@@ -4,7 +4,7 @@
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() { delete sprite_; }
+GameScene::~GameScene() { delete model_; }
 
 void GameScene::Initialize() {
 
@@ -12,18 +12,18 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	//モデル
 	textureHandle_ = TextureManager::Load("sample.png");
 
-	sprite_ = Sprite::Create(textureHandle_, {100, 50});
+	model_ = Model::Create();
+
+	//ワールドトランスフォーム
+	worldTransform_.Initialize();
+	//ビュープロジェクション
+	viewProjection_.Initialize();
 }
 
-void GameScene::Update() {
-	//スプライト
-	Vector2 position = sprite_->GetPosition();
-	position.x += 1.0f;
-	position.y += 1.0f;
-	sprite_->SetPosition(position);
-}
+void GameScene::Update() {}
 
 void GameScene::Draw() {
 
@@ -51,6 +51,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -63,9 +64,6 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-
-	//スプライト
-	sprite_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
