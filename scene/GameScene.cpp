@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include "AxisIndicator.h"
 
 GameScene::GameScene() {}
 
@@ -9,6 +10,8 @@ GameScene::~GameScene() {
 
 	//自キャラの解放
 	delete player_;
+
+	delete debugCamera_;
 }
 
 void GameScene::Initialize() {
@@ -17,24 +20,50 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	//テクスチャの読み込み
+	// テクスチャの読み込み
 	textureHandle_ = TextureManager::Load("sample.png");
 
-	//3Dモデルの生成
+	// 3Dモデルの生成
 	model_ = Model::Create();
 
-	//ビュープロジェクションの初期化
+	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
-	//自キャラの生成
+	// 自キャラの生成
 	player_ = new Player();
-	//自キャラの初期化
+	// 自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
+
+	// デバッグカメラ生成
+	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
+
+	// 軸方向表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+	// 軸方向が参照するビュープロジェクションを参照する(アドレス渡し)
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 }
 
 void GameScene::Update() {
 	//自キャラの更新
 	player_->Update();
+
+	// デバッグカメラの更新
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_C)) {
+		isDebugCameraActive_ = true;
+	}
+#endif
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
+		//ビュープロジェクション行列の転送
+		viewProjection_.TransferMatrix();
+	} else {
+		//ビュープロジェクション行列の更新と転送
+		viewProjection_.UpdateMatrix();
+	}
 }
 
 void GameScene::Draw() {
