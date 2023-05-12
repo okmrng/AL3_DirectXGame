@@ -61,6 +61,26 @@ void Player::Update() {
 
 	worldTransform_.TransferMatrix();
 
+	//回転速さ(ラジアン/frame)
+	const float kRotSpeed = 0.02f;
+
+	//押した方向で移動ベクトルを変更
+	if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotation_.y -= kRotSpeed;
+	}
+	if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotation_.y += kRotSpeed;
+	}
+
+	//キャラクター攻撃処理
+	Attack();
+
+	//弾更新
+	//if (bullet_!=nullptr)と同じ条件
+	if (bullet_) {
+		bullet_->Update();
+	}
+
 	//キャラクターの座標を表示
 	ImGui::SetNextWindowPos({60, 60});
 	ImGui::SetNextWindowSize({300, 100});
@@ -77,4 +97,20 @@ void Player::Update() {
 void Player::Draw(ViewProjection& viewProjection) {
 	//3Dモデルを描画
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+
+	//弾描画
+	if (bullet_) {
+		bullet_->Draw(viewProjection);
+	}
+}
+
+void Player::Attack() { 
+	if (input_->TriggerKey(DIK_SPACE)) {
+		//弾を生成し、初期化
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
+
+		//弾を登録する
+		bullet_ = newBullet;
+	}
 }

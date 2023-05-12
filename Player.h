@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #include "Input.h"
+#include "PlayerBullet.h"
 
 /// <summary>
 /// 自キャラ
@@ -28,6 +29,11 @@ public:
 	/// <param name="viewProjection">ビュープロジェクション（参照渡し）</param>
 	void Draw(ViewProjection& viewProjection);
 
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
+
 	//メンバ変数
 private:
 	//ワールド変換データ
@@ -41,4 +47,7 @@ private:
 
 	//キーボード入力
 	Input* input_ = nullptr;
+
+	//弾
+	PlayerBullet* bullet_ = nullptr;
 };
