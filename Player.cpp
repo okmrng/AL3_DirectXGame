@@ -3,6 +3,10 @@
 #include <cassert>
 #include "ImGuiManager.h"
 
+Player::~Player() {
+	
+}
+
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	//NULLポインタチェック
 	assert(model);

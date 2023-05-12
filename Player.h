@@ -12,6 +12,11 @@ class Player {
 	//メンバ関数
 public:
 	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Player();
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
