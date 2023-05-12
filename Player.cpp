@@ -3,8 +3,10 @@
 #include <cassert>
 #include "ImGuiManager.h"
 
-Player::~Player() {
-	
+Player::~Player() { 
+	for (PlayerBullet* bullet : bullets_) {
+		delete bullet;
+	}
 }
 
 void Player::Initialize(Model* model, uint32_t textureHandle) {
@@ -81,8 +83,8 @@ void Player::Update() {
 
 	//弾更新
 	//if (bullet_!=nullptr)と同じ条件
-	if (bullet_) {
-		bullet_->Update();
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
 	}
 
 	//キャラクターの座標を表示
@@ -103,8 +105,8 @@ void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
 	//弾描画
-	if (bullet_) {
-		bullet_->Draw(viewProjection);
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
 	}
 }
 
@@ -115,6 +117,6 @@ void Player::Attack() {
 		newBullet->Initialize(model_, worldTransform_.translation_);
 
 		//弾を登録する
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }
