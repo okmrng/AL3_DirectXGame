@@ -37,6 +37,9 @@ public:
 	void LeaveUpdate();
 
 private:
+	//メンバ関数ポインタのテーブル
+	static void (Enemy::*spFuncTable[])();
+
 	//メンバ変数
 	//  ワールド変換データ
 	WorldTransform worldTransform_;

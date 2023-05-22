@@ -20,17 +20,10 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 }
 
 void Enemy::Update() {
-	//フェーズ
-	switch (phase_) {
-	case Phase::Approach:
-	default:
-		//移動(ベクトルを加算)
-		ApproachUpdate();
-		break;
-	case Phase::Leave:
-		LeaveUpdate();
-		break;
-	}
+	//フェーズの関数テーブル
+	void (Enemy::*Enemy::spFuncTable[])(){
+
+	};
 
 	worldTransform_.UpdateMatrix();
 }
