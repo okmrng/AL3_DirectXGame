@@ -39,6 +39,11 @@ public:
 private:
 	//メンバ関数ポインタのテーブル
 	static void (Enemy::*spFuncTable[])();
+	//staticで宣言したメンバ関数ポインタテーブル
+	void (Enemy::*Enemy::spFuncTable[])() = {
+		&Enemy::ApproachUpdate,
+		&Enemy::LeaveUpdate
+	};
 
 	//メンバ変数
 	//  ワールド変換データ

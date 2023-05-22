@@ -20,10 +20,7 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 }
 
 void Enemy::Update() {
-	//フェーズの関数テーブル
-	void (Enemy::*Enemy::spFuncTable[])(){
-
-	};
+	
 
 	worldTransform_.UpdateMatrix();
 }
