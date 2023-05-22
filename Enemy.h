@@ -4,9 +4,19 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "EnemyBullet.h"
+#include <list>
 
+/// <summary>
+/// 敵
+/// </summary>
 class Enemy {
 public:
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Enemy();
+
 	//メンバ関数
 	/// <summary>
 	/// 初期化
@@ -27,6 +37,11 @@ public:
 	void Draw(const ViewProjection& viewProjection);
 
 	/// <summary>
+	/// 接近フェーズの初期化関数
+	/// </summary>
+	void ApproachInitialize();
+
+	/// <summary>
 	/// 接近フェーズの更新関数
 	/// </summary>
 	void ApproachUpdate();
@@ -36,8 +51,19 @@ public:
 	/// </summary>
 	void LeaveUpdate();
 
-private:
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Fire();
+
 	//メンバ変数
+	// 発射間隔
+	static const int kFireInterval = 60;
+
+private:
+	//発射タイマー
+	int32_t kFireTimer = 0;
+
 	//  ワールド変換データ
 	WorldTransform worldTransform_;
 
@@ -57,4 +83,7 @@ private:
 	};
 	//フェーズ
 	Phase phase_ = Phase::Approach;
+
+	// 弾
+	std::list<EnemyBullet*> bullets_;
 };
