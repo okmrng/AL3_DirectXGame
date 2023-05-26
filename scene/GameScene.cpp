@@ -42,6 +42,9 @@ void GameScene::Initialize() {
 	// 敵の初期化
 	enemy_->Initialize(model_, {0, 0, 50});
 
+	//敵キャラに自キャラのアドレスを渡す
+	enemy_->SetPlayer(player_);
+
 	// デバッグカメラ生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 

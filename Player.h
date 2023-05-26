@@ -40,6 +40,9 @@ public:
 	/// </summary>
 	void Attack();
 
+	//ワールド座標を取得
+	Vector3 GetWorldPositiopn();
+
 	//メンバ変数
 private:
 	//ワールド変換データ
