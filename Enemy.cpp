@@ -26,15 +26,6 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	//速度
 	velocity_ = {-0.1f, 0.1f, -0.2f};
 
-	// デスフラグの立った弾を削除
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->isDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
-
 	//接近フェーズ初期化
 	ApproachInitialize();
 }
