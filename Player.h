@@ -39,9 +39,30 @@ public:
 	/// 攻撃
 	/// </summary>
 	void Attack();
-
-	//ワールド座標を取得
+	
+	/// <summary>
+	/// ワールド座標を取得
+	/// </summary>
+	/// <returns></returns>
 	Vector3 GetWorldPositiopn();
+
+	/// <summary>
+	/// 衝突を検出したら呼び出されるコールバック関数
+	/// </summary>
+	void OnColision();
+
+	//ゲッター
+	/// <summary>
+	/// 弾リストを取得
+	/// </summary>
+	/// <returns></returns>
+	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
+
+	/// <summary>
+	/// 半径
+	/// </summary>
+	/// <returns></returns>
+	const float GetRadius() { return radius_; }
 
 	//メンバ変数
 private:
@@ -59,4 +80,7 @@ private:
 
 	//弾
 	std::list<PlayerBullet*> bullets_;
+
+	//半径
+	const float radius_ = 1.0f;
 };

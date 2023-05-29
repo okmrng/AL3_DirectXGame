@@ -59,10 +59,32 @@ public:
 	/// </summary>
 	void Fire();
 
+	/// <summary>
+	/// ワールド座標を取得
+	/// </summary>
+	/// <returns></returns>
+	Vector3 GetWorldPositiopn();
+
+	/// <summary>
+	/// 衝突を検出したら呼び出されるコールバック関数
+	/// </summary>
+	void OnColision();
+
+	// セッター
 	void SetPlayer(Player* player) { player_ = player; }
 
-	// ワールド座標を取得
-	Vector3 GetWorldPositiopn();
+	// ゲッター
+	/// <summary>
+	/// 弾リストを取得
+	/// </summary>
+	/// <returns></returns>
+	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
+
+	/// <summary>
+	/// 半径取得
+	/// </summary>
+	/// <returns></returns>
+	const float GetRadius() { return radius_; }
 
 	//メンバ変数
 	// 発射間隔
@@ -97,4 +119,7 @@ private:
 
 	//自キャラ
 	Player* player_ = nullptr;
+
+	//半径
+	const float radius_ = 1.0f;
 };

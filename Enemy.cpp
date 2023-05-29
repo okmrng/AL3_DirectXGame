@@ -49,6 +49,15 @@ void Enemy::Update() {
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Update();
 	}
+
+	// デスフラグの立った弾を削除
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->isDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
@@ -135,3 +144,5 @@ Vector3 Enemy::GetWorldPositiopn() {
 
 	return worldPos;
 }
+
+void Enemy::OnColision() {}
