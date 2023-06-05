@@ -12,9 +12,6 @@ GameScene::~GameScene() {
 	delete player_;
 
 	delete debugCamera_;
-
-	//敵の解放
-	delete enemy_;
 }
 
 void GameScene::Initialize() {
