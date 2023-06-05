@@ -19,9 +19,23 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	velocity_ = {-1, 1, -1};
 }
 
-void Enemy::Update() {
-	
+// staticで宣言したメンバ関数ポインタテーブル
+void (Enemy::*Enemy::spFuncTable[])() = {
+	&Enemy::ApproachUpdate,
+	&Enemy::LeaveUpdate
+};
 
+void Enemy::Update() {
+	//現在フェーズの関数を実行
+	//メンバ関数ポインタの呼び出し
+	if (worldTransform_.translation_.z >= 0.0f) {
+		(this->*spFuncTable[0])();
+	}
+	if (worldTransform_.translation_.z <= 0.0f) {
+		(this->*spFuncTable[1])();
+	}
+
+	//行列を更新
 	worldTransform_.UpdateMatrix();
 }
 
