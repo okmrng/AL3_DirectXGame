@@ -63,11 +63,6 @@ void Player::Update() {
 	worldTransform_.translation_.x += move.x;
 	worldTransform_.translation_.y += move.y;
 
-	worldTransform_.matWorld_ = MakeAffinMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-
-	worldTransform_.TransferMatrix();
-
 	//回転速さ(ラジアン/frame)
 	const float kRotSpeed = 0.02f;
 
