@@ -23,6 +23,9 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate);
 //アフィン行列
 Matrix4x4 MakeAffinMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
 
+//逆行列
+Matrix4x4 Inverse(const Matrix4x4& m);
+
 //代入演算子オーバーロード
 Matrix4x4& operator*=(Matrix4x4& m1, const Matrix4x4& m2);
 

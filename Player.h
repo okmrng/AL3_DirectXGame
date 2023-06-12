@@ -22,7 +22,7 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="textureHandle">テクスチャハンドル</param>
-	void Initialize(Model* model,uint32_t textureHandle);
+	void Initialize(Model* model,uint32_t textureHandle, const Vector3& position);
 
 	/// <summary>
 	/// 更新
@@ -63,6 +63,12 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	const float GetRadius() { return radius_; }
+
+	/// <summary>
+	/// 親となるワールドトランスフォームをセット
+	/// </summary>
+	/// <param name="parent">親となるワールドトランスフォーム</param>
+	void SetParent(const WorldTransform* parent);
 
 	//メンバ変数
 private:
