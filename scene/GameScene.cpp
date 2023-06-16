@@ -13,7 +13,13 @@ GameScene::~GameScene() {
 	delete player_;
 
 	// 敵の解放
-	delete enemy_;
+	for (Enemy* enemy : enemy_) {
+		delete enemy;
+	}
+	// 敵弾の解放
+	for (EnemyBullet* bullet : bullets_) {
+		delete bullet;
+	}
 
 	// 天球の解放
 	delete skydome_;
@@ -47,13 +53,7 @@ void GameScene::Initialize() {
 	Vector3 playerPosition(0.0f, 0.0f, 15.0f);
 	player_->Initialize(model_, textureHandle_, playerPosition);
 
-	// 敵の生成
-	enemy_ = new Enemy();
-	// 敵の初期化
-	enemy_->Initialize(model_, {0, 0, 50});
-
-	//敵キャラに自キャラのアドレスを渡す
-	enemy_->SetPlayer(player_);
+	AddEnemy({0.0f, 5.0f, 30.0f});
 
 	// 天球の生成
 	skydome_ = new Skydome();
@@ -77,13 +77,34 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	//自キャラの更新
+	// 自キャラの更新
 	player_->Update();
 
-	//敵の更新
-	if (enemy_) {
-		enemy_->Update();
+	// 敵の更新
+	for (Enemy* enemy : enemy_) {
+		enemy->Update();
 	}
+	// デスフラグの立った敵を削除
+	enemy_.remove_if([](Enemy* enemy) {
+		if (enemy->GetIsDead()) {
+			delete enemy;
+			return true;
+		}
+		return false;
+	});
+
+	// 弾更新
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Update();
+	}
+	// デスフラグの立った弾を削除
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->isDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 
 	// 当たり判定
 	CheckAllCollisions();
@@ -125,7 +146,7 @@ void GameScene::CheckAllCollisions() {
 	//自弾リストの取得
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 	//敵弾リストの取得
-	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+	//const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
 
 	//自キャラと敵弾の当たり判定
 	#pragma region
@@ -133,7 +154,7 @@ void GameScene::CheckAllCollisions() {
 	posA = player_->GetWorldPositiopn();
 
 	//自キャラと敵弾全ての当たり判定
-	for (EnemyBullet* bullet : enemyBullets) {
+	for (EnemyBullet* bullet : bullets_) {
 		//敵弾の座標
 		posB = bullet->GetWorldPositiopn();
 
@@ -159,31 +180,33 @@ void GameScene::CheckAllCollisions() {
 
 	// 自弾と敵キャラの当たり判定
 	#pragma region
-	// 敵キャラの座標
-	posA = enemy_->GetWorldPositiopn();
+	for (Enemy* enemy : enemy_) {
+		// 敵キャラの座標
+		posA = enemy->GetWorldPositiopn();
 
-	// 自弾と敵キャラ全ての当たり判定
-	for (PlayerBullet* bullet : playerBullets) {
-		// 自弾の座標
-		posB = bullet->GetWorldPositiopn();
+		// 自弾と敵キャラ全ての当たり判定
+		for (PlayerBullet* bullet : playerBullets) {
+			// 自弾の座標
+			posB = bullet->GetWorldPositiopn();
 
-		// AとBの距離を求める
-		const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
-		const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
-		const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
-		const float collisionXYZ = collisionX + collisionY + collisionZ;
+			// AとBの距離を求める
+			const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+			const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+			const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+			const float collisionXYZ = collisionX + collisionY + collisionZ;
 
-		const float collisionRadiusA = enemy_->GetRadius();
-		const float collisionRadiusB = bullet->GetRadius();
-		const float collisionRadiusAB =
-		    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+			const float collisionRadiusA = enemy->GetRadius();
+			const float collisionRadiusB = bullet->GetRadius();
+			const float collisionRadiusAB =
+			    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
 
-		// 球と球の交差判定
-		if (collisionXYZ <= collisionRadiusAB) {
-			// 自キャラの衝突時コールバックを呼び出す
-			enemy_->OnColision();
-			// 自弾の衝突時コールバックを呼び出す
-			bullet->OnColision();
+			// 球と球の交差判定
+			if (collisionXYZ <= collisionRadiusAB) {
+				// 自キャラの衝突時コールバックを呼び出す
+				enemy->OnColision();
+				// 自弾の衝突時コールバックを呼び出す
+				bullet->OnColision();
+			}
 		}
 	}
 	#pragma endregion
@@ -193,7 +216,7 @@ void GameScene::CheckAllCollisions() {
 
 	// 自弾と敵キャラ全ての当たり判定
 	for (PlayerBullet* pBullet : playerBullets) {
-		for (EnemyBullet* eBullet : enemyBullets) {
+		for (EnemyBullet* eBullet : bullets_) {
 			// 自弾の座標
 			posA = pBullet->GetWorldPositiopn();
 			// 敵弾の座標
@@ -213,7 +236,7 @@ void GameScene::CheckAllCollisions() {
 			// 球と球の交差判定
 			if (collisionXYZ <= collisionRadiusAB) {
 				// 自キャラの衝突時コールバックを呼び出す
-				enemy_->OnColision();
+				//enemy_->OnColision();
 				// 敵弾の衝突時コールバックを呼び出す
 				eBullet->OnColision();
 			}
@@ -253,7 +276,13 @@ void GameScene::Draw() {
 	player_->Draw(viewProjection_);
 
 	//敵の描画
-	enemy_->Draw(viewProjection_);
+	for (Enemy* enemy : enemy_) {
+		enemy->Draw(viewProjection_);
+	}
+	// 敵の弾の描画
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection_);
+	}
 
 	// 天球の描画
 	skydome_->Draw(viewProjection_);
@@ -274,4 +303,22 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
+	// リストに登録する
+	bullets_.push_back(enemyBullet);
+}
+
+void GameScene::AddEnemy(Vector3 pos) {
+	// 敵の生成
+	Enemy* obj = new Enemy();
+	// 敵の初期化
+	obj->Initialize(model_, pos);
+	// 敵キャラに自キャラのアドレスを渡す
+	obj->SetPlayer(player_);
+	// 敵キャラのゲームシーンを渡す
+	obj->SetGameScene(this);
+
+	enemy_.push_back(obj);
 }

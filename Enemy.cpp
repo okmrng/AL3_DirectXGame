@@ -3,11 +3,12 @@
 #include <cassert>
 #include "Player.h"
 #include <cmath>
+#include "GameScene.h"
 
 Enemy::~Enemy() {
-	for (EnemyBullet* bullet : bullets_) {
+	/*for (EnemyBullet* bullet : bullets_) {
 		delete bullet;
-	}
+	}*/
 }
 
 void Enemy::Initialize(Model* model, const Vector3& position) {
@@ -46,27 +47,27 @@ void Enemy::Update() {
 	worldTransform_.UpdateMatrix();
 
 	// 弾更新
-	for (EnemyBullet* bullet : bullets_) {
+	/*for (EnemyBullet* bullet : bullets_) {
 		bullet->Update();
-	}
+	}*/
 
 	// デスフラグの立った弾を削除
-	bullets_.remove_if([](EnemyBullet* bullet) {
+	/*bullets_.remove_if([](EnemyBullet* bullet) {
 		if (bullet->isDead()) {
 			delete bullet;
 			return true;
 		}
 		return false;
-	});
+	});*/
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
 	// 弾描画
-	for (EnemyBullet* bullet : bullets_) {
+	/*for (EnemyBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection);
-	}
+	}*/
 }
 
 void Enemy::ApproachInitialize() {
@@ -94,6 +95,10 @@ void Enemy::ApproachUpdate() {
 }
 
 void Enemy::LeaveUpdate() {
+	if (deathTimer_-- < 0) {
+		isDead_ = true;
+	}
+
 	// 座標を移動させる(1フレーム分の移動量を足しこむ)
 	worldTransform_.translation_.x += velocity_.x;
 	worldTransform_.translation_.y += velocity_.y;
@@ -130,7 +135,8 @@ void Enemy::Fire() {
 	newBullet->Initialize(model_, worldTransform_.translation_,velocity);
 
 	// 弾を登録する
-	bullets_.push_back(newBullet);
+	//bullets_.push_back(newBullet);
+	gameScene_->AddEnemyBullet(newBullet);
 }
 
 Vector3 Enemy::GetWorldPositiopn() {

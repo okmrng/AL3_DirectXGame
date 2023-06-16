@@ -7,8 +7,9 @@
 #include "EnemyBullet.h"
 #include <list>
 
-//自機クラスの前方宣言
+// 前方宣言
 class Player;
+class GameScene;
 
 /// <summary>
 /// 敵
@@ -73,18 +74,22 @@ public:
 	// セッター
 	void SetPlayer(Player* player) { player_ = player; }
 
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+
 	// ゲッター
 	/// <summary>
 	/// 弾リストを取得
 	/// </summary>
 	/// <returns></returns>
-	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
+	//const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 
 	/// <summary>
 	/// 半径取得
 	/// </summary>
 	/// <returns></returns>
 	const float GetRadius() { return radius_; }
+
+	bool GetIsDead() { return isDead_; }
 
 	//メンバ変数
 	// 発射間隔
@@ -115,11 +120,19 @@ private:
 	Phase phase_ = Phase::Approach;
 
 	// 弾
-	std::list<EnemyBullet*> bullets_;
+	//std::list<EnemyBullet*> bullets_;
 
 	//自キャラ
 	Player* player_ = nullptr;
 
 	//半径
 	const float radius_ = 1.0f;
+
+	// ゲームシーン
+	GameScene* gameScene_ = nullptr;
+
+	// デスタイマー
+	int32_t deathTimer_ = 300;
+	// デスフラグ
+	bool isDead_ = false;
 };
