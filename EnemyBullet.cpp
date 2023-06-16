@@ -1,12 +1,16 @@
 ﻿#include "EnemyBullet.h"
 
 #include <cassert>
+#include <cmath>
 
 void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 	// NULLポインタチェック
 	assert(model);
 
 	model_ = model;
+
+	// 引数で受け取った速度をメンバ変数に代入
+	velocity_ = velocity;
 
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
@@ -15,8 +19,14 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 	// 引数で受け取った初期座標をセット
 	worldTransform_.translation_ = position;
 
-	// 引数で受け取った速度をメンバ変数に代入
-	velocity_ = velocity;
+	worldTransform_.scale_.x = 0.5f;
+	worldTransform_.scale_.y = 0.5f;
+	worldTransform_.scale_.z = 3.0f;
+
+	worldTransform_.rotation_.y = std::atan2(velocity_.z, velocity_.x);
+	
+
+	worldTransform_.rotation_.x = std::atan2(-velocity_.y, velocity_.z);
 }
 
 void EnemyBullet::Update() {
