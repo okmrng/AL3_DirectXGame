@@ -41,6 +41,9 @@ void GameScene::Initialize() {
 	// テクスチャの読み込み
 	textureHandle_ = TextureManager::Load("sample.png");
 
+	// レティクルのテクスチャ
+	TextureManager::Load("target.png");
+
 	// 3Dモデルの生成
 	model_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
@@ -82,7 +85,7 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 	// 自キャラの更新
-	player_->Update();
+	player_->Update(viewProjection_);
 
 	// 敵の更新
 	UpdateEnemyPopComands();
@@ -301,6 +304,8 @@ void GameScene::Draw() {
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
+
+	player_->DrawUI();
 
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる

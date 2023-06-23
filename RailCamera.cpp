@@ -10,7 +10,7 @@ void RailCamera::Initialize(const Vector3& position, const Vector3& rotate) {
 	worldTransform_.rotation_ = rotate;
 
 	// ビュープロジェクションの初期化
-	viewProjection_.farZ = 100.0f;
+	//viewProjection_.farZ = 100.0f;
 	viewProjection_.Initialize();
 }
 

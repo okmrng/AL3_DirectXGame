@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "PlayerBullet.h"
 #include <list>
+#include "Sprite.h"
 
 /// <summary>
 /// 自キャラ
@@ -27,13 +28,18 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(ViewProjection& viewProjection);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="viewProjection">ビュープロジェクション（参照渡し）</param>
 	void Draw(ViewProjection& viewProjection);
+
+	/// <summary>
+	/// UI描画
+	/// </summary>
+	void DrawUI();
 
 	/// <summary>
 	/// 攻撃
@@ -89,4 +95,12 @@ private:
 
 	//半径
 	const float radius_ = 1.0f;
+
+	// 3Dレティクル用ワールドトランスフォーム
+	WorldTransform worldTransform3DReticle_;
+
+	Model* model3DReticle_ = nullptr;
+
+	// 2Dレティクル用スプライト
+	Sprite* sprite2DReticle_ = nullptr;
 };
