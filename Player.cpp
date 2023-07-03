@@ -142,34 +142,106 @@ void Player::Update(ViewProjection& viewProjection) {
 
 	// 3Dレティクルのワールド座標から2Dレティクルのスクリーン座標を計算
 	{ 
-		Vector3 positionReticle;
-		positionReticle.x = worldTransform3DReticle_.matWorld_.m[3][0];
-		positionReticle.y = worldTransform3DReticle_.matWorld_.m[3][1];
-		positionReticle.z = worldTransform3DReticle_.matWorld_.m[3][2];
+		//Vector3 positionReticle;
+		//positionReticle.x = worldTransform3DReticle_.matWorld_.m[3][0];
+		//positionReticle.y = worldTransform3DReticle_.matWorld_.m[3][1];
+		//positionReticle.z = worldTransform3DReticle_.matWorld_.m[3][2];
+
+		//// ビューポート行列
+		//Matrix4x4 matViewport =
+		//    MakeViewportMatrix(0.0f, 0.0f, WinApp::kWindowWidth, WinApp::kWindowHeight, 0.0f, 1.0f);
+
+		//// ビュー行列とプロジェクション行列、ビューポート行列を合成する
+		//Matrix4x4 matViewProjectionViewport =
+		//    viewProjection.matView * viewProjection.matProjection * matViewport;
+
+		//// ワールド→スクリーン座標変換
+		//positionReticle = Transform(positionReticle, matViewProjectionViewport);
+
+		//// スプライトのレティクルに座標設定
+		//sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+	}
+
+	// マウスカーソルのスクリーン座標からワールド座標を取得して3Dレティクル配置
+	{
+		POINT mousePosition;
+
+		// マウス座標(スクリーン座標)を取得する
+		GetCursorPos(&mousePosition);
+
+		// クライアントエリア座標に変換する
+		HWND hwnd = WinApp::GetInstance()->GetHwnd();
+		ScreenToClient(hwnd, &mousePosition);
+
+		// マウス座標を2Dレティクルのスプライトに代入する
+		sprite2DReticle_->SetPosition(Vector2((float)mousePosition.x, (float)mousePosition.y));
 
 		// ビューポート行列
 		Matrix4x4 matViewport =
 		    MakeViewportMatrix(0.0f, 0.0f, WinApp::kWindowWidth, WinApp::kWindowHeight, 0.0f, 1.0f);
 
-		// ビュー行列とプロジェクション行列、ビューポート行列を合成する
+		// ビュープロジェクションビューポート合成行列
 		Matrix4x4 matViewProjectionViewport =
 		    viewProjection.matView * viewProjection.matProjection * matViewport;
 
-		// ワールド→スクリーン座標変換
-		positionReticle = Transform(positionReticle, matViewProjectionViewport);
+		// 合成行列の逆行列
+		Matrix4x4 matInverseViewProjectionViewport = Inverse(matViewProjectionViewport);
 
-		// スプライトのレティクルに座標設定
-		sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+		// スクリーン座標
+		Vector3 posNear = Vector3((float)mousePosition.x, (float)mousePosition.y, 0);
+		Vector3 posFar = Vector3((float)mousePosition.x, (float)mousePosition.y, 1);
+
+		// スクリーン座標系からワールド座標系へ
+		posNear = Transform(posNear, matInverseViewProjectionViewport);
+		posFar = Transform(posFar, matInverseViewProjectionViewport);
+
+		// マウスレイの方向
+		Vector3 mouseDirection = posFar - posNear;
+
+		float length = sqrtf( mouseDirection.x * mouseDirection.x + mouseDirection.y * mouseDirection.y +
+		    mouseDirection.z * mouseDirection.z);
+		mouseDirection.x /= length;
+		mouseDirection.y /= length;
+		mouseDirection.z /= length;
+
+		// カメラから標準オブジェクトの距離
+		const float kDistanceTestObject = 1.0f;
+		worldTransform3DReticle_.translation_ = mouseDirection - posNear;
+
+		float length2 = sqrtf(
+		    worldTransform3DReticle_.translation_.x * worldTransform3DReticle_.translation_.x +
+		    worldTransform3DReticle_.translation_.y * worldTransform3DReticle_.translation_.y +
+		    worldTransform3DReticle_.translation_.z * worldTransform3DReticle_.translation_.z);
+		worldTransform3DReticle_.translation_.x /= length2;
+		worldTransform3DReticle_.translation_.y /= length2;
+		worldTransform3DReticle_.translation_.z /= length2;
+
+		worldTransform3DReticle_.translation_.x *= kDistanceTestObject;
+		worldTransform3DReticle_.translation_.y *= kDistanceTestObject;
+		worldTransform3DReticle_.translation_.z *= kDistanceTestObject;
+
+		// ワールド行列の更新
+		worldTransform3DReticle_.UpdateMatrix();
+		// ワールド行列の転送
+		worldTransform3DReticle_.TransferMatrix();
+
+		ImGui::Begin("PlayerReticle");
+		ImGui::Text("2DReticle:(%f,%f)", sprite2DReticle_->GetPosition().x,sprite2DReticle_->GetPosition().y);
+		ImGui::Text("Near:(%+.2f,%+.2f,%+.2f)", posNear.x, posNear.y, posNear.z);
+		ImGui::Text("Far:(%+.2f,%+.2f,%+.2f)", posFar.x, posFar.y, posFar.z);
+		ImGui::Text("3DReticle:(%+.2f,%+.2f,%+.2f)", worldTransform3DReticle_.translation_.x,
+		    worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
+		ImGui::End();
 	}
 }
 
 void Player::Draw(ViewProjection& viewProjection) {
-	//3Dモデルを描画
+	// 3Dモデルを描画
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
 	model3DReticle_->Draw(worldTransform3DReticle_, viewProjection, textureHandle_);
 
-	//弾描画
+	// 弾描画
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
@@ -181,13 +253,13 @@ void Player::DrawUI() {
 
 void Player::Attack() { 
 	if (input_->TriggerKey(DIK_SPACE)) {
-		//弾の速度
+		// 弾の速度
 		const float kBulletSpeed = 1.0f;
-		//Vector3 velocity(0, 0, kBulletSpeed);
+		// Vector3 velocity(0, 0, kBulletSpeed);
 		Vector3 subtract;
-		subtract.x = worldTransform3DReticle_.matWorld_.m[3][0] - worldTransform_.matWorld_.m[3][0];
-		subtract.y = worldTransform3DReticle_.matWorld_.m[3][1] - worldTransform_.matWorld_.m[3][1];
-		subtract.z = worldTransform3DReticle_.matWorld_.m[3][2] - worldTransform_.matWorld_.m[3][2];
+		subtract.x = worldTransform3DReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
+		subtract.y = worldTransform3DReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
+		subtract.z = worldTransform3DReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
 
 		// 正規化
 		float lengh =  sqrtf(subtract.x * subtract.x + subtract.y * subtract.y + subtract.z * subtract.z);
@@ -201,23 +273,23 @@ void Player::Attack() {
 		velocity.y = dir.y * kBulletSpeed;
 		velocity.z = dir.z * kBulletSpeed;
 
-		//速度ベクトルを自機の向きに合わせて回転させる
+		// 速度ベクトルを自機の向きに合わせて回転させる
 		//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
-		//弾を生成し、初期化
+		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, GetWorldPositiopn(), velocity);
 
-		//弾を登録する
+		// 弾を登録する
 		bullets_.push_back(newBullet);
 	}
 }
 
 Vector3 Player::GetWorldPositiopn() {
-	//ワールド座標を入れる変数
+	// ワールド座標を入れる変数
 	Vector3 worldPos;
 
-	//ワールド行列の平行移動成分を取得(ワールド座標)
+	// ワールド行列の平行移動成分を取得(ワールド座標)
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
 	worldPos.y = worldTransform_.matWorld_.m[3][1];
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
