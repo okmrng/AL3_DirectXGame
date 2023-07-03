@@ -122,46 +122,6 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform_.translation_ = {sliderValue[0], sliderValue[1], sliderValue[2]};
 	ImGui::End();
 
-	// 自機のワールド座標から3Dレティクルのワールド座標を計算
-	{
-		// 自機から3Dレティクルへの距離
-		const float kDistancePlayerTo3DReticle = 50.0f;
-		// 自機から3Dレティクルへのオフセット(Z+向き)
-		Vector3 offset = {0.0f, 0.0f, 1.0f};
-		// 自機のワールド行列の回転を反映
-		offset = TransformNormal(offset, worldTransform_.matWorld_);
-		// ベクトルの長さを整える
-		offset = Normalize(offset) * kDistancePlayerTo3DReticle;
-		// 3Dレティクルの座標を設定
-		worldTransform3DReticle_.translation_ = worldTransform_.translation_ + offset;
-		// ワールド行列の更新
-		worldTransform3DReticle_.UpdateMatrix();
-		// ワールド行列の転送
-		worldTransform3DReticle_.TransferMatrix();
-	}
-
-	// 3Dレティクルのワールド座標から2Dレティクルのスクリーン座標を計算
-	{ 
-		//Vector3 positionReticle;
-		//positionReticle.x = worldTransform3DReticle_.matWorld_.m[3][0];
-		//positionReticle.y = worldTransform3DReticle_.matWorld_.m[3][1];
-		//positionReticle.z = worldTransform3DReticle_.matWorld_.m[3][2];
-
-		//// ビューポート行列
-		//Matrix4x4 matViewport =
-		//    MakeViewportMatrix(0.0f, 0.0f, WinApp::kWindowWidth, WinApp::kWindowHeight, 0.0f, 1.0f);
-
-		//// ビュー行列とプロジェクション行列、ビューポート行列を合成する
-		//Matrix4x4 matViewProjectionViewport =
-		//    viewProjection.matView * viewProjection.matProjection * matViewport;
-
-		//// ワールド→スクリーン座標変換
-		//positionReticle = Transform(positionReticle, matViewProjectionViewport);
-
-		//// スプライトのレティクルに座標設定
-		//sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
-	}
-
 	// マウスカーソルのスクリーン座標からワールド座標を取得して3Dレティクル配置
 	{
 		POINT mousePosition;
@@ -198,33 +158,18 @@ void Player::Update(ViewProjection& viewProjection) {
 		// マウスレイの方向
 		Vector3 mouseDirection = posFar - posNear;
 
-		float length = sqrtf( mouseDirection.x * mouseDirection.x + mouseDirection.y * mouseDirection.y +
-		    mouseDirection.z * mouseDirection.z);
-		mouseDirection.x /= length;
-		mouseDirection.y /= length;
-		mouseDirection.z /= length;
+		mouseDirection = Normalize(mouseDirection);
 
 		// カメラから標準オブジェクトの距離
-		const float kDistanceTestObject = 1.0f;
-		worldTransform3DReticle_.translation_ = mouseDirection - posNear;
-
-		float length2 = sqrtf(
-		    worldTransform3DReticle_.translation_.x * worldTransform3DReticle_.translation_.x +
-		    worldTransform3DReticle_.translation_.y * worldTransform3DReticle_.translation_.y +
-		    worldTransform3DReticle_.translation_.z * worldTransform3DReticle_.translation_.z);
-		worldTransform3DReticle_.translation_.x /= length2;
-		worldTransform3DReticle_.translation_.y /= length2;
-		worldTransform3DReticle_.translation_.z /= length2;
-
-		worldTransform3DReticle_.translation_.x *= kDistanceTestObject;
-		worldTransform3DReticle_.translation_.y *= kDistanceTestObject;
-		worldTransform3DReticle_.translation_.z *= kDistanceTestObject;
+		const float kDistanceTestObject = 50.0f;
+		worldTransform3DReticle_.translation_ = posNear + mouseDirection * kDistanceTestObject;
 
 		// ワールド行列の更新
 		worldTransform3DReticle_.UpdateMatrix();
 		// ワールド行列の転送
 		worldTransform3DReticle_.TransferMatrix();
 
+		// デバッグ文字
 		ImGui::Begin("PlayerReticle");
 		ImGui::Text("2DReticle:(%f,%f)", sprite2DReticle_->GetPosition().x,sprite2DReticle_->GetPosition().y);
 		ImGui::Text("Near:(%+.2f,%+.2f,%+.2f)", posNear.x, posNear.y, posNear.z);
@@ -256,22 +201,17 @@ void Player::Attack() {
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
 		// Vector3 velocity(0, 0, kBulletSpeed);
-		Vector3 subtract;
-		subtract.x = worldTransform3DReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
-		subtract.y = worldTransform3DReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
-		subtract.z = worldTransform3DReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
+		Vector3 velocity;
+		velocity.x = worldTransform3DReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
+		velocity.y = worldTransform3DReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
+		velocity.z = worldTransform3DReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
 
 		// 正規化
-		float lengh =  sqrtf(subtract.x * subtract.x + subtract.y * subtract.y + subtract.z * subtract.z);
-		Vector3 dir;
-		dir.x = subtract.x / lengh;
-		dir.y = subtract.y / lengh;
-		dir.z = subtract.z / lengh;
+		velocity = Normalize(velocity);
 
-		Vector3 velocity;
-		velocity.x = dir.x * kBulletSpeed;
-		velocity.y = dir.y * kBulletSpeed;
-		velocity.z = dir.z * kBulletSpeed;
+		velocity.x *= kBulletSpeed;
+		velocity.y *= kBulletSpeed;
+		velocity.z *= kBulletSpeed;
 
 		// 速度ベクトルを自機の向きに合わせて回転させる
 		//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
