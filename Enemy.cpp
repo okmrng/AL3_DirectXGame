@@ -76,11 +76,11 @@ void Enemy::ApproachInitialize() {
 
 void Enemy::ApproachUpdate() {
 	// 座標を移動させる(1フレーム分の移動量を足しこむ)
-	worldTransform_.translation_.z += velocity_.z;
+	//worldTransform_.translation_.z += velocity_.z;
 
 	// 規定の位置に到達したら離脱
 	if (worldTransform_.translation_.z < 0.0f) {
-		phase_ = Phase::Leave;
+		//phase_ = Phase::Leave;
 	}
 
 	//発射タイマーカウントダウン
