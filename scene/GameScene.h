@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "DebugCamera.h"
 #include "Enemy.h"
+#include <memory>
 
 /// <summary>
 /// ゲームシーン
@@ -62,7 +63,8 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 
 	//自キャラ
-	Player* player_ = nullptr;
+	//Player* player_ = nullptr;
+	std::unique_ptr<Player> player_;
 
 	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;

@@ -133,6 +133,13 @@ void Enemy::Fire() {
 	bullets_.push_back(newBullet);
 }
 
+void Enemy::SetPlayer(Player* player) { 
+	player_ = player;
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->SetPlayer(player);
+	}
+}
+
 Vector3 Enemy::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

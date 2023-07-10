@@ -59,7 +59,7 @@ public:
 	/// </summary>
 	void Fire();
 
-	void SetPlayer(Player* player) { player_ = player; }
+	void SetPlayer(Player* player);
 
 	// ワールド座標を取得
 	Vector3 GetWorldPositiopn();
@@ -84,17 +84,17 @@ private:
 	// 速度
 	Vector3 velocity_;
 
-	//行動フェーズ
+	// 行動フェーズ
 	enum class Phase {
 		Approach, //接近する
 		Leave     //離脱する
 	};
-	//フェーズ
+	// フェーズ
 	Phase phase_ = Phase::Approach;
 
 	// 弾
 	std::list<EnemyBullet*> bullets_;
 
-	//自キャラ
+	// 自キャラ
 	Player* player_ = nullptr;
 };

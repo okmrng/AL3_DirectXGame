@@ -5,6 +5,9 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
+// 自機クラスの前方宣言
+class Player;
+
 /// <summary>
 /// 敵の弾
 /// </summary>
@@ -33,6 +36,11 @@ public:
 
 	bool isDead() const { return isDead_; }
 
+	void SetPlayer(Player* player) { player_ = player; }
+
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
+
 	private:
 	// メンバ変数
 	//  ワールド変換データ
@@ -54,4 +62,7 @@ public:
 	int32_t deathTimer_ = kLifeTime;
 	// デスフラグ
 	bool isDead_ = false;
+
+	// 自キャラ
+	Player* player_ = nullptr;
 };

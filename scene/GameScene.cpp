@@ -9,7 +9,7 @@ GameScene::~GameScene() {
 	delete model_;
 
 	//自キャラの解放
-	delete player_;
+	//delete player_;
 
 	delete debugCamera_;
 
@@ -33,7 +33,8 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 	// 自キャラの生成
-	player_ = new Player();
+	//player_ = new Player();
+	player_ = std::make_unique<Player>();
 	// 自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
 
@@ -43,7 +44,8 @@ void GameScene::Initialize() {
 	enemy_->Initialize(model_, {0, 0, 50});
 
 	//敵キャラに自キャラのアドレスを渡す
-	enemy_->SetPlayer(player_);
+	//enemy_->SetPlayer(player_);
+	enemy_->SetPlayer(player_.get());
 
 	// デバッグカメラ生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
