@@ -6,6 +6,10 @@ Enemy::~Enemy() {
 	for (EnemyBullet* bullet : bullets_) {
 		delete bullet;
 	}
+
+	for (TimedCall* timedCall : timedCalls_) {
+		delete timedCall;
+	}
 }
 
 void Enemy::Initialize(Model* model, const Vector3& position) {
@@ -23,15 +27,6 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 
 	//速度
 	velocity_ = {-0.1f, 0.1f, -0.2f};
-
-	// デスフラグの立った弾を削除
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->isDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
 
 	//接近フェーズ初期化
 	ApproachInitialize();
@@ -56,6 +51,28 @@ void Enemy::Update() {
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Update();
 	}
+
+	// デスフラグの立った弾を削除
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->isDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
+
+	// 終了したタイマーを削除
+	timedCalls_.remove_if([](TimedCall* timedCall) {
+		if (timedCall->IsFinished()) {
+			delete timedCall;
+			return true;
+		}
+		return false;
+	});
+
+	for (TimedCall* timedCall : timedCalls_) {
+		timedCall->Update();
+	}
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
@@ -70,6 +87,9 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 void Enemy::ApproachInitialize() {
 	//発射タイマーを初期化
 	kFireTimer = kFireInterval;
+
+	// 発射タイマーをセットする
+	FireReset();
 }
 
 void Enemy::ApproachUpdate() {
@@ -82,13 +102,13 @@ void Enemy::ApproachUpdate() {
 	}
 
 	//発射タイマーカウントダウン
-	--kFireTimer;
-	if (kFireTimer <= 0) {
-		//弾を発射
-		Fire();
-		//発射タイマーを初期化
-		kFireTimer = kFireInterval;
-	}
+	//--kFireTimer;
+	//if (kFireTimer <= 0) {
+	//	//弾を発射
+	//	Fire();
+	//	//発射タイマーを初期化
+	//	kFireTimer = kFireInterval;
+	//}
 }
 
 void Enemy::LeaveUpdate() {
@@ -96,6 +116,8 @@ void Enemy::LeaveUpdate() {
 	worldTransform_.translation_.x += velocity_.x;
 	worldTransform_.translation_.y += velocity_.y;
 	worldTransform_.translation_.z += velocity_.z;
+
+	timedCalls_.clear();
 }
 
 void Enemy::Fire() {
@@ -106,4 +128,11 @@ void Enemy::Fire() {
 
 	// 弾を登録する
 	bullets_.push_back(newBullet);
+}
+
+void Enemy::FireReset() {
+	Fire();
+
+	// 発射タイマーのセット
+	timedCalls_.push_back(new TimedCall(std::bind(&Enemy::FireReset, this), 30));
 }

@@ -40,7 +40,7 @@ void GameScene::Initialize() {
 	// 敵の生成
 	enemy_ = new Enemy();
 	// 敵の初期化
-	enemy_->Initialize(model_, {0, 0, 50});
+	enemy_->Initialize(model_, {10, -20, 50});
 
 	// デバッグカメラ生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);

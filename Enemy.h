@@ -6,6 +6,7 @@
 #include "WorldTransform.h"
 #include "EnemyBullet.h"
 #include <list>
+#include "TimedCall.h"
 
 /// <summary>
 /// 敵
@@ -56,6 +57,11 @@ public:
 	/// </summary>
 	void Fire();
 
+	/// <summary>
+	/// 弾を発射し、タイマーをリセットするコールバック関数
+	/// </summary>
+	void FireReset();
+
 	//メンバ変数
 	// 発射間隔
 	static const int kFireInterval = 60;
@@ -86,4 +92,7 @@ private:
 
 	// 弾
 	std::list<EnemyBullet*> bullets_;
+
+	// 時限発動のリスト
+	std::list<TimedCall*> timedCalls_;
 };
