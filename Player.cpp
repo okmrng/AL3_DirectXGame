@@ -10,7 +10,7 @@ Player::~Player() {
 	}
 }
 
-void Player::Initialize(Model* model, uint32_t textureHandle) {
+void Player::Initialize(Model* model, uint32_t textureHandle, const Vector3& position) {
 	//NULLポインタチェック
 	assert(model);
 
@@ -20,6 +20,8 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 	//ワールド変換の初期化
 	worldTransform_.Initialize();
+	// 引数で受け取った情報をセット
+	worldTransform_.translation_ = position;
 
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();

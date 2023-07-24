@@ -22,7 +22,7 @@ private:
 	// コールバック
 	std::function<void(void)> f_;
 
-	uint32_t time_;     // 残り時間
+	uint32_t time_;       // 残り時間
 
 	bool finish_ = false; // 完了フラグ
 };

@@ -34,16 +34,16 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 
 void Enemy::Update() {
 	//フェーズ
-	switch (phase_) {
-	case Phase::Approach:
-	default:
-		//移動(ベクトルを加算)
-		ApproachUpdate();
-		break;
-	case Phase::Leave:
-		LeaveUpdate();
-		break;
-	}
+	//switch (phase_) {
+	//case Phase::Approach:
+	//default:
+	//	//移動(ベクトルを加算)
+	//	ApproachUpdate();
+	//	break;
+	//case Phase::Leave:
+	//	LeaveUpdate();
+	//	break;
+	//}
 
 	worldTransform_.UpdateMatrix();
 
@@ -101,6 +101,8 @@ void Enemy::ApproachUpdate() {
 		phase_ = Phase::Leave;
 	}
 
+	//FireReset();
+
 	//発射タイマーカウントダウン
 	//--kFireTimer;
 	//if (kFireTimer <= 0) {
@@ -134,5 +136,5 @@ void Enemy::FireReset() {
 	Fire();
 
 	// 発射タイマーのセット
-	timedCalls_.push_back(new TimedCall(std::bind(&Enemy::FireReset, this), 30));
+	timedCalls_.push_back(new TimedCall(std::bind(&Enemy::FireReset, this), 60));
 }
