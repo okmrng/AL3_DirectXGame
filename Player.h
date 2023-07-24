@@ -5,11 +5,12 @@
 #include "Input.h"
 #include "PlayerBullet.h"
 #include <list>
+#include "Colider.h"
 
 /// <summary>
 /// 自キャラ
 /// </summary>
-class Player {
+class Player : public Colider {
 	//メンバ関数
 public:
 	/// <summary>
@@ -44,12 +45,12 @@ public:
 	/// ワールド座標を取得
 	/// </summary>
 	/// <returns></returns>
-	Vector3 GetWorldPositiopn();
+	Vector3 GetWorldPosition() override;
 
 	/// <summary>
 	/// 衝突を検出したら呼び出されるコールバック関数
 	/// </summary>
-	void OnColision();
+	void OnColision() override;
 
 	//ゲッター
 	/// <summary>

@@ -4,6 +4,7 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Colider.h"
 
 /// <summary>
 /// 敵の弾

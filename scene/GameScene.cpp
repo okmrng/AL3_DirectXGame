@@ -96,32 +96,8 @@ void GameScene::CheckAllCollisions() {
 
 	//自キャラと敵弾の当たり判定
 	#pragma region
-	//自キャラの座標
-	posA = player_->GetWorldPositiopn();
+	
 
-	//自キャラと敵弾全ての当たり判定
-	for (EnemyBullet* bullet : enemyBullets) {
-		//敵弾の座標
-		posB = bullet->GetWorldPositiopn();
-
-		// AとBの距離を求める
-		const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
-		const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
-		const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
-		const float collisionXYZ = collisionX + collisionY + collisionZ;
-
-		const float collisionRadiusA = player_->GetRadius();
-		const float collisionRadiusB = bullet->GetRadius();
-		const float collisionRadiusAB =(collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
-
-		// 球と球の交差判定
-		if (collisionXYZ <= collisionRadiusAB) {
-			// 自キャラの衝突時コールバックを呼び出す
-			player_->OnColision();
-			// 敵弾の衝突時コールバックを呼び出す
-			bullet->OnColision();
-		}
-	}
 	#pragma endregion
 
 	// 自弾と敵キャラの当たり判定
@@ -238,4 +214,25 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckCollisionPair(Colider* colliderA, Colider* colliderB) {
+	Vector3 posA = colliderA->GetWorldPosition();
+	Vector3 posB = colliderB->GetWorldPosition();
+
+	const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+	const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+	const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+	const float collisionXYZ = collisionX + collisionY + collisionZ;
+
+	const float collisionRadiusA = colliderA->GetRadius();
+	const float collisionRadiusB = colliderB->GetRadius();
+	const float collisionRadiusAB =
+	    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+
+	// 球と球の交差判定
+	if (collisionXYZ <= collisionRadiusAB) {
+		colliderA->OnColision();
+		colliderB->OnColision();
+	}
 }

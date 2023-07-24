@@ -138,7 +138,7 @@ void Player::Attack() {
 	}
 }
 
-Vector3 Player::GetWorldPositiopn() {
+Vector3 Player::GetWorldPosition() {
 	//ワールド座標を入れる変数
 	Vector3 worldPos;
 
