@@ -1,20 +1,20 @@
-#pragma once
+ï»¿#pragma once
 
 class Colider {
 public:
-	// ”¼Œa‚ğæ“¾
+	// åŠå¾„ã‚’å–å¾—
 	float GetRadius() { return radius_; }
 
-	// ”¼Œa‚ğİ’è
-	void SetRadius(float radius);
+	// åŠå¾„ã‚’è¨­å®š
+	void SetRadius(float radius) { radius_ = radius; }
 
-	// Õ“Ë‚ÉŒÄ‚Î‚ê‚éŠÖ”
+	// è¡çªæ™‚ã«å‘¼ã°ã‚Œã‚‹é–¢æ•°
 	virtual void OnColision();
 
-	// ƒ[ƒ‹ƒhÀ•W‚ğæ“¾
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—
 	virtual Vector3 GetWorldPosition() = 0;
 
 private:
-	// Õ“Ë”»’è
+	// è¡çªåˆ¤å®š
 	float radius_ = 50.0f;
 };

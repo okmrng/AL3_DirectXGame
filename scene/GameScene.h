@@ -79,5 +79,10 @@ private: // メンバ変数
 	//敵
 	Enemy* enemy_ = nullptr;
 
+	/// <summary>
+	/// コライダー2つの衝突判定と応答
+	/// </summary>
+	/// <param name="colliderA">コライダーA</param>
+	/// <param name="colliderB">コライダーB</param>
 	void CheckCollisionPair(Colider* colliderA, Colider* colliderB);
 };

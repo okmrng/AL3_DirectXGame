@@ -87,18 +87,21 @@ void GameScene::Update() {
 
 void GameScene::CheckAllCollisions() { 
 	//自弾リストの取得
-	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 	//敵弾リストの取得
-	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+	//const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
 
 	//自キャラと敵弾の当たり判定
 	#pragma region
-	
+	/*for (EnemyBullet* enemyBullet : enemyBullets) {
+		CheckAllCollisions(player_,enemyBullets);
+	}*/
+
 	#pragma endregion
 
 	// 自弾と敵キャラの当たり判定
 	#pragma region
-
+	
 	#pragma endregion
 
 	// 自弾と敵弾の当たり判定

@@ -41,7 +41,7 @@ void EnemyBullet::OnColision() {
 	isDead_ = true;
 }
 
-Vector3 EnemyBullet::GetWorldPositiopn() {
+Vector3 EnemyBullet::GetWorldPosition() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 
