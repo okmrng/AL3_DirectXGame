@@ -35,13 +35,13 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	Vector3 playerPosition(10.0f, 10.0f, 15.0f);
+	Vector3 playerPosition(0.0f, 0.0f, 10.0f);
 	player_->Initialize(model_, textureHandle_, playerPosition);
 
 	// 敵の生成
 	enemy_ = new Enemy();
 	// 敵の初期化
-	Vector3 enemyPos{10.0f, -20.0f, 50.0f};
+	Vector3 enemyPos{0.0f, 5.0f, 50.0f};
 	enemy_->Initialize(model_, enemyPos);
 
 	// デバッグカメラ生成

@@ -34,16 +34,29 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 
 void Enemy::Update() {
 	//フェーズ
-	//switch (phase_) {
-	//case Phase::Approach:
-	//default:
-	//	//移動(ベクトルを加算)
-	//	ApproachUpdate();
-	//	break;
-	//case Phase::Leave:
-	//	LeaveUpdate();
-	//	break;
-	//}
+	switch (phase_) {
+	case Phase::Approach:
+	default:
+		//移動(ベクトルを加算)
+		ApproachUpdate();
+		break;
+	case Phase::Leave:
+		LeaveUpdate();
+		break;
+	}
+
+	// 終了したタイマーを削除
+	timedCalls_.remove_if([](TimedCall* timedCall) {
+		if (timedCall->IsFinished()) {
+			delete timedCall;
+			return true;
+		}
+		return false;
+	});
+
+	for (TimedCall* timedCall : timedCalls_) {
+		timedCall->Update();
+	}
 
 	worldTransform_.UpdateMatrix();
 
@@ -60,19 +73,6 @@ void Enemy::Update() {
 		}
 		return false;
 	});
-
-	// 終了したタイマーを削除
-	timedCalls_.remove_if([](TimedCall* timedCall) {
-		if (timedCall->IsFinished()) {
-			delete timedCall;
-			return true;
-		}
-		return false;
-	});
-
-	for (TimedCall* timedCall : timedCalls_) {
-		timedCall->Update();
-	}
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
