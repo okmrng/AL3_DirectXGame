@@ -121,4 +121,12 @@ private: // メンバ変数
 	bool isWait_;
 	// 待機タイマー
 	int32_t waitTimer_;
+
+	// シーン
+	enum class Scene {
+		TITLE,     // タイトル
+        OPERATION, // チュートリアル
+		MAINGAME   // メインゲーム
+	};
+	Scene scene_ = Scene::TITLE;
 };

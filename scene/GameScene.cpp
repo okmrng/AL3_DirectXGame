@@ -84,69 +84,71 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	// 自キャラの更新
-	player_->Update(viewProjection_);
+	if (scene_ == Scene::MAINGAME) {
+		// 自キャラの更新
+		player_->Update(viewProjection_);
 
-	// 敵の更新
-	UpdateEnemyPopComands();
+		// 敵の更新
+		UpdateEnemyPopComands();
 
-	for (Enemy* enemy : enemy_) {
-		enemy->Update();
-	}
-
-	// デスフラグの立った敵を削除
-	enemy_.remove_if([](Enemy* enemy) {
-		if (enemy->GetIsDead()) {
-			delete enemy;
-			return true;
+		for (Enemy* enemy : enemy_) {
+			enemy->Update();
 		}
-		return false;
-	});
 
-	// 弾更新
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-	}
-	// デスフラグの立った弾を削除
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->isDead()) {
-			delete bullet;
-			return true;
+		// デスフラグの立った敵を削除
+		enemy_.remove_if([](Enemy* enemy) {
+			if (enemy->GetIsDead()) {
+				delete enemy;
+				return true;
+			}
+			return false;
+		});
+
+		// 弾更新
+		for (EnemyBullet* bullet : bullets_) {
+			bullet->Update();
 		}
-		return false;
-	});
+		// デスフラグの立った弾を削除
+		bullets_.remove_if([](EnemyBullet* bullet) {
+			if (bullet->isDead()) {
+				delete bullet;
+				return true;
+			}
+			return false;
+		});
 
-	// 当たり判定
-	CheckAllCollisions();
+		// 当たり判定
+		CheckAllCollisions();
 
-	//天球の更新
-	skydome_->Update();
+		// 天球の更新
+		skydome_->Update();
 
-	// レールカメラの更新
-	railCamera_->Update();
-	viewProjection_.matView = railCamera_->GetViewProjection().matView;
-	viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-	
-	// デバッグカメラの更新
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_C)) {
-		isDebugCameraActive_ = true;
-	}
-#endif
-
-	if (isDebugCameraActive_) {
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-
-		//ビュープロジェクション行列の転送
-		viewProjection_.TransferMatrix();
-	} 
-	else if (!isDebugCameraActive_) {
+		// レールカメラの更新
+		railCamera_->Update();
 		viewProjection_.matView = railCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-		viewProjection_.TransferMatrix();
+
+		// デバッグカメラの更新
+		#ifdef _DEBUG
+		if (input_->TriggerKey(DIK_C)) {
+			isDebugCameraActive_ = true;
+		}
+		#endif
+
+		if (isDebugCameraActive_) {
+			debugCamera_->Update();
+			viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+			viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
+			// ビュープロジェクション行列の転送
+			viewProjection_.TransferMatrix();
+		} else if (!isDebugCameraActive_) {
+			viewProjection_.matView = railCamera_->GetViewProjection().matView;
+			viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+			viewProjection_.TransferMatrix();
+		}
 	}
+	
 }
 
 void GameScene::CheckAllCollisions() { 
@@ -282,20 +284,22 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	//自キャラの描画
-	player_->Draw(viewProjection_);
+	if (scene_ == Scene::MAINGAME) {
+		// 自キャラの描画
+		player_->Draw(viewProjection_);
 
-	//敵の描画
-	for (Enemy* enemy : enemy_) {
-		enemy->Draw(viewProjection_);
-	}
-	// 敵の弾の描画
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(viewProjection_);
-	}
+		// 敵の描画
+		for (Enemy* enemy : enemy_) {
+			enemy->Draw(viewProjection_);
+		}
+		// 敵の弾の描画
+		for (EnemyBullet* bullet : bullets_) {
+			bullet->Draw(viewProjection_);
+		}
 
-	// 天球の描画
-	skydome_->Draw(viewProjection_);
+		// 天球の描画
+		skydome_->Draw(viewProjection_);
+	}
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -305,7 +309,9 @@ void GameScene::Draw() {
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
 
-	player_->DrawUI();
+	if (scene_ == Scene::MAINGAME) {
+		player_->DrawUI();
+	}
 
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
