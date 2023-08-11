@@ -139,6 +139,8 @@ void Enemy::Fire() {
 	gameScene_->AddEnemyBullet(newBullet);
 }
 
+void Enemy::OnColision() {}
+
 Vector3 Enemy::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
@@ -150,5 +152,3 @@ Vector3 Enemy::GetWorldPositiopn() {
 
 	return worldPos;
 }
-
-void Enemy::OnColision() {}

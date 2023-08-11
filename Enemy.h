@@ -61,12 +61,6 @@ public:
 	void Fire();
 
 	/// <summary>
-	/// ワールド座標を取得
-	/// </summary>
-	/// <returns></returns>
-	Vector3 GetWorldPositiopn();
-
-	/// <summary>
 	/// 衝突を検出したら呼び出されるコールバック関数
 	/// </summary>
 	void OnColision();
@@ -78,10 +72,10 @@ public:
 
 	// ゲッター
 	/// <summary>
-	/// 弾リストを取得
+	/// ワールド座標を取得
 	/// </summary>
 	/// <returns></returns>
-	//const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
+	Vector3 GetWorldPositiopn();
 
 	/// <summary>
 	/// 半径取得
@@ -92,47 +86,34 @@ public:
 	bool GetIsDead() { return isDead_; }
 
 	//メンバ変数
-	// 発射間隔
-	static const int kFireInterval = 60;
+	static const int kFireInterval = 60; // 発射間隔
 
 private:
-	//発射タイマー
-	int32_t kFireTimer = 0;
+	int32_t kFireTimer = 0;              // 発射タイマー
 
-	//  ワールド変換データ
-	WorldTransform worldTransform_;
+	WorldTransform worldTransform_;      // ワールド変換データ
 
 	// モデル
 	Model* model_ = nullptr;
+	uint32_t textureHandle_ = 0u;        // テクスチャハンドル
 
-	// テクスチャハンドル
-	uint32_t textureHandle_ = 0u;
+	Vector3 velocity_;                   // 速度
 
-	// 速度
-	Vector3 velocity_;
-
-	//行動フェーズ
+	// フェーズ
+	// 行動フェーズ
 	enum class Phase {
-		Approach, //接近する
-		Leave     //離脱する
+		Approach,                        // 接近する
+		Leave                            // 離脱する
 	};
-	//フェーズ
 	Phase phase_ = Phase::Approach;
 
-	// 弾
-	//std::list<EnemyBullet*> bullets_;
+	Player* player_ = nullptr;           // 自キャラ
 
-	//自キャラ
-	Player* player_ = nullptr;
+	const float radius_ = 1.0f;          // 半径
 
-	//半径
-	const float radius_ = 1.0f;
+	GameScene* gameScene_ = nullptr;     // ゲームシーン
 
-	// ゲームシーン
-	GameScene* gameScene_ = nullptr;
-
-	// デスタイマー
-	int32_t deathTimer_ = 300;
-	// デスフラグ
-	bool isDead_ = false;
+	// デス
+	int32_t deathTimer_ = 300;           // デスタイマー
+	bool isDead_ = false;                // デスフラグ
 };
