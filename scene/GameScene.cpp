@@ -9,28 +9,16 @@ GameScene::GameScene() {}
 GameScene::~GameScene() { 
 	delete model_;
 	delete modelSkydome_;
-
-	//自キャラの解放
 	delete player_;
-
-	// 敵の解放
 	for (Enemy* enemy : enemy_) {
 		delete enemy;
 	}
-	// 敵弾の解放
 	for (EnemyBullet* bullet : bullets_) {
 		delete bullet;
 	}
-
-	// 天球の解放
 	delete skydome_;
-
-	// レールカメラの解放
 	delete railCamera_;
-
-	//デバックカメラの解放
 	delete debugCamera_;
-
 	delete title_;
 }
 
@@ -40,40 +28,31 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	// テクスチャの読み込み
-	textureHandle_ = TextureManager::Load("sample.png");
-
-	// レティクルのテクスチャ
-	TextureManager::Load("target.png");
-
-	// 3Dモデルの生成
+	// 3Dモデル
 	model_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
-	// ビュープロジェクションの初期化
+	// ビュープロジェクション
 	viewProjection_.Initialize();
 
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	Vector3 playerPosition(0.0f, 0.0f, 15.0f);
-	player_->Initialize(model_, textureHandle_, playerPosition);
+	player_->Initialize(model_);
 
 	AddEnemy({0.0f, 5.0f, 30.0f});
 
 	// 敵発生
 	LoadEnemyPopData();
 
-	// 天球の生成
+	// 天球
 	skydome_ = new Skydome();
-	// 天球の初期化
 	skydome_->Initialize(modelSkydome_);
 
-	// レールカメラの生成
+	// レールカメラ
 	railCamera_ = new RailCamera();
-	// レールカメラの初期化
-	railCamera_->Initialize({0.0f,0.0f,1.0f,},{0.0f,0.0f,0.0f});
-	// 自キャラとレールカメラの親子関係を結ぶ
+	railCamera_->Initialize();
+	// 自キャラとの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTransform());
 
 	// タイトル
@@ -101,12 +80,11 @@ void GameScene::Update() {
 	}
 
 	if (scene_ == Scene::MAINGAME) {
-		// 自キャラの更新
+		// 自キャラ
 		player_->Update(viewProjection_);
 
-		// 敵の更新
+		// 敵
 		UpdateEnemyPopComands();
-
 		for (Enemy* enemy : enemy_) {
 			enemy->Update();
 		}
@@ -120,11 +98,12 @@ void GameScene::Update() {
 			return false;
 		});
 
-		// 弾更新
+		// 敵弾更新
 		for (EnemyBullet* bullet : bullets_) {
 			bullet->Update();
 		}
-		// デスフラグの立った弾を削除
+
+		// デスフラグの立った敵弾を削除
 		bullets_.remove_if([](EnemyBullet* bullet) {
 			if (bullet->isDead()) {
 				delete bullet;
@@ -173,8 +152,6 @@ void GameScene::CheckAllCollisions() {
 
 	//自弾リストの取得
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
-	//敵弾リストの取得
-	//const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
 
 	//自キャラと敵弾の当たり判定
 	#pragma region
@@ -302,8 +279,7 @@ void GameScene::Draw() {
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
-	/// </summary>
-
+	// メインゲーム
 	if (scene_ == Scene::MAINGAME) {
 		// 自キャラの描画
 		player_->Draw(viewProjection_);
@@ -320,6 +296,7 @@ void GameScene::Draw() {
 		// 天球の描画
 		skydome_->Draw(viewProjection_);
 	}
+	/// </summary>
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -329,12 +306,12 @@ void GameScene::Draw() {
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
 
+	/// <summary>
+	/// ここに前景スプライトの描画処理を追加できる
+	// メインゲーム
 	if (scene_ == Scene::MAINGAME) {
 		player_->DrawUI();
 	}
-
-	/// <summary>
-	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
 	// スプライト描画後処理
@@ -355,7 +332,7 @@ void GameScene::AddEnemy(Vector3 pos) {
 	obj->Initialize(model_, pos);
 	// 敵キャラに自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
-	// 敵キャラのゲームシーンを渡す
+	// 敵キャラにゲームシーンを渡す
 	obj->SetGameScene(this);
 
 	enemy_.push_back(obj);

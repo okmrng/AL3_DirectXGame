@@ -12,18 +12,19 @@ Player::~Player() {
 	delete sprite2DReticle_;
 }
 
-void Player::Initialize(Model* model, uint32_t textureHandle, const Vector3& position) {
+void Player::Initialize(Model* model) {
 	//NULLポインタチェック
 	assert(model);
 
 	//引数として受け取ったデータをメンバ変数に記録する
 	model_ = model;
-	textureHandle_ = textureHandle;
+	// テクスチャの読み込み
+	textureHandle_ = TextureManager::Load("player/player.png");
 
 	//ワールド変換の初期化
 	worldTransform_.Initialize();
 	// 引数で受け取った情報をセット
-	worldTransform_.translation_ = position;
+	worldTransform_.translation_ = {0.0f, 0.0f, 15.0f};
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();

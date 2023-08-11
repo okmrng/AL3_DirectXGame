@@ -2,12 +2,12 @@
 #include "Matrix4x4.h"
 #include "ImGuiManager.h"
 
-void RailCamera::Initialize(const Vector3& position, const Vector3& rotate) {
+void RailCamera::Initialize() {
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
 	// 引数で受け取った情報をセット
-	worldTransform_.translation_ = position;
-	worldTransform_.rotation_ = rotate;
+	worldTransform_.translation_ = {0.0f, 0.0f, 0.0f};
+	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 
 	// ビュープロジェクションの初期化
 	//viewProjection_.farZ = 100.0f;

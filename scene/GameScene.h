@@ -83,10 +83,7 @@ private: // メンバ変数
 
 	/// <summary>
 	/// ゲームシーン用
-	/// </summary>
-	 
-	uint32_t textureHandle_ = 0;         // テクスチャハンドル
-									     
+	/// </summary>									     
 	// 3Dモデル					  	     
 	Model* model_ = nullptr;		     
 	Model* modelSkydome_ = nullptr;	     

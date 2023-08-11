@@ -12,9 +12,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="position">ワールド座標</param>
-	/// <param name="radian">回転角</param>
-	void Initialize(const Vector3& position, const Vector3& rotate);
+	void Initialize();
 
 	/// <summary>
 	/// 更新
