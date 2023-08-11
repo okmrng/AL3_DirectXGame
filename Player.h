@@ -6,6 +6,9 @@
 #include "PlayerBullet.h"
 #include <list>
 #include "Sprite.h"
+#include <cassert>
+#include "ImGuiManager.h"
+#include "MathUtility.h"
 
 /// <summary>
 /// 自キャラ
@@ -26,7 +29,14 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
+	/// /// <param name="viewProjection">ビュープロジェクション</param>
 	void Update(ViewProjection& viewProjection);
+
+	/// <summary>
+	/// レティクル更新
+	/// </summary>
+	/// <param name="viewProjection">ビュープロジェクション</param>
+	void UpdateReticle(ViewProjection& viewProjection);
 
 	/// <summary>
 	/// 描画
@@ -87,9 +97,7 @@ private:
 	const float radius_ = 1.0f;              // 半径
 
 	// 2Dレティクル
-	WorldTransform worldTransform3DReticle_; // ワールド変換データ
-
-	Model* model3DReticle_ = nullptr;
-
-	Sprite* sprite2DReticle_ = nullptr;      // スプライト
+	WorldTransform worldTransformReticle_;   // ワールド変換データ
+										     
+	Sprite* spriteReticle_ = nullptr;        // スプライト
 };
