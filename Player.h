@@ -11,7 +11,6 @@
 /// 自キャラ
 /// </summary>
 class Player {
-	//メンバ関数
 public:
 	/// <summary>
 	/// デストラクタ
@@ -22,7 +21,6 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="model">モデル</param>
-	/// <param name="textureHandle">テクスチャハンドル</param>
 	void Initialize(Model* model);
 
 	/// <summary>
@@ -45,12 +43,6 @@ public:
 	/// 攻撃
 	/// </summary>
 	void Attack();
-	
-	/// <summary>
-	/// ワールド座標を取得
-	/// </summary>
-	/// <returns></returns>
-	Vector3 GetWorldPositiopn();
 
 	/// <summary>
 	/// 衝突を検出したら呼び出されるコールバック関数
@@ -61,46 +53,43 @@ public:
 	/// <summary>
 	/// 弾リストを取得
 	/// </summary>
-	/// <returns></returns>
 	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
+	
+	/// <summary>
+	/// ワールド座標を取得
+	/// </summary>
+	Vector3 GetWorldPositiopn();
 
 	/// <summary>
 	/// 半径
 	/// </summary>
-	/// <returns></returns>
 	const float GetRadius() { return radius_; }
 
+	// セッター
 	/// <summary>
 	/// 親となるワールドトランスフォームをセット
 	/// </summary>
 	/// <param name="parent">親となるワールドトランスフォーム</param>
 	void SetParent(const WorldTransform* parent);
 
-	//メンバ変数
 private:
-	//ワールド変換データ
-	WorldTransform worldTransform_;
+	// 自機
+	WorldTransform worldTransform_;          // ワールド変換データ
+									         
+	// モデル						          
+	Model* model_ = nullptr;		         
+	uint32_t textureHandle_ = 0u;            // テクスチャハンドル
+									         
+	Input* input_ = nullptr;                 // キーボード入力
+									         
+	std::list<PlayerBullet*> bullets_;       // 弾
+									         
+	const float radius_ = 1.0f;              // 半径
 
-	//モデル
-	Model* model_ = nullptr;
-
-	//テクスチャハンドル
-	uint32_t textureHandle_ = 0u;
-
-	//キーボード入力
-	Input* input_ = nullptr;
-
-	//弾
-	std::list<PlayerBullet*> bullets_;
-
-	//半径
-	const float radius_ = 1.0f;
-
-	// 3Dレティクル用ワールドトランスフォーム
-	WorldTransform worldTransform3DReticle_;
+	// 2Dレティクル
+	WorldTransform worldTransform3DReticle_; // ワールド変換データ
 
 	Model* model3DReticle_ = nullptr;
 
-	// 2Dレティクル用スプライト
-	Sprite* sprite2DReticle_ = nullptr;
+	Sprite* sprite2DReticle_ = nullptr;      // スプライト
 };

@@ -226,6 +226,8 @@ void Player::Attack() {
 	}
 }
 
+void Player::OnColision() {}
+
 Vector3 Player::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
@@ -237,8 +239,6 @@ Vector3 Player::GetWorldPositiopn() {
 
 	return worldPos;
 }
-
-void Player::OnColision() {}
 
 void Player::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
