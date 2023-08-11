@@ -31,16 +31,16 @@ public:
 
 	// ゲッター
 	/// <summary>
-	/// メインゲームへ遷移するフラグ
+	/// 次のシーンへ遷移するフラグ
 	/// </summary>
-	bool GetToPlay() { return toPlay_; }
+	bool GetToNext() { return toNext_; }
 
 private:
 	uint32_t textureHandle_title_bg = 0u; // 背景のテクスチャハンドル
 
-	Sprite* sprite_title_bg = nullptr; // 背景のスプライト
-
-	bool toPlay_ = false;     // メインゲームへ遷移するフラグ
-
-	Input* input_ = nullptr; // キー入力
+	Sprite* sprite_title_bg = nullptr;    // 背景のスプライト
+									      
+	bool toNext_ = false;                 // 次のシーンへ遷移するフラグ
+									      
+	Input* input_ = nullptr;              // キー入力
 };

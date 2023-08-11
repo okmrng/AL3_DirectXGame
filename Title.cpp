@@ -20,7 +20,7 @@ void Title::Initialize() {
 void Title::Update() {
 	// スペースキーが押されたらメインゲームへ
 	if (input_->PushKey(DIK_SPACE)) {
-		toPlay_ = true;
+		toNext_ = true;
 	}
 }
 

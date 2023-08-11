@@ -74,7 +74,7 @@ void GameScene::Update() {
 		title_->Update();
 		// タイトルからの遷移
 		// メインゲームへ
-		if (title_->GetToPlay()) {
+		if (title_->GetToNext()) {
 			scene_ = Scene::MAINGAME;
 		}
 	}
