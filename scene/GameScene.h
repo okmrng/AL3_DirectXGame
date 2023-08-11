@@ -15,6 +15,7 @@
 #include "Skydome.h"
 #include "RailCamera.h"
 #include <sstream>
+#include "Title.h"
 
 /// <summary>
 /// ゲームシーン
@@ -113,6 +114,8 @@ private: // メンバ変数
 
 	// レールカメラ
 	RailCamera* railCamera_ = nullptr;
+
+	Title* title_ = nullptr; // タイトル
 
 	// 敵発生コマンド
 	std::stringstream enemyPopComands;

@@ -30,6 +30,8 @@ GameScene::~GameScene() {
 
 	//デバックカメラの解放
 	delete debugCamera_;
+
+	delete title_;
 }
 
 void GameScene::Initialize() {
@@ -74,6 +76,10 @@ void GameScene::Initialize() {
 	// 自キャラとレールカメラの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTransform());
 
+	// タイトル
+	title_ = new Title();
+	title_->Initialize();
+
 	// デバッグカメラ生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
@@ -84,6 +90,16 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+	// タイトル
+	if (scene_ == Scene::TITLE) {
+		title_->Update();
+		// タイトルからの遷移
+		// メインゲームへ
+		if (title_->GetToPlay()) {
+			scene_ = Scene::MAINGAME;
+		}
+	}
+
 	if (scene_ == Scene::MAINGAME) {
 		// 自キャラの更新
 		player_->Update(viewProjection_);
@@ -268,6 +284,10 @@ void GameScene::Draw() {
 
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
+	// タイトル
+	if (scene_ == Scene::TITLE) {
+		title_->Draw();
+	}
 	/// </summary>
 
 	// スプライト描画後処理
