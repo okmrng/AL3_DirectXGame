@@ -1,11 +1,13 @@
 ﻿#pragma once
 
 #include "Model.h"
-#include "Vector3.h"
+#include "Material.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "EnemyBullet.h"
 #include <list>
+#include <cmath>
+#include <cassert>
 
 // 前方宣言
 class Player;
@@ -16,12 +18,6 @@ class GameScene;
 /// </summary>
 class Enemy {
 public:
-	/// <summary>
-	/// デストラクタ
-	/// </summary>
-	~Enemy();
-
-	//メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -85,7 +81,6 @@ public:
 
 	bool GetIsDead() { return isDead_; }
 
-	//メンバ変数
 	static const int kFireInterval = 60; // 発射間隔
 
 private:
