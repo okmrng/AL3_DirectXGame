@@ -4,6 +4,7 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include <cassert>
 
 /// <summary>
 /// 自キャラの弾
