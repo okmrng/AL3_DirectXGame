@@ -92,7 +92,7 @@ void Player::Update(ViewProjection& viewProjection) {
 
 	// デスフラグの立った弾を削除
 	bullets_.remove_if([](PlayerBullet* bullet) {
-		if (bullet->isDead()) {
+		if (bullet->GetisDead()) {
 			delete bullet;
 			return true;
 		}
