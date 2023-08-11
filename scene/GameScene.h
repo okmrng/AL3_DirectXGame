@@ -14,8 +14,8 @@
 #include "EnemyBullet.h"
 #include "Skydome.h"
 #include "RailCamera.h"
-#include <sstream>
 #include "Title.h"
+#include <sstream>
 
 /// <summary>
 /// ゲームシーン
@@ -85,51 +85,41 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 	 
-	//テクスチャハンドル
-	uint32_t textureHandle_ = 0;
+	uint32_t textureHandle_ = 0;         // テクスチャハンドル
+									     
+	// 3Dモデル					  	     
+	Model* model_ = nullptr;		     
+	Model* modelSkydome_ = nullptr;	     
+									     
+	ViewProjection viewProjection_;      // ビュープロジェクション
+									     
+	Player* player_ = nullptr;           // 自機
 
-	//3Dモデル
-	Model* model_ = nullptr;
-	Model* modelSkydome_ = nullptr;
+	// デバッグカメラ
+	DebugCamera* debugCamera_ = nullptr; // デバッグカメラ
+	bool isDebugCameraActive_ = false;   // デバッグカメラ有効フラグ
 
-	//ビュープロジェクション
-	ViewProjection viewProjection_;
+	// 敵
+	std::list<Enemy*> enemy_;            // 敵
+	std::list<EnemyBullet*> bullets_;    // 敵弾
 
-	//自キャラ
-	Player* player_ = nullptr;
+	Skydome* skydome_ = nullptr;         // 天球
 
-	//デバッグカメラ有効
-	bool isDebugCameraActive_ = false;
+	RailCamera* railCamera_ = nullptr;   // レールカメラ
 
-	//デバッグカメラ
-	DebugCamera* debugCamera_ = nullptr;
+	Title* title_ = nullptr;             // タイトル
 
-	//敵
-	std::list<Enemy*> enemy_;
-	// 敵弾
-	std::list<EnemyBullet*> bullets_;
-
-	//天球
-	Skydome* skydome_ = nullptr;
-
-	// レールカメラ
-	RailCamera* railCamera_ = nullptr;
-
-	Title* title_ = nullptr; // タイトル
-
-	// 敵発生コマンド
-	std::stringstream enemyPopComands;
-
-	// 待機中フラグ
-	bool isWait_;
-	// 待機タイマー
-	int32_t waitTimer_;
+	std::stringstream enemyPopComands;   // 敵発生コマンド
+	
+	// 待機中
+	bool isWait_;                        // 待機中フラグ
+	int32_t waitTimer_;                  // 待機タイマー
 
 	// シーン
 	enum class Scene {
-		TITLE,     // タイトル
-        OPERATION, // チュートリアル
-		MAINGAME   // メインゲーム
+		TITLE,                           // タイトル
+        OPERATION,                       // チュートリアル
+		MAINGAME                         // メインゲーム
 	};
-	Scene scene_ = Scene::TITLE;
+	Scene scene_ = Scene::TITLE;         // シーン
 };
