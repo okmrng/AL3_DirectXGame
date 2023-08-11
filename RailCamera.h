@@ -8,7 +8,6 @@
 /// </summary>
 class RailCamera {
 public:
-	// メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -24,7 +23,6 @@ public:
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
 private:
-	// メンバ変数
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 

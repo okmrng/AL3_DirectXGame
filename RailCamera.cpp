@@ -5,12 +5,11 @@
 void RailCamera::Initialize() {
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
-	// 引数で受け取った情報をセット
+
 	worldTransform_.translation_ = {0.0f, 0.0f, 0.0f};
 	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
 
 	// ビュープロジェクションの初期化
-	//viewProjection_.farZ = 100.0f;
 	viewProjection_.Initialize();
 }
 
@@ -35,10 +34,4 @@ void RailCamera::Update() {
 	// カメラオブジェクトのワールド行列からビュー行列を計算する
 	viewProjection_.matView = Inverse(worldTransform_.matWorld_);
 	viewProjection_.TransferMatrix();
-
-	// カメラの座標を表示
-	ImGui::Begin("Camera");
-	ImGui::DragFloat3("RailCamera.Translation", &worldTransform_.translation_.x, 0.01f);
-	ImGui::DragFloat3("RailCamera.Rotate", &worldTransform_.rotation_.x, 0.01f);
-	ImGui::End();
 }
