@@ -2,13 +2,13 @@
 
 #include "Model.h"
 #include "WorldTransform.h"
+#include <cassert>
 
 /// <summary>
 /// 天球
 /// </summary>
 class Skydome {
 public:
-	//メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -25,7 +25,6 @@ public:
 	void Draw(ViewProjection& viewProjection);
 
 private:
-	//メンバ変数
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 
