@@ -105,7 +105,7 @@ void GameScene::Update() {
 
 		// デスフラグの立った敵弾を削除
 		bullets_.remove_if([](EnemyBullet* bullet) {
-			if (bullet->isDead()) {
+			if (bullet->GetisDead()) {
 				delete bullet;
 				return true;
 			}
