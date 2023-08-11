@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include <cassert>
 
 /// <summary>
 /// 敵の弾
