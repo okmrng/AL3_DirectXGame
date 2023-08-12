@@ -54,8 +54,8 @@ void Player::Update(ViewProjection& viewProjection) {
 	}
 
 	// 範囲制限
-	const float kMoveLimitX = 34.0f;
-	const float kMoveLimitY = 18.0f;
+	const float kMoveLimitX = 9.5f;
+	const float kMoveLimitY = 5.0f;
 
 	// 範囲を越えない処理
 	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
