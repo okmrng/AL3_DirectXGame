@@ -104,6 +104,13 @@ void Player::Update(ViewProjection& viewProjection) {
 		}
 	}
 
+	// ボムクールタイム
+	if (canBomb_ == false) {
+		if (--bombTimer_ <= 0) {
+			canBomb_ = true;
+		}
+	}
+
 	// マウスカーソルのスクリーン座標からワールド座標を取得して2Dレティクル配置
 	UpdateReticle(viewProjection);
 }
@@ -200,27 +207,32 @@ void Player::Attack() {
 }
 
 void Player::Bomb() {
-	if (input_->IsTriggerMouse(1)) {
-		// 弾の速度
-		const float kBulletSpeed = 1.0f;
-		Vector3 velocity;
-		velocity.x = worldTransformReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
-		velocity.y = worldTransformReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
-		velocity.z = worldTransformReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
+	if (canBomb_) {
+		if (input_->IsTriggerMouse(1)) {
+			// 弾の速度
+			const float kBulletSpeed = 1.0f;
+			Vector3 velocity;
+			velocity.x = worldTransformReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
+			velocity.y = worldTransformReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
+			velocity.z = worldTransformReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
 
-		// 正規化
-		velocity = Normalize(velocity);
+			// 正規化
+			velocity = Normalize(velocity);
 
-		velocity.x *= kBulletSpeed;
-		velocity.y *= kBulletSpeed;
-		velocity.z *= kBulletSpeed;
+			velocity.x *= kBulletSpeed;
+			velocity.y *= kBulletSpeed;
+			velocity.z *= kBulletSpeed;
 
-		// 弾を生成し、初期化
-		PlayerBomb* newBomb = new PlayerBomb();
-		newBomb->Initialize(model_, GetWorldPositiopn(), velocity);
+			// 弾を生成し、初期化
+			PlayerBomb* newBomb = new PlayerBomb();
+			newBomb->Initialize(model_, GetWorldPositiopn(), velocity);
 
-		// 弾を登録する
-		bomb_ = newBomb;
+			// 弾を登録する
+			bomb_ = newBomb;
+
+			bombTimer_ = kCoolTime_;
+			canBomb_ = false;
+		}
 	}
 }
 

@@ -90,22 +90,26 @@ public:
 
 private:
 	// 自機
-	WorldTransform worldTransform_;          // ワールド変換データ
-									         
-	// モデル						          
-	Model* model_ = nullptr;		         
-	uint32_t textureHandle_ = 0u;            // テクスチャハンドル
-									         
-	Input* input_ = nullptr;                 // キーボード入力
-	
-	// 攻撃
-	std::list<PlayerBullet*> bullets_;       // 弾
-	PlayerBomb* bomb_ = nullptr;             // ボム
+	WorldTransform worldTransform_;           // ワールド変換データ
+									          
+	// モデル						           
+	Model* model_ = nullptr;		          
+	uint32_t textureHandle_ = 0u;             // テクスチャハンドル
+									          
+	Input* input_ = nullptr;                  // キーボード入力
+											  
+	// 攻撃								    
+	std::list<PlayerBullet*> bullets_;        // 弾
+	PlayerBomb* bomb_ = nullptr;              // ボム
+											  
+	bool canBomb_ = true;                     // ボムフラグ
+	static const int32_t kCoolTime_ = 60 * 3; // ボムのクールタイムの長さ
+	int32_t bombTimer_ = kCoolTime_;          // ボムのクールタイム
 
-	const float radius_ = 1.0f;              // 半径
-
-	// 2Dレティクル
-	WorldTransform worldTransformReticle_;   // ワールド変換データ
-										     
-	Sprite* spriteReticle_ = nullptr;        // スプライト
+	const float radius_ = 1.0f;               // 半径
+											  
+	// 2Dレティクル							 
+	WorldTransform worldTransformReticle_;    // ワールド変換データ
+										      
+	Sprite* spriteReticle_ = nullptr;         // スプライト
 };
