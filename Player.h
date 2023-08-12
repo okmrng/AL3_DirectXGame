@@ -4,6 +4,7 @@
 #include "WorldTransform.h"
 #include "Input.h"
 #include "PlayerBullet.h"
+#include "PlayerBomb.h"
 #include <list>
 #include "Sprite.h"
 #include <cassert>
@@ -55,6 +56,11 @@ public:
 	void Attack();
 
 	/// <summary>
+	/// ボム
+	/// </summary>
+	void Bomb();
+
+	/// <summary>
 	/// 衝突を検出したら呼び出されるコールバック関数
 	/// </summary>
 	void OnColision();
@@ -91,9 +97,11 @@ private:
 	uint32_t textureHandle_ = 0u;            // テクスチャハンドル
 									         
 	Input* input_ = nullptr;                 // キーボード入力
-									         
+	
+	// 攻撃
 	std::list<PlayerBullet*> bullets_;       // 弾
-									         
+	PlayerBomb* bomb_ = nullptr;             // ボム
+
 	const float radius_ = 1.0f;              // 半径
 
 	// 2Dレティクル

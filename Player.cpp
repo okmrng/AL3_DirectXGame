@@ -4,6 +4,7 @@ Player::~Player() {
 	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;
 	}
+	delete bomb_;
 	delete spriteReticle_;
 }
 
@@ -99,6 +100,20 @@ void Player::Update(ViewProjection& viewProjection) {
 		return false;
 	});
 
+	// ボム
+	Bomb();
+
+	if (bomb_) {
+		bomb_->Update();
+	}
+
+	// デスフラグが立ったらボムを削除
+	if (bomb_) {
+		if (bomb_->GetisDead()) {
+			delete bomb_;
+		}
+	}
+
 	// マウスカーソルのスクリーン座標からワールド座標を取得して2Dレティクル配置
 	UpdateReticle(viewProjection);
 }
@@ -158,6 +173,11 @@ void Player::Draw(ViewProjection& viewProjection) {
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
+
+	// ボム
+	if (bomb_) {
+		bomb_->Draw(viewProjection);
+	}
 }
 
 void Player::DrawUI() { 
@@ -186,6 +206,31 @@ void Player::Attack() {
 
 		// 弾を登録する
 		bullets_.push_back(newBullet);
+	}
+}
+
+void Player::Bomb() {
+	if (input_->IsPressMouse(1)) {
+		// 弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity;
+		velocity.x = worldTransformReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
+		velocity.y = worldTransformReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
+		velocity.z = worldTransformReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
+
+		// 正規化
+		velocity = Normalize(velocity);
+
+		velocity.x *= kBulletSpeed;
+		velocity.y *= kBulletSpeed;
+		velocity.z *= kBulletSpeed;
+
+		// 弾を生成し、初期化
+		PlayerBomb* newBomb = new PlayerBomb();
+		newBomb->Initialize(model_, GetWorldPositiopn(), velocity);
+
+		// 弾を登録する
+		bomb_ = newBomb;
 	}
 }
 

@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Model.h"
+#include "WorldTransform.h"
 
 /// <summary>
 /// 自機のボム
