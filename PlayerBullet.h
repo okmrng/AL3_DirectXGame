@@ -1,9 +1,6 @@
 ﻿#pragma once
 
 #include "Model.h"
-#include "Vector3.h"
-#include "ViewProjection.h"
-#include "WorldTransform.h"
 #include <cassert>
 
 /// <summary>
