@@ -42,14 +42,14 @@ void Player::Update(ViewProjection& viewProjection) {
 	const float kCharacterSpeed = 0.2f;
 
 	// 押した方向でベクトル移動
-	if (input_->PushKey(DIK_LEFT)) {
+	if (input_->PushKey(DIK_A)) {
 		move.x -= kCharacterSpeed;
-	} else if (input_->PushKey(DIK_RIGHT)) {
+	} else if (input_->PushKey(DIK_D)) {
 		move.x += kCharacterSpeed;
 	}
-	if (input_->PushKey(DIK_UP)) {
+	if (input_->PushKey(DIK_W)) {
 		move.y += kCharacterSpeed;
-	} else if (input_->PushKey(DIK_DOWN)) {
+	} else if (input_->PushKey(DIK_S)) {
 		move.y -= kCharacterSpeed;
 	}
 
@@ -71,17 +71,6 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform_.UpdateMatrix();
 	// 行列の転送
 	worldTransform_.TransferMatrix();
-
-	// 回転速さ(ラジアン/frame)
-	const float kRotSpeed = 0.02f;
-
-	// 押した方向で移動ベクトルを変更
-	if (input_->PushKey(DIK_A)) {
-		worldTransform_.rotation_.y -= kRotSpeed;
-	}
-	if (input_->PushKey(DIK_D)) {
-		worldTransform_.rotation_.y += kRotSpeed;
-	}
 
 	// キャラクター攻撃処理
 	Attack();
@@ -111,6 +100,7 @@ void Player::Update(ViewProjection& viewProjection) {
 	if (bomb_) {
 		if (bomb_->GetisDead()) {
 			delete bomb_;
+			bomb_ = nullptr;
 		}
 	}
 
@@ -185,7 +175,7 @@ void Player::DrawUI() {
 }
 
 void Player::Attack() { 
-	if (input_->PushKey(DIK_SPACE)) {
+	if (input_->IsPressMouse(0)) {
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity;
@@ -210,7 +200,7 @@ void Player::Attack() {
 }
 
 void Player::Bomb() {
-	if (input_->IsPressMouse(1)) {
+	if (input_->IsTriggerMouse(1)) {
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity;
