@@ -73,7 +73,10 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform_.TransferMatrix();
 
 	// キャラクター攻撃処理
-	Attack();
+	if (--kAttackTimer_ <= 0) {
+		Attack();
+		kAttackTimer_ = kAttackInterval_;
+	}
 
 	// 弾更新
 	for (PlayerBullet* bullet : bullets_) {

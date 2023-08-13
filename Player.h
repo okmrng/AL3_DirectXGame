@@ -90,26 +90,31 @@ public:
 
 private:
 	// 自機
-	WorldTransform worldTransform_;           // ワールド変換データ
-									          
-	// モデル						           
-	Model* model_ = nullptr;		          
-	uint32_t textureHandle_ = 0u;             // テクスチャハンドル
-									          
-	Input* input_ = nullptr;                  // キーボード入力
-											  
-	// 攻撃								    
-	std::list<PlayerBullet*> bullets_;        // 弾
-	PlayerBomb* bomb_ = nullptr;              // ボム
-											  
-	bool canBomb_ = true;                     // ボムフラグ
-	static const int32_t kCoolTime_ = 60 * 3; // ボムのクールタイムの長さ
-	int32_t bombTimer_ = kCoolTime_;          // ボムのクールタイム
+	WorldTransform worldTransform_;            // ワールド変換データ
+									           
+	// モデル						            
+	Model* model_ = nullptr;		           
+	uint32_t textureHandle_ = 0u;              // テクスチャハンドル
+									           
+	Input* input_ = nullptr;                   // キーボード入力
+											   
+	// 弾							    	   
+	std::list<PlayerBullet*> bullets_;         // 弾
 
-	const float radius_ = 1.0f;               // 半径
-											  
-	// 2Dレティクル							 
-	WorldTransform worldTransformReticle_;    // ワールド変換データ
-										      
-	Sprite* spriteReticle_ = nullptr;         // スプライト
+	static const int32_t kAttackInterval_ = 8; // 発射間隔
+	int32_t kAttackTimer_ = kAttackInterval_;  // 発射タイマー
+											   
+	// ボム									   
+	PlayerBomb* bomb_ = nullptr;               // ボム	
+											   
+	bool canBomb_ = true;                      // ボムフラグ
+	static const int32_t kCoolTime_ = 60 * 3;  // ボムのクールタイムの長さ
+	int32_t bombTimer_ = kCoolTime_;           // ボムのクールタイム
+											   
+	const float radius_ = 1.0f;                // 半径
+											   
+	// 2Dレティクル							   
+	WorldTransform worldTransformReticle_;     // ワールド変換データ
+										              
+	Sprite* spriteReticle_ = nullptr;                 // スプライト
 };
