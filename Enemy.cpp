@@ -35,6 +35,11 @@ void Enemy::Update() {
 		break;
 	}
 
+	// HPが0になったらデス
+	if (HP <= 0) {
+		isDead_ = true;
+	}
+
 	worldTransform_.UpdateMatrix();
 }
 
@@ -105,7 +110,7 @@ void Enemy::Fire() {
 	gameScene_->AddEnemyBullet(newBullet);
 }
 
-void Enemy::OnColision() {}
+void Enemy::OnColision() { isDead_ = true; }
 
 Vector3 Enemy::GetWorldPositiopn() {
 	// ワールド座標を入れる変数

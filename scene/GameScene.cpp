@@ -186,11 +186,9 @@ void GameScene::CheckAllCollisions() {
 	// 自弾と敵キャラの当たり判定
 	#pragma region
 	for (Enemy* enemy : enemy_) {
-		// 敵キャラの座標
-		posA = enemy->GetWorldPositiopn();
-
-		// 自弾と敵キャラ全ての当たり判定
 		for (PlayerBullet* bullet : playerBullets) {
+			// 敵キャラの座標
+			posA = enemy->GetWorldPositiopn();
 			// 自弾の座標
 			posB = bullet->GetWorldPositiopn();
 
@@ -207,7 +205,7 @@ void GameScene::CheckAllCollisions() {
 
 			// 球と球の交差判定
 			if (collisionXYZ <= collisionRadiusAB) {
-				// 自キャラの衝突時コールバックを呼び出す
+				// 敵キャラの衝突時コールバックを呼び出す
 				enemy->OnColision();
 				// 自弾の衝突時コールバックを呼び出す
 				bullet->OnColision();
@@ -219,7 +217,7 @@ void GameScene::CheckAllCollisions() {
 	// 自弾と敵弾の当たり判定
 	#pragma region
 
-	// 自弾と敵キャラ全ての当たり判定
+	// 自弾と敵弾全ての当たり判定
 	for (PlayerBullet* pBullet : playerBullets) {
 		for (EnemyBullet* eBullet : bullets_) {
 			// 自弾の座標
