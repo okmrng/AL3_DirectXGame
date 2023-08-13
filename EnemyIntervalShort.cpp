@@ -1,9 +1,9 @@
-﻿#include "Enemy.h"
+﻿#include "EnemyIntervalShort.h"
 
-#include "Player.h"
 #include "GameScene.h"
+#include "Player.h"
 
-void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
+void EnemyIntervalShort::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -22,7 +22,7 @@ void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& vel
 	ApproachInitialize();
 }
 
-void Enemy::Update() {
+void EnemyIntervalShort::Update() {
 	// フェーズ
 	switch (phase_) {
 	case Phase::Approach:
@@ -43,16 +43,16 @@ void Enemy::Update() {
 	worldTransform_.UpdateMatrix();
 }
 
-void Enemy::Draw(const ViewProjection& viewProjection) {
+void EnemyIntervalShort::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }
 
-void Enemy::ApproachInitialize() {
+void EnemyIntervalShort::ApproachInitialize() {
 	// 発射タイマーを初期化
 	kFireTimer = kFireInterval;
 }
 
-void Enemy::ApproachUpdate() {
+void EnemyIntervalShort::ApproachUpdate() {
 	// 座標を移動させる
 	worldTransform_.translation_.z += velocity_.z;
 
@@ -64,14 +64,14 @@ void Enemy::ApproachUpdate() {
 	// 発射タイマーカウントダウン
 	--kFireTimer;
 	if (kFireTimer <= 0) {
-		//弾を発射
+		// 弾を発射
 		Fire();
-		//発射タイマーを初期化
+		// 発射タイマーを初期化
 		kFireTimer = kFireInterval;
 	}
 }
 
-void Enemy::LeaveUpdate() {
+void EnemyIntervalShort::LeaveUpdate() {
 	if (deathTimer_-- < 0) {
 		isDead_ = true;
 	}
@@ -82,7 +82,7 @@ void Enemy::LeaveUpdate() {
 	worldTransform_.translation_.z += velocity_.z;
 }
 
-void Enemy::Fire() {
+void EnemyIntervalShort::Fire() {
 	assert(player_);
 
 	// 弾の速度
@@ -110,9 +110,9 @@ void Enemy::Fire() {
 	gameScene_->AddEnemyBullet(newBullet);
 }
 
-void Enemy::OnColision() { --HP; }
+void EnemyIntervalShort::OnColision() { --HP; }
 
-Vector3 Enemy::GetWorldPositiopn() {
+Vector3 EnemyIntervalShort::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 

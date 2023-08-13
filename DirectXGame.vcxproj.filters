@@ -111,6 +111,9 @@
     <ClCompile Include="PlayerBomb.cpp">
       <Filter>ソース ファイル\player</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyIntervalShort.cpp">
+      <Filter>ソース ファイル\enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="PlayerBomb.h">
       <Filter>ヘッダー ファイル\player</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyIntervalShort.h">
+      <Filter>ヘッダー ファイル\enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

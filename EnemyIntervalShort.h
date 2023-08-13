@@ -1,22 +1,22 @@
 ﻿#pragma once
 
-#include "Model.h"
+#include "EnemyBullet.h"
 #include "Material.h"
+#include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "EnemyBullet.h"
-#include <list>
-#include <cmath>
 #include <cassert>
+#include <cmath>
+#include <list>
 
 // 前方宣言
 class Player;
 class GameScene;
 
 /// <summary>
-/// 敵
+/// 発射間隔が短い敵
 /// </summary>
-class Enemy {
+class EnemyIntervalShort {
 public:
 	/// <summary>
 	/// 初期化
@@ -81,34 +81,34 @@ public:
 
 	bool GetIsDead() { return isDead_; }
 
-	static const int kFireInterval = 60; // 発射間隔
+	static const int kFireInterval = 45; // 発射間隔
 
 private:
 	int32_t kFireTimer = 0;              // 発射タイマー
-
+									     
 	WorldTransform worldTransform_;      // ワールド変換データ
-
-	// モデル
-	Model* model_ = nullptr;
+									     
+	// モデル						      
+	Model* model_ = nullptr;		     
 	uint32_t textureHandle_ = 0u;        // テクスチャハンドル
-
+								         
 	Vector3 velocity_;                   // 速度
-
-	// フェーズ
-	// 行動フェーズ
-	enum class Phase {
+								         
+	// フェーズ					         
+	// 行動フェーズ				  	     
+	enum class Phase {			         
 		Approach,                        // 接近する
 		Leave                            // 離脱する
-	};
-	Phase phase_ = Phase::Approach;
-
+	};							         
+	Phase phase_ = Phase::Approach;      
+								         
 	Player* player_ = nullptr;           // 自キャラ
 
 	const float radius_ = 2.0f;          // 半径
-
+									     
 	GameScene* gameScene_ = nullptr;     // ゲームシーン
-
-	// デス
+									     
+	// デス						         
 	int32_t deathTimer_ = 300;           // デスタイマー
 	bool isDead_ = false;                // デスフラグ
 
