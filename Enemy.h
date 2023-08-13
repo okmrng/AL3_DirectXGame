@@ -104,7 +104,7 @@ private:
 
 	Player* player_ = nullptr;           // 自キャラ
 
-	const float radius_ = 1.0f;          // 半径
+	const float radius_ = 2.0f;          // 半径
 
 	GameScene* gameScene_ = nullptr;     // ゲームシーン
 
@@ -113,5 +113,5 @@ private:
 	bool isDead_ = false;                // デスフラグ
 
 	// HP
-	int32_t HP = 100;
+	int32_t HP = 5;
 };

@@ -61,7 +61,7 @@ void Enemy::ApproachUpdate() {
 		phase_ = Phase::Leave;
 	}
 
-	//発射タイマーカウントダウン
+	// 発射タイマーカウントダウン
 	--kFireTimer;
 	if (kFireTimer <= 0) {
 		//弾を発射
@@ -110,7 +110,7 @@ void Enemy::Fire() {
 	gameScene_->AddEnemyBullet(newBullet);
 }
 
-void Enemy::OnColision() { isDead_ = true; }
+void Enemy::OnColision() { --HP; }
 
 Vector3 Enemy::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
