@@ -13,6 +13,9 @@ GameScene::~GameScene() {
 	for (Enemy* enemy : enemy_) {
 		delete enemy;
 	}
+	for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+		delete enemyIntervalShort;
+	}
 	for (EnemyBullet* bullet : bullets_) {
 		delete bullet;
 	}
@@ -83,7 +86,7 @@ void GameScene::Update() {
 		// 自キャラ
 		player_->Update(viewProjection_);
 
-		// 敵
+		// 通常の敵
 		UpdateEnemyPopComands();
 		for (Enemy* enemy : enemy_) {
 			enemy->Update();
@@ -93,6 +96,21 @@ void GameScene::Update() {
 		enemy_.remove_if([](Enemy* enemy) {
 			if (enemy->GetIsDead()) {
 				delete enemy;
+				return true;
+			}
+			return false;
+		});
+
+		// 発射間隔が短い敵
+		UpdateEnemyIntervalShortPopComands();
+		for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+			enemyIntervalShort->Update();
+		}
+
+		// デスフラグの立った敵を削除
+		enemyIntervalShort_.remove_if([](EnemyIntervalShort* enemyIntervalShort) {
+			if (enemyIntervalShort->GetIsDead()) {
+				delete enemyIntervalShort;
 				return true;
 			}
 			return false;
@@ -282,10 +300,16 @@ void GameScene::Draw() {
 		// 自キャラの描画
 		player_->Draw(viewProjection_);
 
-		// 敵の描画
+		// 通常の敵の描画
 		for (Enemy* enemy : enemy_) {
 			enemy->Draw(viewProjection_);
 		}
+
+		// 発射間隔が短い敵の描画
+		for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+			enemyIntervalShort->Draw(viewProjection_);
+		}
+
 		// 敵の弾の描画
 		for (EnemyBullet* bullet : bullets_) {
 			bullet->Draw(viewProjection_);
@@ -336,14 +360,38 @@ void GameScene::AddEnemy(Vector3 pos, Vector3 velocity) {
 	enemy_.push_back(obj);
 }
 
+void GameScene::AddEnemyIntervalShort(Vector3 pos, Vector3 velocity) {
+	// 生成
+	EnemyIntervalShort* obj = new EnemyIntervalShort();
+	// 初期化
+	obj->Initialize(model_, pos, velocity);
+	// 自キャラのアドレスを渡す
+	obj->SetPlayer(player_);
+	// ゲームシーンを渡す
+	obj->SetGameScene(this);
+
+	enemyIntervalShort_.push_back(obj);
+}
+
 void GameScene::LoadEnemyPopData() {
-	// ファイルを開く
 	std::ifstream file;
-	file.open("Resources/enemyData.csv");
+	// 通常の敵
+	// ファイルを開く
+	file.open("Resources/script/enemyData.csv");
 	assert(file.is_open());
 
 	// ファイルの内容を文字列ストリームにコピー
 	enemyPopComands << file.rdbuf();
+
+	// ファイルを閉じる
+	file.close();
+
+	// 発射間隔が短い敵
+	file.open("Resources/script/enemyIntervalShortData.csv");
+	assert(file.is_open());
+
+	// ファイルの内容を文字列ストリームにコピー
+	enemyIntervalShortPopComands << file.rdbuf();
 
 	// ファイルを閉じる
 	file.close();
@@ -408,6 +456,83 @@ void GameScene::UpdateEnemyPopComands() {
 
 			// 敵を発生させる
 			AddEnemy(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ));
+		}
+		// WAITコマンド
+		else if (word.find("WAIT") == 0) {
+			getline(line_stream, word, ',');
+
+			// 待ち時間
+			int32_t waitTime = atoi(word.c_str());
+
+			// 待機開始
+			isWait_ = true;
+			waitTimer_ = waitTime;
+
+			// コマンドループを抜ける
+			break;
+		}
+	}
+}
+
+void GameScene::UpdateEnemyIntervalShortPopComands() {
+	// 待機処理
+	if (isWait_ == true) {
+		waitTimer_--;
+		if (waitTimer_ <= 0) {
+			// 待機完了
+			isWait_ = false;
+		}
+		return;
+	}
+
+	// 1行分の文字列を入れる変数
+	std::string line;
+
+	// コマンド実行ループ
+	while (getline(enemyIntervalShortPopComands, line)) {
+		// 1行分の文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+
+		std::string word;
+		// ,区切りで行の先頭文字列を取得
+		getline(line_stream, word, ',');
+
+		// "//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			// コメント行を飛ばす
+			continue;
+		}
+
+		// POPコマンド
+		if (word.find("POP") == 0) {
+			// 座標
+			// x
+			getline(line_stream, word, ',');
+			float x = (float)std::atof(word.c_str());
+
+			// y
+			getline(line_stream, word, ',');
+			float y = (float)std::atof(word.c_str());
+
+			// z
+			getline(line_stream, word, ',');
+			float z = (float)std::atof(word.c_str());
+
+			// 速度
+			// x
+			getline(line_stream, word, ',');
+			float velocityX = (float)std::atof(word.c_str());
+
+			// y
+			getline(line_stream, word, ',');
+			float velocityY = (float)std::atof(word.c_str());
+
+			// z
+			getline(line_stream, word, ',');
+			float velocityZ = (float)std::atof(word.c_str());
+
+			// 敵を発生させる
+			AddEnemyIntervalShort(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ));
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {

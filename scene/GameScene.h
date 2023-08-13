@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "DebugCamera.h"
 #include "Enemy.h"
+#include "EnemyIntervalShort.h"
 #include "EnemyBullet.h"
 #include "Skydome.h"
 #include "RailCamera.h"
@@ -67,6 +68,13 @@ public: // メンバ関数
 	void AddEnemy(Vector3 pos, Vector3 velocity);
 
 	/// <summary>
+	/// 発射間隔が短い敵の生成
+	/// </summary>
+	/// <param name="enemy">敵</param>
+	/// <param name="pos">座標</param>
+	void AddEnemyIntervalShort(Vector3 pos, Vector3 velocity);
+
+	/// <summary>
 	/// 敵発生データの読み込み
 	/// </summary>
 	void LoadEnemyPopData();
@@ -75,6 +83,11 @@ public: // メンバ関数
 	/// 敵発生コマンドの更新
 	/// </summary>
 	void UpdateEnemyPopComands();
+
+	/// <summary>
+	/// 発射間隔が短い敵発生コマンドの更新
+	/// </summary>
+	void UpdateEnemyIntervalShortPopComands();
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -88,35 +101,37 @@ private: // メンバ変数
 	Model* model_ = nullptr;		     
 	Model* modelSkydome_ = nullptr;	     
 									     
-	ViewProjection viewProjection_;      // ビュープロジェクション
-									     
-	Player* player_ = nullptr;           // 自機
-
-	// デバッグカメラ
-	DebugCamera* debugCamera_ = nullptr; // デバッグカメラ
-	bool isDebugCameraActive_ = false;   // デバッグカメラ有効フラグ
-
-	// 敵
-	std::list<Enemy*> enemy_;            // 敵
-	std::list<EnemyBullet*> bullets_;    // 敵弾
-
-	Skydome* skydome_ = nullptr;         // 天球
-
-	RailCamera* railCamera_ = nullptr;   // レールカメラ
-
-	Title* title_ = nullptr;             // タイトル
-
-	std::stringstream enemyPopComands;   // 敵発生コマンド
-	
-	// 待機中
-	bool isWait_;                        // 待機中フラグ
-	int32_t waitTimer_;                  // 待機タイマー
-
-	// シーン
-	enum class Scene {
-		TITLE,                           // タイトル
-        OPERATION,                       // チュートリアル
-		MAINGAME                         // メインゲーム
-	};
-	Scene scene_ = Scene::TITLE;         // シーン
+	ViewProjection viewProjection_;                     // ビュープロジェクション
+									                    
+	Player* player_ = nullptr;                          // 自機
+										                
+	// デバッグカメラ					                 
+	DebugCamera* debugCamera_ = nullptr;                // デバッグカメラ
+	bool isDebugCameraActive_ = false;                  // デバッグカメラ有効フラグ
+										                
+	// 敵								   	            
+	std::list<Enemy*> enemy_;                           // 敵
+	std::list<EnemyIntervalShort*> enemyIntervalShort_; // 発射間隔が短い敵
+	std::list<EnemyBullet*> bullets_;                   // 敵弾
+										                
+	Skydome* skydome_ = nullptr;                        // 天球
+										                
+	RailCamera* railCamera_ = nullptr;                  // レールカメラ
+										                
+	Title* title_ = nullptr;                            // タイトル
+										                
+	std::stringstream enemyPopComands;                  // 敵発生コマンド
+	std::stringstream enemyIntervalShortPopComands;     // 発射間隔が短い敵発生コマンド
+										   			    
+	// 待機中							    		    
+	bool isWait_;                                       // 待機中フラグ
+	int32_t waitTimer_;                                 // 待機タイマー
+										                
+	// シーン							                 
+	enum class Scene {					                
+		TITLE,                                          // タイトル
+        OPERATION,                                      // チュートリアル
+		MAINGAME                                        // メインゲーム
+	};									                
+	Scene scene_ = Scene::TITLE;                        // シーン
 };
