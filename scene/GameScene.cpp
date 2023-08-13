@@ -40,7 +40,7 @@ void GameScene::Initialize() {
 	// 自キャラの初期化
 	player_->Initialize(model_);
 
-	AddEnemy({0.0f, 5.0f, 30.0f});
+	AddEnemy({0.0f, 5.0f, 30.0f}, {0.1f, 0.1f, -0.2f});
 
 	// 敵発生
 	LoadEnemyPopData();
@@ -325,11 +325,11 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 	bullets_.push_back(enemyBullet);
 }
 
-void GameScene::AddEnemy(Vector3 pos) {
+void GameScene::AddEnemy(Vector3 pos, Vector3 velocity) {
 	// 敵の生成
 	Enemy* obj = new Enemy();
 	// 敵の初期化
-	obj->Initialize(model_, pos);
+	obj->Initialize(model_, pos, velocity);
 	// 敵キャラに自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// 敵キャラにゲームシーンを渡す
@@ -341,7 +341,7 @@ void GameScene::AddEnemy(Vector3 pos) {
 void GameScene::LoadEnemyPopData() {
 	// ファイルを開く
 	std::ifstream file;
-	file.open("Resources/enemyPos.csv");
+	file.open("Resources/enemyData.csv");
 	assert(file.is_open());
 
 	// ファイルの内容を文字列ストリームにコピー
@@ -382,20 +382,34 @@ void GameScene::UpdateEnemyPopComands() {
 
 		// POPコマンド
 		if (word.find("POP") == 0) {
-			// x座標
+			// 座標
+			// x
 			getline(line_stream, word, ',');
 			float x = (float)std::atof(word.c_str());
 
-			// y座標
+			// y
 			getline(line_stream, word, ',');
 			float y = (float)std::atof(word.c_str());
 
-			// z座標
+			// z
 			getline(line_stream, word, ',');
 			float z = (float)std::atof(word.c_str());
 
+			// 速度
+			// x
+			getline(line_stream, word, ',');
+			float velocityX = (float)std::atof(word.c_str());
+
+			// y
+			getline(line_stream, word, ',');
+			float velocityY = (float)std::atof(word.c_str());
+
+			// z
+			getline(line_stream, word, ',');
+			float velocityZ = (float)std::atof(word.c_str());
+
 			// 敵を発生させる
-			AddEnemy(Vector3(x, y, z));
+			AddEnemy(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ));
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {

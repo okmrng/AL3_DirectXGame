@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "GameScene.h"
 
-void Enemy::Initialize(Model* model, const Vector3& position) {
+void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -16,7 +16,7 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	worldTransform_.translation_ = position;
 
 	// 速度
-	velocity_ = {-0.1f, 0.1f, -0.2f};
+	velocity_ = velocity;
 
 	// 接近フェーズ初期化
 	ApproachInitialize();
@@ -52,7 +52,7 @@ void Enemy::ApproachUpdate() {
 	worldTransform_.translation_.z += velocity_.z;
 
 	// 規定の位置に到達したら離脱
-	if (worldTransform_.translation_.z < 0.0f) {
+	if (worldTransform_.translation_.z < 13.0f) {
 		phase_ = Phase::Leave;
 	}
 
