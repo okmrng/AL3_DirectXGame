@@ -113,6 +113,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="EnemyIntervalShort.cpp" />
+    <ClCompile Include="EnemyMove.cpp" />
     <ClCompile Include="EnemyStrong.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtility.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBullet.h" />
     <ClInclude Include="EnemyIntervalShort.h" />
+    <ClInclude Include="EnemyMove.h" />
     <ClInclude Include="EnemyStrong.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="MathUtility.h" />
