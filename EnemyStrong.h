@@ -118,7 +118,7 @@ private:
 		Leave     // 離脱する
 	};
 	Phase phase_ = Phase::Approach;
-	int32_t toLeaveTimer = 60 * 3; // 離脱フェーズに移るまでの時間
+	int32_t toLeaveTimer = 60 * 10; // 離脱フェーズに移るまでの時間
 
 	Player* player_ = nullptr; // 自キャラ
 
