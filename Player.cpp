@@ -156,7 +156,7 @@ void Player::UpdateReticle(ViewProjection& viewProjection) {
 	mouseDirection = Normalize(mouseDirection);
 
 	// カメラから標準オブジェクトの距離
-	const float kDistanceTestObject = 50.0f;
+	const float kDistanceTestObject = 40.0f;
 	worldTransformReticle_.translation_ = posNear + mouseDirection * kDistanceTestObject;
 
 	// ワールド行列の更新
