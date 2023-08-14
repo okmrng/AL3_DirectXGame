@@ -13,6 +13,7 @@
 #include "Enemy.h"
 #include "EnemyIntervalShort.h"
 #include "EnemyStrong.h"
+#include "EnemyMove.h"
 #include "EnemyBullet.h"
 #include "Skydome.h"
 #include "RailCamera.h"
@@ -83,6 +84,13 @@ public: // メンバ関数
 	void AddEnemyStrong(Vector3 pos, Vector3 velocity);
 
 	/// <summary>
+	/// 動く敵の生成
+	/// </summary>
+	/// <param name="enemy">敵</param>
+	/// <param name="pos">座標</param>
+	void AddEnemyMove(Vector3 pos, Vector3 velocity);
+
+	/// <summary>
 	/// 敵発生データの読み込み
 	/// </summary>
 	void LoadEnemyPopData();
@@ -101,6 +109,11 @@ public: // メンバ関数
 	/// 強い敵発生コマンドの更新
 	/// </summary>
 	void UpdateEnemyStrongPopComands();
+
+	/// <summary>
+	/// 動く敵発生コマンドの更新
+	/// </summary>
+	void UpdateEnemyMovePopComands();
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -126,6 +139,7 @@ private: // メンバ変数
 	std::list<Enemy*> enemy_;                           // 敵
 	std::list<EnemyIntervalShort*> enemyIntervalShort_; // 発射間隔が短い敵
 	std::list<EnemyStrong*> enemyStrong_;               // 強い敵
+	std::list<EnemyMove*> enemyMove_;                   // 動く敵
 
 	std::list<EnemyBullet*> bullets_; // 敵弾
 
@@ -138,6 +152,7 @@ private: // メンバ変数
 	std::stringstream enemyPopComands;              // 敵発生コマンド
 	std::stringstream enemyIntervalShortPopComands; // 発射間隔が短い敵発生コマンド
 	std::stringstream enemyStrongPopComands;        // 敵発生コマンド
+	std::stringstream enemyMovePopComands;          // 動く敵発生コマンド
 
 	// 待機中
 	bool isWait_;       // 待機中フラグ

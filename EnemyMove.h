@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "EnemyBullet.h"
 #include "Material.h"
@@ -9,114 +9,114 @@
 #include <cmath>
 #include <list>
 
-// ‘O•ûéŒ¾
+// å‰æ–¹å®£è¨€
 class Player;
 class GameScene;
 
 /// <summary>
-/// “®‚­“G
+/// å‹•ãæ•µ
 /// </summary>
 class EnemyMove {
 public:
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
-	/// <param name="model">ƒ‚ƒfƒ‹</param>
-	/// <param name="position">‰ŠúÀ•W</param>
+	/// <param name="model">ãƒ¢ãƒ‡ãƒ«</param>
+	/// <param name="position">åˆæœŸåº§æ¨™</param>
 	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
-	/// <param name="viewProjection">ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“</param>
+	/// <param name="viewProjection">ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³</param>
 	void Draw(const ViewProjection& viewProjection);
 
 	/// <summary>
-	/// Ú‹ßƒtƒF[ƒY‚Ì‰Šú‰»ŠÖ”
+	/// æ¥è¿‘ãƒ•ã‚§ãƒ¼ã‚ºã®åˆæœŸåŒ–é–¢æ•°
 	/// </summary>
 	void ApproachInitialize();
 
 	/// <summary>
-	/// Ú‹ßƒtƒF[ƒY‚ÌXVŠÖ”
+	/// æ¥è¿‘ãƒ•ã‚§ãƒ¼ã‚ºã®æ›´æ–°é–¢æ•°
 	/// </summary>
 	void ApproachUpdate();
 
 	/// <summary>
-	/// —£’EƒtƒF[ƒY‚ÌXVŠÖ”
+	/// é›¢è„±ãƒ•ã‚§ãƒ¼ã‚ºã®æ›´æ–°é–¢æ•°
 	/// </summary>
 	void LeaveUpdate();
 
 	/// <summary>
-	/// UŒ‚
+	/// æ”»æ’ƒ
 	/// </summary>
 	void Fire();
 
 	/// <summary>
-	/// Õ“Ë‚ğŒŸo‚µ‚½‚çŒÄ‚Ño‚³‚ê‚éƒR[ƒ‹ƒoƒbƒNŠÖ”
+	/// è¡çªã‚’æ¤œå‡ºã—ãŸã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	/// </summary>
 	void OnColision();
 
 	/// <summary>
-	/// ƒ{ƒ€‚Æ‚ÌÕ“Ëˆ—
+	/// ãƒœãƒ ã¨ã®è¡çªå‡¦ç†
 	/// </summary>
 	void OnBombCollision();
 
-	// ƒZƒbƒ^[
+	// ã‚»ãƒƒã‚¿ãƒ¼
 	void SetPlayer(Player* player) { player_ = player; }
 
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
-	// ƒQƒbƒ^[
+	// ã‚²ãƒƒã‚¿ãƒ¼
 	/// <summary>
-	/// ƒ[ƒ‹ƒhÀ•W‚ğæ“¾
+	/// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—
 	/// </summary>
 	/// <returns></returns>
 	Vector3 GetWorldPositiopn();
 
 	/// <summary>
-	/// ”¼Œaæ“¾
+	/// åŠå¾„å–å¾—
 	/// </summary>
 	/// <returns></returns>
 	const float GetRadius() { return radius_; }
 
 	bool GetIsDead() { return isDead_; }
 
-	static const int kFireInterval = 60; // ”­ËŠÔŠu
+	static const int kFireInterval = 60; // ç™ºå°„é–“éš”
 
 private:
-	int32_t kFireTimer = 0; // ”­Ëƒ^ƒCƒ}[
+	int32_t kFireTimer = 0; // ç™ºå°„ã‚¿ã‚¤ãƒãƒ¼
 
-	WorldTransform worldTransform_; // ƒ[ƒ‹ƒh•ÏŠ·ƒf[ƒ^
+	WorldTransform worldTransform_; // ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›ãƒ‡ãƒ¼ã‚¿
 
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	Model* model_ = nullptr;
-	uint32_t textureHandle_ = 0u; // ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+	uint32_t textureHandle_ = 0u; // ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
 
-	Vector3 velocity_; // ‘¬“x
+	Vector3 velocity_; // é€Ÿåº¦
 
-	// ƒtƒF[ƒY
-	// s“®ƒtƒF[ƒY
+	// ãƒ•ã‚§ãƒ¼ã‚º
+	// è¡Œå‹•ãƒ•ã‚§ãƒ¼ã‚º
 	enum class Phase {
-		Approach, // Ú‹ß‚·‚é
-		Leave     // —£’E‚·‚é
+		Approach, // æ¥è¿‘ã™ã‚‹
+		Leave     // é›¢è„±ã™ã‚‹
 	};
 	Phase phase_ = Phase::Approach;
-	int32_t toLeaveTimer = 60 * 3; // —£’EƒtƒF[ƒY‚ÉˆÚ‚é‚Ü‚Å‚ÌŠÔ
+	int32_t toLeaveTimer = 60 * 3; // é›¢è„±ãƒ•ã‚§ãƒ¼ã‚ºã«ç§»ã‚‹ã¾ã§ã®æ™‚é–“
 
-	Player* player_ = nullptr; // ©ƒLƒƒƒ‰
+	Player* player_ = nullptr; // è‡ªã‚­ãƒ£ãƒ©
 
-	const float radius_ = 2.0f; // ”¼Œa
+	const float radius_ = 2.0f; // åŠå¾„
 
-	GameScene* gameScene_ = nullptr; // ƒQ[ƒ€ƒV[ƒ“
+	GameScene* gameScene_ = nullptr; // ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³
 
-	// ƒfƒX
-	int32_t deathTimer_ = 300; // ƒfƒXƒ^ƒCƒ}[
-	bool isDead_ = false;      // ƒfƒXƒtƒ‰ƒO
+	// ãƒ‡ã‚¹
+	int32_t deathTimer_ = 300; // ãƒ‡ã‚¹ã‚¿ã‚¤ãƒãƒ¼
+	bool isDead_ = false;      // ãƒ‡ã‚¹ãƒ•ãƒ©ã‚°
 
 	int32_t HP = 5;
 };

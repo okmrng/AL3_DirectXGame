@@ -19,6 +19,9 @@ GameScene::~GameScene() {
 	for (EnemyStrong* enemyStrong : enemyStrong_) {
 		delete enemyStrong;
 	}
+	for (EnemyMove* enemyMove : enemyMove_) {
+		delete enemyMove;
+	}
 	for (EnemyBullet* bullet : bullets_) {
 		delete bullet;
 	}
@@ -120,15 +123,30 @@ void GameScene::Update() {
 		//});
 
 		// 強い敵
-		UpdateEnemyStrongPopComands();
-		for (EnemyStrong* enemyStrong : enemyStrong_) {
-			enemyStrong->Update();
+		//UpdateEnemyStrongPopComands();
+		//for (EnemyStrong* enemyStrong : enemyStrong_) {
+		//	enemyStrong->Update();
+		//}
+
+		//// デスフラグの立った敵を削除
+		//enemyStrong_.remove_if([](EnemyStrong* enemyStrong) {
+		//	if (enemyStrong->GetIsDead()) {
+		//		delete enemyStrong;
+		//		return true;
+		//	}
+		//	return false;
+		//});
+
+		// 動く敵
+		UpdateEnemyMovePopComands();
+		for (EnemyMove* enemyMove : enemyMove_) {
+			enemyMove->Update();
 		}
 
 		// デスフラグの立った敵を削除
-		enemyStrong_.remove_if([](EnemyStrong* enemyStrong) {
-			if (enemyStrong->GetIsDead()) {
-				delete enemyStrong;
+		enemyMove_.remove_if([](EnemyMove* enemyMove) {
+			if (enemyMove->GetIsDead()) {
+				delete enemyMove;
 				return true;
 			}
 			return false;
@@ -508,6 +526,92 @@ void GameScene::CheckAllCollisions() {
 		}
 	}
 	#pragma endregion
+
+	// 動く敵
+	// 自キャラと敵キャラの当たり判定
+	#pragma region
+	// 自キャラの座標
+	posA = player_->GetWorldPositiopn();
+
+	for (EnemyMove* enemyMove : enemyMove_) {
+		posB = enemyMove->GetWorldPositiopn();
+
+		// AとBの距離を求める
+		const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+		const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+		const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+		const float collisionXYZ = collisionX + collisionY + collisionZ;
+
+		const float collisionRadiusA = player_->GetRadius();
+		const float collisionRadiusB = enemyMove->GetRadius();
+		const float collisionRadiusAB =
+		    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+
+		// 球と球の交差判定
+		if (collisionXYZ <= collisionRadiusAB) {
+			// 自キャラの衝突時コールバックを呼び出す
+			player_->OnColision();
+		}
+	}
+	#pragma endregion
+
+	// 自弾と敵キャラの当たり判定
+	#pragma region
+	for (EnemyMove* enemyMove : enemyMove_) {
+		for (PlayerBullet* bullet : playerBullets) {
+			// 敵キャラの座標
+			posA = enemyMove->GetWorldPositiopn();
+			// 自弾の座標
+			posB = bullet->GetWorldPositiopn();
+
+			// AとBの距離を求める
+			const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+			const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+			const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+			const float collisionXYZ = collisionX + collisionY + collisionZ;
+
+			const float collisionRadiusA = enemyMove->GetRadius();
+			const float collisionRadiusB = bullet->GetRadius();
+			const float collisionRadiusAB =
+			    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+
+			// 球と球の交差判定
+			if (collisionXYZ <= collisionRadiusAB) {
+				// 敵キャラの衝突時コールバックを呼び出す
+				enemyMove->OnColision();
+				// 自弾の衝突時コールバックを呼び出す
+				bullet->OnColision();
+			}
+		}
+	}
+	#pragma endregion
+
+	// ボムと敵キャラの当たり判定
+	#pragma region
+	// ボムの座標
+	posA = player_->GetBombWorldPositiopn();
+
+	for (EnemyMove* enemyMove : enemyMove_) {
+		posB = enemyMove->GetWorldPositiopn();
+
+		// AとBの距離を求める
+		const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+		const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+		const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+		const float collisionXYZ = collisionX + collisionY + collisionZ;
+
+		const float collisionRadiusA = player_->GetRadius();
+		const float collisionRadiusB = enemyMove->GetRadius();
+		const float collisionRadiusAB =
+		    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+
+		// 球と球の交差判定
+		if (collisionXYZ <= collisionRadiusAB) {
+			// 敵の衝突時コールバックを呼び出す
+			enemyMove->OnBombCollision();
+		}
+	}
+	#pragma endregion
 }
 
 void GameScene::Draw() {
@@ -555,8 +659,13 @@ void GameScene::Draw() {
 		//}
 
 		// 強い敵
-		for (EnemyStrong* enemyStrong : enemyStrong_) {
+		/*for (EnemyStrong* enemyStrong : enemyStrong_) {
 			enemyStrong->Draw(viewProjection_);
+		}*/
+
+		// 動く敵
+		for (EnemyMove* enemyMove : enemyMove_) {
+			enemyMove->Draw(viewProjection_);
 		}
 
 		// 敵の弾の描画
@@ -637,6 +746,19 @@ void GameScene::AddEnemyStrong(Vector3 pos, Vector3 velocity) {
 	enemyStrong_.push_back(obj);
 }
 
+void GameScene::AddEnemyMove(Vector3 pos, Vector3 velocity) {
+	// 生成
+	EnemyMove* obj = new EnemyMove();
+	// 初期化
+	obj->Initialize(model_, pos, velocity);
+	// 自キャラのアドレスを渡す
+	obj->SetPlayer(player_);
+	// ゲームシーンを渡す
+	obj->SetGameScene(this);
+
+	enemyMove_.push_back(obj);
+}
+
 void GameScene::LoadEnemyPopData() {
 	std::ifstream file;
 	// 通常の敵
@@ -667,6 +789,17 @@ void GameScene::LoadEnemyPopData() {
 
 	// ファイルの内容を文字列ストリームにコピー
 	enemyStrongPopComands << file.rdbuf();
+
+	// ファイルを閉じる
+	file.close();
+
+	// 動く敵
+	// ファイルを開く
+	file.open("Resources/script/enemyMoveData.csv");
+	assert(file.is_open());
+
+	// ファイルの内容を文字列ストリームにコピー
+	enemyMovePopComands << file.rdbuf();
 
 	// ファイルを閉じる
 	file.close();
@@ -885,6 +1018,83 @@ void GameScene::UpdateEnemyStrongPopComands() {
 
 			// 敵を発生させる
 			AddEnemyStrong(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ));
+		}
+		// WAITコマンド
+		else if (word.find("WAIT") == 0) {
+			getline(line_stream, word, ',');
+
+			// 待ち時間
+			int32_t waitTime = atoi(word.c_str());
+
+			// 待機開始
+			isWait_ = true;
+			waitTimer_ = waitTime;
+
+			// コマンドループを抜ける
+			break;
+		}
+	}
+}
+
+void GameScene::UpdateEnemyMovePopComands() {
+	// 待機処理
+	if (isWait_ == true) {
+		waitTimer_--;
+		if (waitTimer_ <= 0) {
+			// 待機完了
+			isWait_ = false;
+		}
+		return;
+	}
+
+	// 1行分の文字列を入れる変数
+	std::string line;
+
+	// コマンド実行ループ
+	while (getline(enemyMovePopComands, line)) {
+		// 1行分の文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+
+		std::string word;
+		// ,区切りで行の先頭文字列を取得
+		getline(line_stream, word, ',');
+
+		// "//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			// コメント行を飛ばす
+			continue;
+		}
+
+		// POPコマンド
+		if (word.find("POP") == 0) {
+			// 座標
+			// x
+			getline(line_stream, word, ',');
+			float x = (float)std::atof(word.c_str());
+
+			// y
+			getline(line_stream, word, ',');
+			float y = (float)std::atof(word.c_str());
+
+			// z
+			getline(line_stream, word, ',');
+			float z = (float)std::atof(word.c_str());
+
+			// 速度
+			// x
+			getline(line_stream, word, ',');
+			float velocityX = (float)std::atof(word.c_str());
+
+			// y
+			getline(line_stream, word, ',');
+			float velocityY = (float)std::atof(word.c_str());
+
+			// z
+			getline(line_stream, word, ',');
+			float velocityZ = (float)std::atof(word.c_str());
+
+			// 敵を発生させる
+			AddEnemyMove(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ));
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {
