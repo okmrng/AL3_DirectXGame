@@ -112,6 +112,8 @@ void Enemy::Fire() {
 
 void Enemy::OnColision() { --HP; }
 
+void Enemy::OnBombCollision() { isDead_ = true; }
+
 Vector3 Enemy::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

@@ -66,6 +66,11 @@ public:
 	/// </summary>
 	void OnColision();
 
+	/// <summary>
+	/// ボムとの衝突処理
+	/// </summary>
+	void OnBombCollision();
+
 	// セッター
 	void SetPlayer(Player* player) { player_ = player; }
 
@@ -125,5 +130,5 @@ private:
 	int32_t deathTimer_ = 300; // デスタイマー
 	bool isDead_ = false;      // デスフラグ
 
-	int32_t HP = 20;
+	int32_t HP = 50;
 };

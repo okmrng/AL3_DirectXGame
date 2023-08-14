@@ -253,6 +253,17 @@ Vector3 Player::GetWorldPositiopn() {
 	return worldPos;
 }
 
+Vector3 Player::GetBombWorldPositiopn() {
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+
+	if (bomb_) {
+		worldPos = bomb_->GetWorldPositiopn();
+	}
+
+	return worldPos;
+}
+
 void Player::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
 	worldTransform_.parent_ = parent;

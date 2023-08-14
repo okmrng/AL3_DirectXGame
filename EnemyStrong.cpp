@@ -61,7 +61,7 @@ void EnemyStrong::ApproachUpdate() {
 	worldTransform_.translation_.z += velocity_.z;
 
 	// 規定の位置に到達したら離脱
-	if (worldTransform_.translation_.z < 20.0f) {
+	if (worldTransform_.translation_.z < 35.0f) {
 		phase_ = Phase::ATTACK;
 	}
 
@@ -131,6 +131,8 @@ void EnemyStrong::Fire() {
 }
 
 void EnemyStrong::OnColision() { --HP; }
+
+void EnemyStrong::OnBombCollision() { isDead_ = true; }
 
 void EnemyStrong::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ

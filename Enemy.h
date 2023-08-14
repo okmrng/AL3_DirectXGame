@@ -61,6 +61,11 @@ public:
 	/// </summary>
 	void OnColision();
 
+	/// <summary>
+	/// ボムとの衝突処理
+	/// </summary>
+	void OnBombCollision();
+
 	// セッター
 	void SetPlayer(Player* player) { player_ = player; }
 

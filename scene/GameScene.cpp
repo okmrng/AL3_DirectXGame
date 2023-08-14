@@ -277,6 +277,33 @@ void GameScene::CheckAllCollisions() {
 	}
 	#pragma endregion
 
+	// ボムと敵キャラの当たり判定
+	#pragma region
+	// ボムの座標
+	posA = player_->GetBombWorldPositiopn();
+
+	for (Enemy* enemy : enemy_) {
+		posB = enemy->GetWorldPositiopn();
+
+		// AとBの距離を求める
+		const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+		const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+		const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+		const float collisionXYZ = collisionX + collisionY + collisionZ;
+
+		const float collisionRadiusA = player_->GetRadius();
+		const float collisionRadiusB = enemy->GetRadius();
+		const float collisionRadiusAB =
+		    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+
+		// 球と球の交差判定
+		if (collisionXYZ <= collisionRadiusAB) {
+			// 敵の衝突時コールバックを呼び出す
+			enemy->OnBombCollision();
+		}
+	}
+	#pragma endregion
+
 	// 自弾と敵弾の当たり判定
 	#pragma region
 
@@ -310,6 +337,7 @@ void GameScene::CheckAllCollisions() {
 	}
 	#pragma endregion
 
+	// 発射間隔が短い敵
 	// 自キャラと敵キャラの当たり判定
 	#pragma region
 	// 自キャラの座標
@@ -335,10 +363,10 @@ void GameScene::CheckAllCollisions() {
 			player_->OnColision();
 		}
 	}
-#pragma endregion
+	#pragma endregion
 
-// 自弾と敵キャラの当たり判定
-#pragma region
+	// 自弾と敵キャラの当たり判定
+	#pragma region
 	for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
 		for (PlayerBullet* bullet : playerBullets) {
 			// 敵キャラの座標
@@ -366,7 +394,120 @@ void GameScene::CheckAllCollisions() {
 			}
 		}
 	}
-#pragma endregion
+	#pragma endregion
+
+	// ボムと敵キャラの当たり判定
+	#pragma region
+	// ボムの座標
+	posA = player_->GetBombWorldPositiopn();
+
+	for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+		posB = enemyIntervalShort->GetWorldPositiopn();
+
+		// AとBの距離を求める
+		const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+		const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+		const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+		const float collisionXYZ = collisionX + collisionY + collisionZ;
+
+		const float collisionRadiusA = player_->GetRadius();
+		const float collisionRadiusB = enemyIntervalShort->GetRadius();
+		const float collisionRadiusAB =
+		    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+
+		// 球と球の交差判定
+		if (collisionXYZ <= collisionRadiusAB) {
+			// 敵の衝突時コールバックを呼び出す
+			enemyIntervalShort->OnBombCollision();
+		}
+	}
+	#pragma endregion
+
+	// 強い敵
+	// 自キャラと敵キャラの当たり判定
+	#pragma region
+	// 自キャラの座標
+	posA = player_->GetWorldPositiopn();
+
+	for (EnemyStrong* enemyStrong : enemyStrong_) {
+		posB = enemyStrong->GetWorldPositiopn();
+
+		// AとBの距離を求める
+		const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+		const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+		const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+		const float collisionXYZ = collisionX + collisionY + collisionZ;
+
+		const float collisionRadiusA = player_->GetRadius();
+		const float collisionRadiusB = enemyStrong->GetRadius();
+		const float collisionRadiusAB =
+		    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+
+		// 球と球の交差判定
+		if (collisionXYZ <= collisionRadiusAB) {
+			// 自キャラの衝突時コールバックを呼び出す
+			player_->OnColision();
+		}
+	}
+	#pragma endregion
+
+	// 自弾と敵キャラの当たり判定
+	#pragma region
+	for (EnemyStrong* enemyStrong : enemyStrong_) {
+		for (PlayerBullet* bullet : playerBullets) {
+			// 敵キャラの座標
+			posA = enemyStrong->GetWorldPositiopn();
+			// 自弾の座標
+			posB = bullet->GetWorldPositiopn();
+
+			// AとBの距離を求める
+			const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+			const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+			const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+			const float collisionXYZ = collisionX + collisionY + collisionZ;
+
+			const float collisionRadiusA = enemyStrong->GetRadius();
+			const float collisionRadiusB = bullet->GetRadius();
+			const float collisionRadiusAB =
+			    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+
+			// 球と球の交差判定
+			if (collisionXYZ <= collisionRadiusAB) {
+				// 敵キャラの衝突時コールバックを呼び出す
+				enemyStrong->OnColision();
+				// 自弾の衝突時コールバックを呼び出す
+				bullet->OnColision();
+			}
+		}
+	}
+	#pragma endregion
+
+	// ボムと敵キャラの当たり判定
+	#pragma region
+	// ボムの座標
+	posA = player_->GetBombWorldPositiopn();
+
+	for (EnemyStrong* enemyStrong : enemyStrong_) {
+		posB = enemyStrong->GetWorldPositiopn();
+
+		// AとBの距離を求める
+		const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+		const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+		const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+		const float collisionXYZ = collisionX + collisionY + collisionZ;
+
+		const float collisionRadiusA = player_->GetRadius();
+		const float collisionRadiusB = enemyStrong->GetRadius();
+		const float collisionRadiusAB =
+		    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+
+		// 球と球の交差判定
+		if (collisionXYZ <= collisionRadiusAB) {
+			// 自キャラの衝突時コールバックを呼び出す
+			enemyStrong->OnColision();
+		}
+	}
+	#pragma endregion
 }
 
 void GameScene::Draw() {

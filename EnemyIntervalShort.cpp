@@ -112,6 +112,8 @@ void EnemyIntervalShort::Fire() {
 
 void EnemyIntervalShort::OnColision() { --HP; }
 
+void EnemyIntervalShort::OnBombCollision() { isDead_ = true; }
+
 Vector3 EnemyIntervalShort::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

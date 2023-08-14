@@ -77,6 +77,11 @@ public:
 	Vector3 GetWorldPositiopn();
 
 	/// <summary>
+	/// ワールド座標を取得
+	/// </summary>
+	Vector3 GetBombWorldPositiopn();
+
+	/// <summary>
 	/// 半径
 	/// </summary>
 	const float GetRadius() { return radius_; }

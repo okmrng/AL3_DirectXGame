@@ -16,7 +16,7 @@ void RailCamera::Initialize() {
 void RailCamera::Update() { 
 	// 加算する値
 	Vector3 move = {0.0f, 0.0f, 0.0f};
-	Vector3 rot = {0.0f, 0.001f, 0.0f};
+	Vector3 rot = {0.0f, 0.000f, 0.0f};
 
 	// 座標の加算
 	worldTransform_.translation_.x += move.x;
