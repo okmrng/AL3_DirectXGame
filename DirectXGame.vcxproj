@@ -113,6 +113,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="EnemyIntervalShort.cpp" />
+    <ClCompile Include="EnemyStrong.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBullet.h" />
     <ClInclude Include="EnemyIntervalShort.h" />
+    <ClInclude Include="EnemyStrong.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="MathUtility.h" />
     <ClInclude Include="math\Matrix4x4.h" />
