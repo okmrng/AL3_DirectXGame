@@ -132,6 +132,11 @@ void EnemyStrong::Fire() {
 
 void EnemyStrong::OnColision() { --HP; }
 
+void EnemyStrong::SetParent(const WorldTransform* parent) {
+	// 親子関係を結ぶ
+	worldTransform_.parent_ = parent;
+}
+
 Vector3 EnemyStrong::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

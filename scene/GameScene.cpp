@@ -490,6 +490,8 @@ void GameScene::AddEnemyStrong(Vector3 pos, Vector3 velocity) {
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
 	obj->SetGameScene(this);
+	// レールカメラと親子関係を結ぶ
+	obj->SetParent(&railCamera_->GetWorldTransform());
 
 	enemyStrong_.push_back(obj);
 }
