@@ -49,8 +49,6 @@ void GameScene::Initialize() {
 	// 自キャラの初期化
 	player_->Initialize(model_);
 
-	AddEnemy({0.0f, 5.0f, 30.0f}, {0.1f, 0.1f, -0.2f});
-
 	// 敵発生
 	LoadEnemyPopData();
 
@@ -746,11 +744,11 @@ void GameScene::AddEnemyStrong(Vector3 pos, Vector3 velocity) {
 	enemyStrong_.push_back(obj);
 }
 
-void GameScene::AddEnemyMove(Vector3 pos, Vector3 velocity) {
+void GameScene::AddEnemyMove(Vector3 pos, Vector3 velocity, const Vector3& leaveVelocity) {
 	// 生成
 	EnemyMove* obj = new EnemyMove();
 	// 初期化
-	obj->Initialize(model_, pos, velocity);
+	obj->Initialize(model_, pos, velocity, leaveVelocity);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
@@ -1093,8 +1091,22 @@ void GameScene::UpdateEnemyMovePopComands() {
 			getline(line_stream, word, ',');
 			float velocityZ = (float)std::atof(word.c_str());
 
+			// 離脱時の速度
+			// x
+			getline(line_stream, word, ',');
+			float leaveVelocityX = (float)std::atof(word.c_str());
+
+			// y
+			getline(line_stream, word, ',');
+			float leaveVelocityY = (float)std::atof(word.c_str());
+
+			// z
+			getline(line_stream, word, ',');
+			float leaveVelocityZ = (float)std::atof(word.c_str());
+
 			// 敵を発生させる
-			AddEnemyMove(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ));
+			AddEnemyMove(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ),
+			    Vector3(leaveVelocityX, leaveVelocityY, leaveVelocityZ));
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {

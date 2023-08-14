@@ -88,7 +88,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="enemy">敵</param>
 	/// <param name="pos">座標</param>
-	void AddEnemyMove(Vector3 pos, Vector3 velocity);
+	void AddEnemyMove(Vector3 pos, Vector3 velocity, const Vector3& leaveVelocity);
 
 	/// <summary>
 	/// 敵発生データの読み込み

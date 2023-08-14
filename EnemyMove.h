@@ -23,7 +23,8 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="position">初期座標</param>
-	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
+	void Initialize(
+	    Model* model, const Vector3& position, const Vector3& velocity, const Vector3& leaveVelocity);
 
 	/// <summary>
 	/// 更新
@@ -97,7 +98,8 @@ private:
 	Model* model_ = nullptr;
 	uint32_t textureHandle_ = 0u; // テクスチャハンドル
 
-	Vector3 velocity_; // 速度
+	Vector3 velocity_;      // 速度
+	Vector3 leaveVelocity_; // 速度
 
 	// フェーズ
 	// 行動フェーズ

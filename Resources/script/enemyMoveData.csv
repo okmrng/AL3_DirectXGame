@@ -1,3 +1,3 @@
-// コマンド,x,y,z,velocityX,velocityY,velocityZ
-WAIT 120,,,,,,
-POP,12,-8,110,0.2,-0.4,-0.2
+// コマンド,x,y,z,velocityX,velocityY,velocityZ,leaveX,leaveY,leaveZ
+WAIT 120,,,,,,,,,
+POP,9,0,110,0.1,-0.1,-0.2,0.2,0.4,-0.2

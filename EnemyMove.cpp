@@ -3,7 +3,8 @@
 #include "GameScene.h"
 #include "Player.h"
 
-void EnemyMove::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
+void EnemyMove::Initialize(
+    Model* model, const Vector3& position, const Vector3& velocity, const Vector3& leaveVelocity) {
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -17,6 +18,7 @@ void EnemyMove::Initialize(Model* model, const Vector3& position, const Vector3&
 
 	// 速度
 	velocity_ = velocity;
+	leaveVelocity_ = leaveVelocity;
 
 	// 接近フェーズ初期化
 	ApproachInitialize();
@@ -54,7 +56,17 @@ void EnemyMove::ApproachInitialize() {
 
 void EnemyMove::ApproachUpdate() {
 	// 座標を移動させる
+	worldTransform_.translation_.x += velocity_.x;
+	worldTransform_.translation_.y += velocity_.y;
 	worldTransform_.translation_.z += velocity_.z;
+
+	// 画面端に行ったら逆方向へ移動
+	if (worldTransform_.translation_.x >= 9.5f || worldTransform_.translation_.x <= -9.5f) {
+		velocity_.x *= -1;
+	}
+	if (worldTransform_.translation_.y >= 5.0f || worldTransform_.translation_.y <= -5.0f) {
+		velocity_.y *= -1;
+	}
 
 	// 規定の位置に到達したら離脱
 	if (worldTransform_.translation_.z < 13.0f) {
@@ -77,9 +89,9 @@ void EnemyMove::LeaveUpdate() {
 	}
 
 	// 座標を移動させる(1フレーム分の移動量を足しこむ)
-	worldTransform_.translation_.x += velocity_.x;
-	worldTransform_.translation_.y += velocity_.y;
-	worldTransform_.translation_.z += velocity_.z;
+	worldTransform_.translation_.x += leaveVelocity_.x;
+	worldTransform_.translation_.y += leaveVelocity_.y;
+	worldTransform_.translation_.z += leaveVelocity_.z;
 }
 
 void EnemyMove::Fire() {
