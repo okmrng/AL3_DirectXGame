@@ -9,6 +9,7 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
+	worldTransform_.scale_ = {0.5f, 0.5f, 0.5f};
 	// 引数で受け取った初期座標をセット
 	worldTransform_.translation_ = position;
 
