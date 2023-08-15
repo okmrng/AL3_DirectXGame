@@ -56,8 +56,8 @@ void Enemy::ApproachUpdate() {
 	// 座標を移動させる
 	worldTransform_.translation_.z += velocity_.z;
 
-	// 規定の位置に到達したら離脱
-	if (worldTransform_.translation_.z < 13.0f) {
+	// 離脱
+	if (--toLeaveTimer <= 0.0f) {
 		phase_ = Phase::Leave;
 	}
 

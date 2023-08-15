@@ -105,7 +105,8 @@ private:
 		Approach,                        // 接近する
 		Leave                            // 離脱する
 	};							         
-	Phase phase_ = Phase::Approach;      
+	Phase phase_ = Phase::Approach;     
+	int32_t toLeaveTimer = 60 * 5;
 								         
 	Player* player_ = nullptr;           // 自キャラ
 
