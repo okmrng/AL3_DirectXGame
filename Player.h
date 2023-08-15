@@ -86,6 +86,11 @@ public:
 	/// </summary>
 	const float GetRadius() { return radius_; }
 
+	/// <summary>
+	/// 死亡フラグの取得
+	/// </summary>
+	bool GetIsDead() { return isDead_; }
+
 	// セッター
 	/// <summary>
 	/// 親となるワールドトランスフォームをセット
@@ -121,5 +126,9 @@ private:
 	// 2Dレティクル							   
 	WorldTransform worldTransformReticle_;     // ワールド変換データ
 										              
-	Sprite* spriteReticle_ = nullptr;                 // スプライト
+	Sprite* spriteReticle_ = nullptr;          // スプライト
+
+	int32_t HP_ = 3; // HP
+	
+	bool isDead_ = false; // 死亡フラグ
 };
