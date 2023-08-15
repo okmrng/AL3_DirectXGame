@@ -91,10 +91,9 @@ void GameScene::Update() {
 		player_->Update(viewProjection_);
 
 		// ゲームオーバー
-		if (player_->GetIsDead()) {
-			//delete player_;
+		/*if (player_->GetIsDead()) {
 			scene_ = Scene::TITLE;
-		}
+		}*/
 
 		// 通常の敵
 		//UpdateEnemyPopComands();

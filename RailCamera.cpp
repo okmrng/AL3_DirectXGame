@@ -14,19 +14,15 @@ void RailCamera::Initialize() {
 }
 
 void RailCamera::Update() { 
-	// 加算する値
-	Vector3 move = {0.0f, 0.0f, 0.0f};
-	Vector3 rot = {0.0f, 0.000f, 0.0f};
-
 	// 座標の加算
-	worldTransform_.translation_.x += move.x;
-	worldTransform_.translation_.y += move.y;
-	worldTransform_.translation_.z += move.z;
+	worldTransform_.translation_.x += move_.x;
+	worldTransform_.translation_.y += move_.y;
+	worldTransform_.translation_.z += move_.z;
 
 	// 角度の加算
-	worldTransform_.rotation_.x += rot.x;
-	worldTransform_.rotation_.y += rot.y;
-	worldTransform_.rotation_.z += rot.z;
+	worldTransform_.rotation_.x += rot_.x;
+	worldTransform_.rotation_.y += rot_.y;
+	worldTransform_.rotation_.z += rot_.z;
 
 	// ワールド行列の再計算
 	worldTransform_.UpdateMatrix();
@@ -35,3 +31,7 @@ void RailCamera::Update() {
 	viewProjection_.matView = Inverse(worldTransform_.matWorld_);
 	viewProjection_.TransferMatrix();
 }
+
+void RailCamera::SetMove(Vector3 move) { move_ = move; }
+
+void RailCamera::SetRot(Vector3 rot) { rot_ = rot; }
