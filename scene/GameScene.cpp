@@ -813,11 +813,11 @@ void GameScene::LoadEnemyPopData() {
 
 void GameScene::UpdateEnemyPopComands() {
 	// 待機処理
-	if (isWait_ == true) {
-		waitTimer_--;
-		if (waitTimer_ <= 0) {
+	if (enemyIsWait_ == true) {
+		enemyWaitTimer_--;
+		if (enemyWaitTimer_ <= 0) {
 			// 待機完了
-			isWait_ = false;
+			enemyIsWait_ = false;
 		}
 		return;
 	}
@@ -879,8 +879,8 @@ void GameScene::UpdateEnemyPopComands() {
 			int32_t waitTime = atoi(word.c_str());
 
 			// 待機開始
-			isWait_ = true;
-			waitTimer_ = waitTime;
+			enemyIsWait_ = true;
+			enemyWaitTimer_ = waitTime;
 
 			// コマンドループを抜ける
 			break;
@@ -890,11 +890,11 @@ void GameScene::UpdateEnemyPopComands() {
 
 void GameScene::UpdateEnemyIntervalShortPopComands() {
 	// 待機処理
-	if (isWait_ == true) {
-		waitTimer_--;
-		if (waitTimer_ <= 0) {
+	if (enemyIntervalShortIsWait_ == true) {
+		enemyIntervalShortWaitTimer_--;
+		if (enemyIntervalShortWaitTimer_ <= 0) {
 			// 待機完了
-			isWait_ = false;
+			enemyIntervalShortIsWait_ = false;
 		}
 		return;
 	}
@@ -956,8 +956,8 @@ void GameScene::UpdateEnemyIntervalShortPopComands() {
 			int32_t waitTime = atoi(word.c_str());
 
 			// 待機開始
-			isWait_ = true;
-			waitTimer_ = waitTime;
+			enemyIntervalShortIsWait_ = true;
+			enemyIntervalShortWaitTimer_ = waitTime;
 
 			// コマンドループを抜ける
 			break;
@@ -967,11 +967,11 @@ void GameScene::UpdateEnemyIntervalShortPopComands() {
 
 void GameScene::UpdateEnemyStrongPopComands() {
 	// 待機処理
-	if (isWait_ == true) {
-		waitTimer_--;
-		if (waitTimer_ <= 0) {
+	if (enemyStrongIsWait_ == true) {
+		enemyStrongWaitTimer_--;
+		if (enemyStrongWaitTimer_ <= 0) {
 			// 待機完了
-			isWait_ = false;
+			enemyStrongIsWait_ = false;
 		}
 		return;
 	}
@@ -1033,8 +1033,8 @@ void GameScene::UpdateEnemyStrongPopComands() {
 			int32_t waitTime = atoi(word.c_str());
 
 			// 待機開始
-			isWait_ = true;
-			waitTimer_ = waitTime;
+			enemyStrongIsWait_ = true;
+			enemyStrongWaitTimer_ = waitTime;
 
 			// コマンドループを抜ける
 			break;
@@ -1044,11 +1044,11 @@ void GameScene::UpdateEnemyStrongPopComands() {
 
 void GameScene::UpdateEnemyMovePopComands() {
 	// 待機処理
-	if (isWait_ == true) {
-		waitTimer_--;
-		if (waitTimer_ <= 0) {
+	if (enemyMoveIsWait_ == true) {
+		enemyMoveWaitTimer_--;
+		if (enemyMoveWaitTimer_ <= 0) {
 			// 待機完了
-			isWait_ = false;
+			enemyMoveIsWait_ = false;
 		}
 		return;
 	}
@@ -1124,8 +1124,8 @@ void GameScene::UpdateEnemyMovePopComands() {
 			int32_t waitTime = atoi(word.c_str());
 
 			// 待機開始
-			isWait_ = true;
-			waitTimer_ = waitTime;
+			enemyMoveIsWait_ = true;
+			enemyMoveWaitTimer_ = waitTime;
 
 			// コマンドループを抜ける
 			break;
@@ -1148,11 +1148,11 @@ void GameScene::LoadRailCamera() {
 
 void GameScene::UpdateRailCameraComands() {
 	// 待機処理
-	if (isWait_ == true) {
-		waitTimer_--;
-		if (waitTimer_ <= 0) {
+	if (asItIs_ == true) {
+		asItIsTimer_--;
+		if (asItIsTimer_ <= 0) {
 			// 待機完了
-			isWait_ = false;
+			asItIs_ = false;
 		}
 		return;
 	}
@@ -1211,11 +1211,11 @@ void GameScene::UpdateRailCameraComands() {
 			getline(line_stream, word, ',');
 
 			// 待ち時間
-			int32_t waitTime = atoi(word.c_str());
+			int32_t asItIsTime = atoi(word.c_str());
 
 			// 待機開始
-			isWait_ = true;
-			waitTimer_ = waitTime;
+			asItIs_ = true;
+			asItIsTimer_ = asItIsTime;
 
 			// コマンドループを抜ける
 			break;

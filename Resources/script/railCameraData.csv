@@ -1,7 +1,3 @@
 // ƒRƒ}ƒ“ƒh,moveX,moveY,moveZ,rotX,rotY,rotZ
 ASITIS,120,,,,,
-CHANGE,0,0,0.1,0,0,0
-ASITIS,240,,,,,
-CHANGE,0.1,0,0,0.001,0,0
-ASITIS,180,,,,,
-CHANGE,0,0,-0.1,0,0,0.001
+CHANGE,0,0,0,0,0,0

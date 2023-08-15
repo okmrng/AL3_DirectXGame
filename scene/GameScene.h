@@ -159,16 +159,29 @@ private: // メンバ変数
 
 	Title* title_ = nullptr; // タイトル
 
+	// コマンド
 	std::stringstream enemyPopComands;              // 敵発生コマンド
 	std::stringstream enemyIntervalShortPopComands; // 発射間隔が短い敵発生コマンド
-	std::stringstream enemyStrongPopComands;        // 敵発生コマンド
+	std::stringstream enemyStrongPopComands;        // 強い敵発生コマンド
 	std::stringstream enemyMovePopComands;          // 動く敵発生コマンド
+	std::stringstream railCameraComands;            // レールカメラのコマンド
 
-	std::stringstream railCameraComands; // レールカメラのコマンド
-
-	// 待機中
-	bool isWait_;       // 待機中フラグ
-	int32_t waitTimer_; // 待機タイマー
+	// 待機
+	// 通常の敵
+	bool enemyIsWait_;       // 待機中フラグ
+	int32_t enemyWaitTimer_; // 待機タイマー
+	// 発射間隔が短い敵
+	bool enemyIntervalShortIsWait_;       // 待機中フラグ
+	int32_t enemyIntervalShortWaitTimer_; // 待機タイマー
+	// 強い敵
+	bool enemyStrongIsWait_;       // 待機中フラグ
+	int32_t enemyStrongWaitTimer_; // 待機タイマー
+	// 動く敵
+	bool enemyMoveIsWait_;       // 待機中フラグ
+	int32_t enemyMoveWaitTimer_; // 待機タイマー
+	// レールカメラ
+	bool asItIs_; // 変化なしフラグ
+	int32_t asItIsTimer_; // 次変化起こすまでの時間
 
 	// シーン
 	enum class Scene {
