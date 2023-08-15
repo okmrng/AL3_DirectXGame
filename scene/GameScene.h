@@ -115,6 +115,16 @@ public: // メンバ関数
 	/// </summary>
 	void UpdateEnemyMovePopComands();
 
+	/// <summary>
+	/// レールカメラデータの読み込み
+	/// </summary>
+	void LoadRailCamera();
+
+	/// <summary>
+	/// レールカメラのコマンドの更新
+	/// </summary>
+	void UpdateRailCameraComands();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -153,6 +163,8 @@ private: // メンバ変数
 	std::stringstream enemyIntervalShortPopComands; // 発射間隔が短い敵発生コマンド
 	std::stringstream enemyStrongPopComands;        // 敵発生コマンド
 	std::stringstream enemyMovePopComands;          // 動く敵発生コマンド
+
+	std::stringstream railCameraComands; // レールカメラのコマンド
 
 	// 待機中
 	bool isWait_;       // 待機中フラグ

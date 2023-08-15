@@ -32,6 +32,7 @@ void RailCamera::Update() {
 	viewProjection_.TransferMatrix();
 }
 
-void RailCamera::SetMove(Vector3 move) { move_ = move; }
-
-void RailCamera::SetRot(Vector3 rot) { rot_ = rot; }
+void RailCamera::SetData(Vector3 move, Vector3 rot) {
+	move_ = move;
+	rot_ = rot;
+}

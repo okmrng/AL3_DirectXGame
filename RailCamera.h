@@ -24,16 +24,11 @@ public:
 
 	// セッター関数
 	/// <summary>
-	/// 平行移動
+	/// 平行移動と回転をセットする
 	/// </summary>
-	/// <param name="move_"></param>
-	void SetMove(Vector3 move);
-
-	/// <summary>
-	/// 回転
-	/// </summary>
-	/// <param name="rot"></param>
-	void SetRot(Vector3 rot);
+	/// <param name="move">平行移動</param>
+	/// <param name="rot">回転</param>
+	void SetData(Vector3 move, Vector3 rot);
 
 private:
 	// ワールド変換データ

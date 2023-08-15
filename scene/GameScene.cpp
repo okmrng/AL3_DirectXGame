@@ -61,6 +61,8 @@ void GameScene::Initialize() {
 	railCamera_->Initialize();
 	// 自キャラとの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTransform());
+	
+	LoadRailCamera();
 
 	// タイトル
 	title_ = new Title();
@@ -173,6 +175,7 @@ void GameScene::Update() {
 		CheckAllCollisions();
 
 		// 天球の更新
+		UpdateRailCameraComands();
 		skydome_->Update();
 
 		// レールカメラの更新
@@ -1115,6 +1118,96 @@ void GameScene::UpdateEnemyMovePopComands() {
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {
+			getline(line_stream, word, ',');
+
+			// 待ち時間
+			int32_t waitTime = atoi(word.c_str());
+
+			// 待機開始
+			isWait_ = true;
+			waitTimer_ = waitTime;
+
+			// コマンドループを抜ける
+			break;
+		}
+	}
+}
+
+void GameScene::LoadRailCamera() {
+	// ファイルを開く
+	std::ifstream file;
+	file.open("Resources/script/railCameraData.csv");
+	assert(file.is_open());
+
+	// ファイルの内容を文字列ストリームにコピー
+	railCameraComands << file.rdbuf();
+
+	// ファイルを閉じる
+	file.close();
+}
+
+void GameScene::UpdateRailCameraComands() {
+	// 待機処理
+	if (isWait_ == true) {
+		waitTimer_--;
+		if (waitTimer_ <= 0) {
+			// 待機完了
+			isWait_ = false;
+		}
+		return;
+	}
+
+	// 1行分の文字列を入れる変数
+	std::string line;
+
+	// コマンド実行ループ
+	while (getline(railCameraComands, line)) {
+		// 1行分の文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+
+		std::string word;
+		// ,区切りで行の先頭文字列を取得
+		getline(line_stream, word, ',');
+
+		// "//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			// コメント行を飛ばす
+			continue;
+		}
+
+		// CHANGEコマンド
+		if (word.find("CHANGE") == 0) {
+			// 平行移動
+			// x座標
+			getline(line_stream, word, ',');
+			float moveX = (float)std::atof(word.c_str());
+
+			// y座標
+			getline(line_stream, word, ',');
+			float moveY = (float)std::atof(word.c_str());
+
+			// z座標
+			getline(line_stream, word, ',');
+			float moveZ = (float)std::atof(word.c_str());
+
+			// 回転
+			// x座標
+			getline(line_stream, word, ',');
+			float rotX = (float)std::atof(word.c_str());
+
+			// y座標
+			getline(line_stream, word, ',');
+			float rotY = (float)std::atof(word.c_str());
+
+			// z座標
+			getline(line_stream, word, ',');
+			float rotZ = (float)std::atof(word.c_str());
+
+			// データをセット
+			railCamera_->SetData(Vector3(moveX, moveY, moveZ), Vector3(rotX, rotY, rotZ));
+		}
+		// ASITISコマンド
+		else if (word.find("ASITIS") == 0) {
 			getline(line_stream, word, ',');
 
 			// 待ち時間
