@@ -214,6 +214,9 @@ void Player::Attack() {
 		velocity.x *= kBulletSpeed;
 		velocity.y *= kBulletSpeed;
 		velocity.z *= kBulletSpeed;
+
+		velocity += misalignment_;
+
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		//newBullet->Initialize(model_, GetWorldPositiopn(), velocity);

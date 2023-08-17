@@ -103,9 +103,13 @@ public:
 
 	void SetRailCamera(RailCamera* railCamera) { railCamera_ = railCamera; }
 
+	void SetMisalignment(Vector3 misalignment) { misalignment_ = misalignment; }
+
 private:
 	// 自機
 	WorldTransform worldTransform_;            // ワールド変換データ
+
+	Vector3 misalignment_;                     // カメラが動いている時のズレ修正
 									           
 	// モデル						            
 	Model* model_ = nullptr;		           

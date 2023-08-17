@@ -1209,6 +1209,8 @@ void GameScene::UpdateRailCameraComands() {
 
 			// データをセット
 			railCamera_->SetData(Vector3(moveX, moveY, moveZ), Vector3(rotX, rotY, rotZ));
+
+			player_->SetMisalignment(Vector3(moveX, moveY, moveZ));
 		}
 		// ASITISコマンド
 		else if (word.find("ASITIS") == 0) {
