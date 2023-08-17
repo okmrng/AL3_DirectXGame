@@ -50,3 +50,5 @@ Vector3 PlayerBullet::GetWorldPositiopn() {
 
 	return worldPos;
 }
+
+void PlayerBullet::SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent; }

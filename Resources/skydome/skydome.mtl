@@ -1,4 +1,4 @@
-# Blender MTL File: '天球.blend'
+# Blender MTL File: 'None'
 # Material Count: 1
 
 newmtl マテリアル
@@ -9,5 +9,5 @@ Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
-illum 2
+illum 1
 map_Kd C:\\Users\\奥村\u3000凪\\OneDrive\\デスクトップ\\AL3\\KamataEngine20230413\\DirectXGame\\Resources\\uvChecker.png

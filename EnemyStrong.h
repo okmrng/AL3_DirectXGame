@@ -97,7 +97,7 @@ public:
 
 	bool GetIsDead() { return isDead_; }
 
-	static const int kFireInterval = 60 * 2; // 発射間隔
+	static const int kFireInterval = 60 * 1; // 発射間隔
 
 private:
 	int32_t kFireTimer = 0; // 発射タイマー

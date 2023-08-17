@@ -61,6 +61,9 @@ void GameScene::Initialize() {
 	railCamera_->Initialize();
 	// 自キャラとの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTransform());
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Set(&railCamera_->GetWorldTransform());
+	}
 	
 	LoadRailCamera();
 
@@ -98,49 +101,49 @@ void GameScene::Update() {
 		}*/
 
 		// 通常の敵
-		//UpdateEnemyPopComands();
-		//for (Enemy* enemy : enemy_) {
-		//	enemy->Update();
-		//}
+		UpdateEnemyPopComands();
+		for (Enemy* enemy : enemy_) {
+			enemy->Update();
+		}
 
-		//// デスフラグの立った敵を削除
-		//enemy_.remove_if([](Enemy* enemy) {
-		//	if (enemy->GetIsDead()) {
-		//		delete enemy;
-		//		return true;
-		//	}
-		//	return false;
-		//});
+		// デスフラグの立った敵を削除
+		enemy_.remove_if([](Enemy* enemy) {
+			if (enemy->GetIsDead()) {
+				delete enemy;
+				return true;
+			}
+			return false;
+		});
 
-		//// 発射間隔が短い敵
-		//UpdateEnemyIntervalShortPopComands();
-		//for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
-		//	enemyIntervalShort->Update();
-		//}
+		// 発射間隔が短い敵
+		UpdateEnemyIntervalShortPopComands();
+		for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+			enemyIntervalShort->Update();
+		}
 
-		//// デスフラグの立った敵を削除
-		//enemyIntervalShort_.remove_if([](EnemyIntervalShort* enemyIntervalShort) {
-		//	if (enemyIntervalShort->GetIsDead()) {
-		//		delete enemyIntervalShort;
-		//		return true;
-		//	}
-		//	return false;
-		//});
+		// デスフラグの立った敵を削除
+		enemyIntervalShort_.remove_if([](EnemyIntervalShort* enemyIntervalShort) {
+			if (enemyIntervalShort->GetIsDead()) {
+				delete enemyIntervalShort;
+				return true;
+			}
+			return false;
+		});
 
 		// 強い敵
-		//UpdateEnemyStrongPopComands();
-		//for (EnemyStrong* enemyStrong : enemyStrong_) {
-		//	enemyStrong->Update();
-		//}
+		UpdateEnemyStrongPopComands();
+		for (EnemyStrong* enemyStrong : enemyStrong_) {
+			enemyStrong->Update();
+		}
 
-		//// デスフラグの立った敵を削除
-		//enemyStrong_.remove_if([](EnemyStrong* enemyStrong) {
-		//	if (enemyStrong->GetIsDead()) {
-		//		delete enemyStrong;
-		//		return true;
-		//	}
-		//	return false;
-		//});
+		// デスフラグの立った敵を削除
+		enemyStrong_.remove_if([](EnemyStrong* enemyStrong) {
+			if (enemyStrong->GetIsDead()) {
+				delete enemyStrong;
+				return true;
+			}
+			return false;
+		});
 
 		// 動く敵
 		UpdateEnemyMovePopComands();
@@ -655,19 +658,19 @@ void GameScene::Draw() {
 		player_->Draw(viewProjection_);
 
 		// 通常の敵の描画
-		//for (Enemy* enemy : enemy_) {
-		//	enemy->Draw(viewProjection_);
-		//}
+		for (Enemy* enemy : enemy_) {
+			enemy->Draw(viewProjection_);
+		}
 
-		//// 発射間隔が短い敵の描画
-		//for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
-		//	enemyIntervalShort->Draw(viewProjection_);
-		//}
+		// 発射間隔が短い敵の描画
+		for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+			enemyIntervalShort->Draw(viewProjection_);
+		}
 
 		// 強い敵
-		/*for (EnemyStrong* enemyStrong : enemyStrong_) {
+		for (EnemyStrong* enemyStrong : enemyStrong_) {
 			enemyStrong->Draw(viewProjection_);
-		}*/
+		}
 
 		// 動く敵
 		for (EnemyMove* enemyMove : enemyMove_) {

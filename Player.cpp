@@ -254,7 +254,7 @@ Vector3 Player::GetWorldPositiopn() {
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
 	worldPos.y = worldTransform_.matWorld_.m[3][1];
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
-
+	
 	return worldPos;
 }
 
@@ -272,4 +272,8 @@ Vector3 Player::GetBombWorldPositiopn() {
 void Player::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
 	worldTransform_.parent_ = parent;
+	worldTransformReticle_.parent_ = parent;
+	/*for (PlayerBullet* bullet : bullets_) {
+		bullet->SetParent(parent);
+	}*/
 }

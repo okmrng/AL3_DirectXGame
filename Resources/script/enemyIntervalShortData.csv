@@ -1,3 +1,2 @@
 // ƒRƒ}ƒ“ƒh,x,y,z,velocityX,velocityY,velocityZ
-WAIT 120,,,,,,
-POP,-6,8,105,-0.1,0.4,-0.2
+WAIT,,,,,,

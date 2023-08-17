@@ -50,3 +50,5 @@ Vector3 EnemyBullet::GetWorldPositiopn() {
 
 	return worldPos;
 }
+
+void EnemyBullet::Set(const WorldTransform* parent) { worldTransform_.parent_ = parent; }

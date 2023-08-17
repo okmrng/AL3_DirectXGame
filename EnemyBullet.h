@@ -48,6 +48,8 @@ public:
 	/// <returns></returns>
 	Vector3 GetWorldPositiopn();
 
+	void Set(const WorldTransform* parent);
+
 private:
 	WorldTransform worldTransform_;          // ワールド変換データ
 									         

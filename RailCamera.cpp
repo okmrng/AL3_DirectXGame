@@ -6,9 +6,6 @@ void RailCamera::Initialize() {
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
 
-	worldTransform_.translation_ = {0.0f, 0.0f, -100.0f};
-	worldTransform_.rotation_ = {0.0f, 0.0f, 0.0f};
-
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 }
