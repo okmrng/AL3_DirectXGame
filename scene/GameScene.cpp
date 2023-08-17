@@ -61,6 +61,7 @@ void GameScene::Initialize() {
 	railCamera_->Initialize();
 	// 自キャラとの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTransform());
+	player_->SetRailCamera(railCamera_);
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Set(&railCamera_->GetWorldTransform());
 	}
@@ -178,10 +179,10 @@ void GameScene::Update() {
 		CheckAllCollisions();
 
 		// 天球の更新
-		UpdateRailCameraComands();
 		skydome_->Update();
 
 		// レールカメラの更新
+		UpdateRailCameraComands();
 		railCamera_->Update();
 		viewProjection_.matView = railCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;

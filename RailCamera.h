@@ -22,6 +22,11 @@ public:
 	const ViewProjection& GetViewProjection() { return viewProjection_; }
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
+	/// <summary>
+	/// ワールド座標を取得
+	/// </summary>
+	Vector3 GetWorldPositiopn();
+
 	// セッター関数
 	/// <summary>
 	/// 平行移動と回転をセットする
@@ -39,5 +44,5 @@ private:
 
 	// 座標に加算する値
 	Vector3 move_ = {0.0f, 0.0f, 0.0f}; // 平行移動
-	Vector3 rot_ = {0.0f, 0.001f, 0.0f}; // 回転
+	Vector3 rot_ = {0.0f, 0.00f, 0.0f}; // 回転
 };

@@ -11,6 +11,9 @@
 #include "ImGuiManager.h"
 #include "MathUtility.h"
 
+// 前方宣言
+class RailCamera;
+
 /// <summary>
 /// 自キャラ
 /// </summary>
@@ -98,6 +101,8 @@ public:
 	/// <param name="parent">親となるワールドトランスフォーム</param>
 	void SetParent(const WorldTransform* parent);
 
+	void SetRailCamera(RailCamera* railCamera) { railCamera_ = railCamera; }
+
 private:
 	// 自機
 	WorldTransform worldTransform_;            // ワールド変換データ
@@ -125,10 +130,14 @@ private:
 											   
 	// 2Dレティクル							   
 	WorldTransform worldTransformReticle_;     // ワールド変換データ
-										              
+								
+	Model* model3DReticle_ = nullptr;
+
 	Sprite* spriteReticle_ = nullptr;          // スプライト
 
 	int32_t HP_ = 3; // HP
 	
 	bool isDead_ = false; // 死亡フラグ
+
+	RailCamera* railCamera_ = nullptr; // レールカメラ
 };

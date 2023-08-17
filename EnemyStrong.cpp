@@ -61,9 +61,9 @@ void EnemyStrong::ApproachUpdate() {
 	worldTransform_.translation_.z += velocity_.z;
 
 	// 離脱
-	if (--toLeaveTimer <= 0.0f) {
+	/*if (--toLeaveTimer <= 0.0f) {
 		phase_ = Phase::Leave;
-	}
+	}*/
 
 	// 発射タイマーカウントダウン
 	--kFireTimer;

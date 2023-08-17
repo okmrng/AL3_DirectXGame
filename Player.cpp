@@ -1,5 +1,7 @@
 ﻿#include "Player.h"
 
+#include "RailCamera.h"
+
 Player::~Player() { 
 	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;
@@ -28,6 +30,8 @@ void Player::Initialize(Model* model) {
 	// レティクル
 	// レティクルのワールドトランスフォーム初期化
 	worldTransformReticle_.Initialize();
+
+	model3DReticle_ = model;
 
 	// レティクル用テクスチャ取得
 	uint32_t textureReticle = TextureManager::Load("player/target.png");
@@ -179,6 +183,8 @@ void Player::Draw(ViewProjection& viewProjection) {
 		bullet->Draw(viewProjection);
 	}
 
+	model3DReticle_->Draw(worldTransformReticle_, viewProjection, textureHandle_);
+
 	// ボム
 	if (bomb_) {
 		bomb_->Draw(viewProjection);
@@ -194,9 +200,13 @@ void Player::Attack() {
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity;
-		velocity.x = worldTransformReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
+		/*velocity.x = worldTransformReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
 		velocity.y = worldTransformReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
-		velocity.z = worldTransformReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
+		velocity.z = worldTransformReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];*/
+
+		Vector3 railCameraWorld = railCamera_->GetWorldPositiopn() + worldTransform_.translation_;
+		
+		velocity = worldTransformReticle_.translation_ - railCameraWorld;
 
 		// 正規化
 		velocity = Normalize(velocity);
@@ -204,10 +214,10 @@ void Player::Attack() {
 		velocity.x *= kBulletSpeed;
 		velocity.y *= kBulletSpeed;
 		velocity.z *= kBulletSpeed;
-
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, GetWorldPositiopn(), velocity);
+		//newBullet->Initialize(model_, GetWorldPositiopn(), velocity);
+		newBullet->Initialize(model_, railCameraWorld, velocity);
 
 		// 弾を登録する
 		bullets_.push_back(newBullet);
@@ -220,9 +230,11 @@ void Player::Bomb() {
 			// 弾の速度
 			const float kBulletSpeed = 1.0f;
 			Vector3 velocity;
-			velocity.x = worldTransformReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
+			/*velocity.x = worldTransformReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
 			velocity.y = worldTransformReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
-			velocity.z = worldTransformReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
+			velocity.z = worldTransformReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];*/
+
+			velocity = worldTransformReticle_.translation_ - railCamera_->GetWorldPositiopn();
 
 			// 正規化
 			velocity = Normalize(velocity);
@@ -233,7 +245,8 @@ void Player::Bomb() {
 
 			// 弾を生成し、初期化
 			PlayerBomb* newBomb = new PlayerBomb();
-			newBomb->Initialize(model_, GetWorldPositiopn(), velocity);
+			//newBomb->Initialize(model_, GetWorldPositiopn(), velocity);
+			newBomb->Initialize(model_, railCamera_->GetWorldPositiopn(), velocity);
 
 			// 弾を登録する
 			bomb_ = newBomb;
@@ -272,7 +285,7 @@ Vector3 Player::GetBombWorldPositiopn() {
 void Player::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
 	worldTransform_.parent_ = parent;
-	worldTransformReticle_.parent_ = parent;
+	//worldTransformReticle_.parent_ = parent;
 	/*for (PlayerBullet* bullet : bullets_) {
 		bullet->SetParent(parent);
 	}*/
