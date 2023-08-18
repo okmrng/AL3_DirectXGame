@@ -332,39 +332,6 @@ void GameScene::CheckAllCollisions() {
 	}
 	#pragma endregion
 
-	// 自弾と敵弾の当たり判定
-	#pragma region
-
-	// 自弾と敵弾全ての当たり判定
-	for (PlayerBullet* pBullet : playerBullets) {
-		for (EnemyBullet* eBullet : bullets_) {
-			// 自弾の座標
-			posA = pBullet->GetWorldPositiopn();
-			// 敵弾の座標
-			posB = eBullet->GetWorldPositiopn();
-
-			// AとBの距離を求める
-			const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
-			const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
-			const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
-			const float collisionXYZ = collisionX + collisionY + collisionZ;
-
-			const float collisionRadiusA = pBullet->GetRadius();
-			const float collisionRadiusB = eBullet->GetRadius();
-			const float collisionRadiusAB =
-			    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
-
-			// 球と球の交差判定
-			if (collisionXYZ <= collisionRadiusAB) {
-				// 自キャラの衝突時コールバックを呼び出す
-				//enemy_->OnColision();
-				// 敵弾の衝突時コールバックを呼び出す
-				eBullet->OnColision();
-			}
-		}
-	}
-	#pragma endregion
-
 	// 発射間隔が短い敵
 	// 自キャラと敵キャラの当たり判定
 	#pragma region
