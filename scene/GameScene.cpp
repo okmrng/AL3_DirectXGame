@@ -866,6 +866,7 @@ void GameScene::UpdateEnemyPopComands() {
 			float misalignmentZ = (float)std::atof(word.c_str());
 
 			// 離脱までの時間
+			getline(line_stream, word, ',');
 			int32_t toLeaveTime = atoi(word.c_str());
 
 			// 敵を発生させる
@@ -961,6 +962,7 @@ void GameScene::UpdateEnemyIntervalShortPopComands() {
 			float misalignmentZ = (float)std::atof(word.c_str());
 
 			// 離脱までの時間
+			getline(line_stream, word, ',');
 			int32_t toLeaveTime = atoi(word.c_str());
 
 			// 敵を発生させる
@@ -1056,6 +1058,7 @@ void GameScene::UpdateEnemyStrongPopComands() {
 			float misalignmentZ = (float)std::atof(word.c_str());
 
 			// 離脱までの時間
+			getline(line_stream, word, ',');
 			int32_t toLeaveTime = atoi(word.c_str());
 
 			// 敵を発生させる
@@ -1164,6 +1167,7 @@ void GameScene::UpdateEnemyMovePopComands() {
 			float misalignmentZ = (float)std::atof(word.c_str());
 
 			// 離脱までの時間
+			getline(line_stream, word, ',');
 			int32_t toLeaveTime = atoi(word.c_str());
 
 			// 敵を発生させる
@@ -1263,6 +1267,18 @@ void GameScene::UpdateRailCameraComands() {
 			railCamera_->SetData(Vector3(moveX, moveY, moveZ), Vector3(rotX, rotY, rotZ));
 
 			player_->SetMisalignment(Vector3(moveX, moveY, moveZ));
+			for (Enemy* enemy : enemy_) {
+				enemy->SetMisalignment(Vector3(moveX, moveY, moveZ));
+			}
+			for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+				enemyIntervalShort->SetMisalignment(Vector3(moveX, moveY, moveZ));
+			}
+			for (EnemyStrong* enemyStrong : enemyStrong_) {
+				enemyStrong->SetMisalignment(Vector3(moveX, moveY, moveZ));
+			}
+			for (EnemyMove* enemyMove : enemyMove_) {
+				enemyMove->SetMisalignment(Vector3(moveX, moveY, moveZ));
+			}
 		}
 		// ASITISコマンド
 		else if (word.find("ASITIS") == 0) {

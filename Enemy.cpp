@@ -62,7 +62,8 @@ void Enemy::ApproachUpdate() {
 	worldTransform_.translation_.z += velocity_.z;
 
 	// 離脱
-	if (--toLeaveTimer_ <= 0.0f) {
+	toLeaveTimer_--;
+	if (toLeaveTimer_ <= 0.0f) {
 		phase_ = Phase::Leave;
 	}
 

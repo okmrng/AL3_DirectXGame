@@ -76,6 +76,8 @@ public:
 
 	void SetRailCamera(RailCamera* railCamera) { railCamera_ = railCamera; }
 
+	void SetMisalignment(Vector3 misalignment) { misalignment_ = misalignment; }
+
 	// ゲッター
 	/// <summary>
 	/// ワールド座標を取得
