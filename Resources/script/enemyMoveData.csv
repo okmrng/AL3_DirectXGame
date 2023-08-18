@@ -1,2 +1,2 @@
-// コマンド,x,y,z,velocityX,velocityY,velocityZ,leaveX,leaveY,leaveZ
-WAIT ,,,,,,,,,
+// コマンド,x,y,z,velocityX,velocityY,velocityZ,leaveX,leaveY,leaveZ,misX,misY,misZ
+WAIT ,,,,,,,,,,,,

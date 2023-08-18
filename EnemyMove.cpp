@@ -4,7 +4,8 @@
 #include "Player.h"
 
 void EnemyMove::Initialize(
-    Model* model, const Vector3& position, const Vector3& velocity, const Vector3& leaveVelocity) {
+    Model* model, const Vector3& position, const Vector3& velocity, const Vector3& leaveVelocity,
+    Vector3 misalignment) {
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -19,6 +20,7 @@ void EnemyMove::Initialize(
 	// 速度
 	velocity_ = velocity;
 	leaveVelocity_ = leaveVelocity;
+	misalignment_ = misalignment;
 
 	// 接近フェーズ初期化
 	ApproachInitialize();
@@ -100,7 +102,8 @@ void EnemyMove::Fire() {
 	// 弾の速度
 	const float kBulletSpeed = -0.5f;
 
-	Vector3 playerWorldPos = player_->GetWorldPositiopn(); // 自キャラのワールド座標
+	Vector3 playerWorldPos =
+	    railCamera_->GetWorldPositiopn() + player_->GetTranslation(); // 自キャラのワールド座標
 	Vector3 enemyWorldPos = GetWorldPositiopn();           // 敵キャラのワールド座標
 	// 敵キャラと自キャラの差分ベクトルを求める
 	Vector3 velocity;
@@ -113,6 +116,8 @@ void EnemyMove::Fire() {
 	velocity.x *= kBulletSpeed;
 	velocity.y *= kBulletSpeed;
 	velocity.z *= kBulletSpeed;
+
+	velocity += misalignment_;
 
 	// 弾を生成し初期化
 	EnemyBullet* newBullet = new EnemyBullet();

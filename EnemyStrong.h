@@ -13,6 +13,7 @@
 // 前方宣言
 class Player;
 class GameScene;
+class RailCamera;
 
 /// <summary>
 /// 強い敵
@@ -24,7 +25,8 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="position">初期座標</param>
-	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
+	void Initialize(
+	    Model* model, const Vector3& position, const Vector3& velocity, Vector3 misalignment);
 
 	/// <summary>
 	/// 更新
@@ -83,6 +85,8 @@ public:
 	/// <param name="parent">親となるワールドトランスフォーム</param>
 	void SetParent(const WorldTransform* parent);
 
+	void SetRailCamera(RailCamera* railCamera) { railCamera_ = railCamera; }
+
 	// ゲッター
 	/// <summary>
 	/// ワールド座標を取得
@@ -110,6 +114,7 @@ private:
 	uint32_t textureHandle_ = 0u; // テクスチャハンドル
 
 	Vector3 velocity_; // 速度
+	Vector3 misalignment_; // カメラが動いている時のズレ修正
 
 	// フェーズ
 	// 行動フェーズ
@@ -132,4 +137,6 @@ private:
 	bool isDead_ = false;      // デスフラグ
 
 	int32_t HP = 50;
+
+	RailCamera* railCamera_ = nullptr; // レールカメラ
 };

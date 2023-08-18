@@ -274,6 +274,8 @@ Vector3 Player::GetWorldPositiopn() {
 	return worldPos;
 }
 
+Vector3 Player::GetTranslation() { return worldTransform_.translation_; }
+
 Vector3 Player::GetBombWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

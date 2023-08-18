@@ -65,5 +65,5 @@ private:
 	int32_t deathTimer_ = kLifeTime;         // デスタイマー
 	bool isDead_ = false;                    // デスフラグ
 
-	const float radius_ = 0.5f;              // 半径
+	const float radius_ = 0.8f;              // 半径
 };

@@ -67,28 +67,29 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="enemy">敵</param>
 	/// <param name="pos">座標</param>
-	void AddEnemy(Vector3 pos, Vector3 velocity);
+	void AddEnemy(Vector3 pos, Vector3 velocity, Vector3 misalignment);
 
 	/// <summary>
 	/// 発射間隔が短い敵の生成
 	/// </summary>
 	/// <param name="enemy">敵</param>
 	/// <param name="pos">座標</param>
-	void AddEnemyIntervalShort(Vector3 pos, Vector3 velocity);
+	void AddEnemyIntervalShort(Vector3 pos, Vector3 velocity, Vector3 misalignment);
 
 	/// <summary>
 	/// 強い敵の生成
 	/// </summary>
 	/// <param name="enemy">敵</param>
 	/// <param name="pos">座標</param>
-	void AddEnemyStrong(Vector3 pos, Vector3 velocity);
+	void AddEnemyStrong(Vector3 pos, Vector3 velocity, Vector3 misalignment);
 
 	/// <summary>
 	/// 動く敵の生成
 	/// </summary>
 	/// <param name="enemy">敵</param>
 	/// <param name="pos">座標</param>
-	void AddEnemyMove(Vector3 pos, Vector3 velocity, const Vector3& leaveVelocity);
+	void AddEnemyMove(
+	    Vector3 pos, Vector3 velocity, const Vector3& leaveVelocity, Vector3 misalignment);
 
 	/// <summary>
 	/// 敵発生データの読み込み

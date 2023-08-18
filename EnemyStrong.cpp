@@ -3,7 +3,8 @@
 #include "GameScene.h"
 #include "Player.h"
 
-void EnemyStrong::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
+void EnemyStrong::Initialize(
+    Model* model, const Vector3& position, const Vector3& velocity, Vector3 misalignment) {
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -17,6 +18,7 @@ void EnemyStrong::Initialize(Model* model, const Vector3& position, const Vector
 
 	// 速度
 	velocity_ = velocity;
+	misalignment_ = misalignment;
 
 	// 接近フェーズ初期化
 	ApproachInitialize();
@@ -61,9 +63,9 @@ void EnemyStrong::ApproachUpdate() {
 	worldTransform_.translation_.z += velocity_.z;
 
 	// 離脱
-	/*if (--toLeaveTimer <= 0.0f) {
+	if (--toLeaveTimer <= 0.0f) {
 		phase_ = Phase::Leave;
-	}*/
+	}
 
 	// 発射タイマーカウントダウン
 	--kFireTimer;
@@ -108,8 +110,9 @@ void EnemyStrong::Fire() {
 	// 弾の速度
 	const float kBulletSpeed = -0.5f;
 
-	Vector3 playerWorldPos = player_->GetWorldPositiopn(); // 自キャラのワールド座標
-	Vector3 enemyWorldPos = GetWorldPositiopn();           // 敵キャラのワールド座標
+	Vector3 playerWorldPos =
+	    railCamera_->GetWorldPositiopn() + player_->GetTranslation(); // 自キャラのワールド座標
+	Vector3 enemyWorldPos = GetWorldPositiopn(); // 敵キャラのワールド座標
 	// 敵キャラと自キャラの差分ベクトルを求める
 	Vector3 velocity;
 	velocity.x = enemyWorldPos.x - playerWorldPos.x;
@@ -121,6 +124,8 @@ void EnemyStrong::Fire() {
 	velocity.x *= kBulletSpeed;
 	velocity.y *= kBulletSpeed;
 	velocity.z *= kBulletSpeed;
+
+	velocity += misalignment_;
 
 	// 弾を生成し初期化
 	EnemyBullet* newBullet = new EnemyBullet();

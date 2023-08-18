@@ -682,56 +682,64 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 	bullets_.push_back(enemyBullet);
 }
 
-void GameScene::AddEnemy(Vector3 pos, Vector3 velocity) {
+void GameScene::AddEnemy(Vector3 pos, Vector3 velocity, Vector3 misalignment) {
 	// 生成
 	Enemy* obj = new Enemy();
 	// 初期化
-	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity);
+	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity, misalignment);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
 	obj->SetGameScene(this);
+	// レールカメラを渡す
+	obj->SetRailCamera(railCamera_);
 
 	enemy_.push_back(obj);
 }
 
-void GameScene::AddEnemyIntervalShort(Vector3 pos, Vector3 velocity) {
+void GameScene::AddEnemyIntervalShort(Vector3 pos, Vector3 velocity, Vector3 misalignment) {
 	// 生成
 	EnemyIntervalShort* obj = new EnemyIntervalShort();
 	// 初期化
-	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity);
+	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity, misalignment);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
 	obj->SetGameScene(this);
+	// レールカメラを渡す
+	obj->SetRailCamera(railCamera_);
 
 	enemyIntervalShort_.push_back(obj);
 }
 
-void GameScene::AddEnemyStrong(Vector3 pos, Vector3 velocity) {
+void GameScene::AddEnemyStrong(Vector3 pos, Vector3 velocity, Vector3 misalignment) {
 	// 生成
 	EnemyStrong* obj = new EnemyStrong();
 	// 初期化
-	obj->Initialize(model_, pos, velocity);
+	obj->Initialize(model_, pos, velocity, misalignment);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
 	obj->SetGameScene(this);
 	// レールカメラと親子関係を結ぶ
 	obj->SetParent(&railCamera_->GetWorldTransform());
+	obj->SetRailCamera(railCamera_);
 
 	enemyStrong_.push_back(obj);
 }
 
-void GameScene::AddEnemyMove(Vector3 pos, Vector3 velocity, const Vector3& leaveVelocity) {
+void GameScene::AddEnemyMove(
+    Vector3 pos, Vector3 velocity, const Vector3& leaveVelocity, Vector3 misalignment) {
 	// 生成
 	EnemyMove* obj = new EnemyMove();
 	// 初期化
-	obj->Initialize(model_, pos, velocity, leaveVelocity);
+	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity, leaveVelocity, misalignment);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
 	obj->SetGameScene(this);
+	// レールカメラを渡す
+	obj->SetRailCamera(railCamera_);
 
 	enemyMove_.push_back(obj);
 }
@@ -838,9 +846,23 @@ void GameScene::UpdateEnemyPopComands() {
 			// z
 			getline(line_stream, word, ',');
 			float velocityZ = (float)std::atof(word.c_str());
+			// 弾のズレ修正
+			// x
+			getline(line_stream, word, ',');
+			float misalignmentX = (float)std::atof(word.c_str());
+
+			// y
+			getline(line_stream, word, ',');
+			float misalignmentY = (float)std::atof(word.c_str());
+
+			// z
+			getline(line_stream, word, ',');
+			float misalignmentZ = (float)std::atof(word.c_str());
 
 			// 敵を発生させる
-			AddEnemy(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ));
+			AddEnemy(
+			    Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ),
+			    Vector3(misalignmentX, misalignmentY, misalignmentZ));
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {
@@ -916,8 +938,23 @@ void GameScene::UpdateEnemyIntervalShortPopComands() {
 			getline(line_stream, word, ',');
 			float velocityZ = (float)std::atof(word.c_str());
 
+			// 弾のズレ修正
+			// x
+			getline(line_stream, word, ',');
+			float misalignmentX = (float)std::atof(word.c_str());
+
+			// y
+			getline(line_stream, word, ',');
+			float misalignmentY = (float)std::atof(word.c_str());
+
+			// z
+			getline(line_stream, word, ',');
+			float misalignmentZ = (float)std::atof(word.c_str());
+
 			// 敵を発生させる
-			AddEnemyIntervalShort(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ));
+			AddEnemyIntervalShort(
+			    Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ),
+			    Vector3(misalignmentX, misalignmentY, misalignmentZ));
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {
@@ -993,8 +1030,23 @@ void GameScene::UpdateEnemyStrongPopComands() {
 			getline(line_stream, word, ',');
 			float velocityZ = (float)std::atof(word.c_str());
 
+			// 弾のズレ修正
+			// x
+			getline(line_stream, word, ',');
+			float misalignmentX = (float)std::atof(word.c_str());
+
+			// y
+			getline(line_stream, word, ',');
+			float misalignmentY = (float)std::atof(word.c_str());
+
+			// z
+			getline(line_stream, word, ',');
+			float misalignmentZ = (float)std::atof(word.c_str());
+
 			// 敵を発生させる
-			AddEnemyStrong(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ));
+			AddEnemyStrong(
+			    Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ),
+			    Vector3(misalignmentX, misalignmentY, misalignmentZ));
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {
@@ -1083,9 +1135,23 @@ void GameScene::UpdateEnemyMovePopComands() {
 			getline(line_stream, word, ',');
 			float leaveVelocityZ = (float)std::atof(word.c_str());
 
+			// 弾のズレ修正
+			// x
+			getline(line_stream, word, ',');
+			float misalignmentX = (float)std::atof(word.c_str());
+
+			// y
+			getline(line_stream, word, ',');
+			float misalignmentY = (float)std::atof(word.c_str());
+
+			// z
+			getline(line_stream, word, ',');
+			float misalignmentZ = (float)std::atof(word.c_str());
+
 			// 敵を発生させる
 			AddEnemyMove(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ),
-			    Vector3(leaveVelocityX, leaveVelocityY, leaveVelocityZ));
+			    Vector3(leaveVelocityX, leaveVelocityY, leaveVelocityZ),
+			    Vector3(misalignmentX, misalignmentY, misalignmentZ));
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {

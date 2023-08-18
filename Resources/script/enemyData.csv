@@ -1,6 +1,6 @@
-// コマンド,x,y,z,velocityX,velocityY,velocityZ
-WAIT,60,,,,,
-POP,0,10,50,0.1,-0.3,0
-WAIT,120,,,,,
-POP,10,5,70,-0.2,0,0
-POP,-10,5,70,0.2,0,0
+// コマンド,x,y,z,velocityX,velocityY,velocityZ,misX,misY,misZ
+WAIT,60,,,,,,,,
+POP,0,10,50,0,0,0,0,0,0.1
+WAIT,120,,,,,,,,
+POP,10,5,70,-0.2,0,0,0,0,0.1
+POP,-10,5,70,0.2,0,0,0,0,0.1

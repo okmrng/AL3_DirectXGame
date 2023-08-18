@@ -80,6 +80,11 @@ public:
 	Vector3 GetWorldPositiopn();
 
 	/// <summary>
+	/// ローカル座標取得
+	/// </summary>
+	Vector3 GetTranslation();
+
+	/// <summary>
 	/// ワールド座標を取得
 	/// </summary>
 	Vector3 GetBombWorldPositiopn();

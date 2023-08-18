@@ -3,7 +3,8 @@
 #include "Player.h"
 #include "GameScene.h"
 
-void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
+void Enemy::Initialize(
+    Model* model, const Vector3& position, const Vector3& velocity, Vector3 misalignment) {
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -17,6 +18,7 @@ void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& vel
 
 	// 速度
 	velocity_ = velocity;
+	misalignment_ = misalignment;
 
 	// 接近フェーズ初期化
 	ApproachInitialize();
@@ -88,7 +90,8 @@ void Enemy::Fire() {
 	// 弾の速度
 	const float kBulletSpeed = -0.5f;
 
-	Vector3 playerWorldPos = player_->GetWorldPositiopn(); // 自キャラのワールド座標
+	Vector3 playerWorldPos =
+	    railCamera_->GetWorldPositiopn() + player_->GetTranslation(); // 自キャラのワールド座標
 	Vector3 enemyWorldPos = GetWorldPositiopn();           // 敵キャラのワールド座標
 	// 敵キャラと自キャラの差分ベクトルを求める
 	Vector3 velocity;
@@ -101,6 +104,8 @@ void Enemy::Fire() {
 	velocity.x *= kBulletSpeed;
 	velocity.y *= kBulletSpeed;
 	velocity.z *= kBulletSpeed;
+
+	velocity += misalignment_;
 
 	// 弾を生成し初期化
 	EnemyBullet* newBullet = new EnemyBullet();
