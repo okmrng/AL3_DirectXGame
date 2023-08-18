@@ -35,11 +35,6 @@ void EnemyIntervalShort::Update() {
 		break;
 	}
 
-	// HPが0になったらデス
-	if (HP <= 0) {
-		isDead_ = true;
-	}
-
 	worldTransform_.UpdateMatrix();
 }
 
@@ -110,7 +105,7 @@ void EnemyIntervalShort::Fire() {
 	gameScene_->AddEnemyBullet(newBullet);
 }
 
-void EnemyIntervalShort::OnColision() { --HP; }
+void EnemyIntervalShort::OnColision() { isDead_ = true; }
 
 void EnemyIntervalShort::OnBombCollision() { isDead_ = true; }
 

@@ -117,6 +117,4 @@ private:
 	// デス						         
 	int32_t deathTimer_ = 300;           // デスタイマー
 	bool isDead_ = false;                // デスフラグ
-
-	int32_t HP = 3;
 };
