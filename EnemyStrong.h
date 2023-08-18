@@ -6,6 +6,7 @@
 #include "WorldTransform.h"
 #include "EnemyBullet.h"
 #include <list>
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include <cassert>
 

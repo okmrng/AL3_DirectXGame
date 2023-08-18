@@ -109,7 +109,7 @@ private:
 	// 自機
 	WorldTransform worldTransform_;            // ワールド変換データ
 
-	Vector3 misalignment_;                     // カメラが動いている時のズレ修正
+	Vector3 misalignment_ = {0.0f, 0.0f, 0.1f}; // カメラが動いている時のズレ修正
 									           
 	// モデル						            
 	Model* model_ = nullptr;		           

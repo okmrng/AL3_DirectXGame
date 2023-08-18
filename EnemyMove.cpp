@@ -61,12 +61,12 @@ void EnemyMove::ApproachUpdate() {
 	worldTransform_.translation_.z += velocity_.z;
 
 	// 画面端に行ったら逆方向へ移動
-	if (worldTransform_.translation_.x >= 9.5f || worldTransform_.translation_.x <= -9.5f) {
+	/*if (worldTransform_.translation_.x >= 9.5f || worldTransform_.translation_.x <= -9.5f) {
 		velocity_.x *= -1;
 	}
 	if (worldTransform_.translation_.y >= 5.0f || worldTransform_.translation_.y <= -5.0f) {
 		velocity_.y *= -1;
-	}
+	}*/
 
 	// 離脱
 	if (--toLeaveTimer <= 0.0f) {

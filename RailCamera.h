@@ -43,6 +43,6 @@ private:
 	ViewProjection viewProjection_;
 
 	// 座標に加算する値
-	Vector3 move_ = {0.0f, 0.0f, 0.0f}; // 平行移動
+	Vector3 move_ = {0.0f, 0.0f, 0.1f}; // 平行移動
 	Vector3 rot_ = {0.0f, 0.00f, 0.0f}; // 回転
 };

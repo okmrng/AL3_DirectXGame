@@ -719,7 +719,7 @@ void GameScene::AddEnemy(Vector3 pos, Vector3 velocity) {
 	// 生成
 	Enemy* obj = new Enemy();
 	// 初期化
-	obj->Initialize(model_, pos, velocity);
+	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
@@ -732,7 +732,7 @@ void GameScene::AddEnemyIntervalShort(Vector3 pos, Vector3 velocity) {
 	// 生成
 	EnemyIntervalShort* obj = new EnemyIntervalShort();
 	// 初期化
-	obj->Initialize(model_, pos, velocity);
+	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す

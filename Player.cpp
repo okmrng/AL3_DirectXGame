@@ -22,7 +22,7 @@ void Player::Initialize(Model* model) {
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
 	// 引数で受け取った情報をセット
-	worldTransform_.translation_ = {0.0f, 0.0f, 15.0f};
+	worldTransform_.translation_ = {0.0f, -2.0f, 15.0f};
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
@@ -183,7 +183,7 @@ void Player::Draw(ViewProjection& viewProjection) {
 		bullet->Draw(viewProjection);
 	}
 
-	model3DReticle_->Draw(worldTransformReticle_, viewProjection, textureHandle_);
+	//model3DReticle_->Draw(worldTransformReticle_, viewProjection, textureHandle_);
 
 	// ボム
 	if (bomb_) {
