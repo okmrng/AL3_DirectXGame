@@ -682,11 +682,12 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 	bullets_.push_back(enemyBullet);
 }
 
-void GameScene::AddEnemy(Vector3 pos, Vector3 velocity, Vector3 misalignment) {
+void GameScene::AddEnemy(
+    Vector3 pos, Vector3 velocity, Vector3 misalignment, int32_t toLeaveTimer) {
 	// 生成
 	Enemy* obj = new Enemy();
 	// 初期化
-	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity, misalignment);
+	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity, misalignment, toLeaveTimer);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
@@ -697,11 +698,12 @@ void GameScene::AddEnemy(Vector3 pos, Vector3 velocity, Vector3 misalignment) {
 	enemy_.push_back(obj);
 }
 
-void GameScene::AddEnemyIntervalShort(Vector3 pos, Vector3 velocity, Vector3 misalignment) {
+void GameScene::AddEnemyIntervalShort(
+    Vector3 pos, Vector3 velocity, Vector3 misalignment, int32_t toLeaveTimer) {
 	// 生成
 	EnemyIntervalShort* obj = new EnemyIntervalShort();
 	// 初期化
-	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity, misalignment);
+	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity, misalignment, toLeaveTimer);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
@@ -712,11 +714,12 @@ void GameScene::AddEnemyIntervalShort(Vector3 pos, Vector3 velocity, Vector3 mis
 	enemyIntervalShort_.push_back(obj);
 }
 
-void GameScene::AddEnemyStrong(Vector3 pos, Vector3 velocity, Vector3 misalignment) {
+void GameScene::AddEnemyStrong(
+    Vector3 pos, Vector3 velocity, Vector3 misalignment, int32_t toLeaveTimer) {
 	// 生成
 	EnemyStrong* obj = new EnemyStrong();
 	// 初期化
-	obj->Initialize(model_, pos, velocity, misalignment);
+	obj->Initialize(model_, pos, velocity, misalignment, toLeaveTimer);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
@@ -729,11 +732,14 @@ void GameScene::AddEnemyStrong(Vector3 pos, Vector3 velocity, Vector3 misalignme
 }
 
 void GameScene::AddEnemyMove(
-    Vector3 pos, Vector3 velocity, const Vector3& leaveVelocity, Vector3 misalignment) {
+    Vector3 pos, Vector3 velocity, const Vector3& leaveVelocity, Vector3 misalignment,
+    int32_t toLeaveTimer) {
 	// 生成
 	EnemyMove* obj = new EnemyMove();
 	// 初期化
-	obj->Initialize(model_, pos + railCamera_->GetWorldPositiopn(), velocity, leaveVelocity, misalignment);
+	obj->Initialize(
+	    model_, pos + railCamera_->GetWorldPositiopn(), velocity, leaveVelocity, misalignment,
+	    toLeaveTimer);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
 	// ゲームシーンを渡す
@@ -859,10 +865,13 @@ void GameScene::UpdateEnemyPopComands() {
 			getline(line_stream, word, ',');
 			float misalignmentZ = (float)std::atof(word.c_str());
 
+			// 離脱までの時間
+			int32_t toLeaveTime = atoi(word.c_str());
+
 			// 敵を発生させる
 			AddEnemy(
 			    Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ),
-			    Vector3(misalignmentX, misalignmentY, misalignmentZ));
+			    Vector3(misalignmentX, misalignmentY, misalignmentZ), toLeaveTime);
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {
@@ -951,10 +960,13 @@ void GameScene::UpdateEnemyIntervalShortPopComands() {
 			getline(line_stream, word, ',');
 			float misalignmentZ = (float)std::atof(word.c_str());
 
+			// 離脱までの時間
+			int32_t toLeaveTime = atoi(word.c_str());
+
 			// 敵を発生させる
 			AddEnemyIntervalShort(
 			    Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ),
-			    Vector3(misalignmentX, misalignmentY, misalignmentZ));
+			    Vector3(misalignmentX, misalignmentY, misalignmentZ), toLeaveTime);
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {
@@ -1043,10 +1055,13 @@ void GameScene::UpdateEnemyStrongPopComands() {
 			getline(line_stream, word, ',');
 			float misalignmentZ = (float)std::atof(word.c_str());
 
+			// 離脱までの時間
+			int32_t toLeaveTime = atoi(word.c_str());
+
 			// 敵を発生させる
 			AddEnemyStrong(
 			    Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ),
-			    Vector3(misalignmentX, misalignmentY, misalignmentZ));
+			    Vector3(misalignmentX, misalignmentY, misalignmentZ), toLeaveTime);
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {
@@ -1148,10 +1163,14 @@ void GameScene::UpdateEnemyMovePopComands() {
 			getline(line_stream, word, ',');
 			float misalignmentZ = (float)std::atof(word.c_str());
 
+			// 離脱までの時間
+			int32_t toLeaveTime = atoi(word.c_str());
+
 			// 敵を発生させる
-			AddEnemyMove(Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ),
+			AddEnemyMove(
+			    Vector3(x, y, z), Vector3(velocityX, velocityY, velocityZ),
 			    Vector3(leaveVelocityX, leaveVelocityY, leaveVelocityZ),
-			    Vector3(misalignmentX, misalignmentY, misalignmentZ));
+			    Vector3(misalignmentX, misalignmentY, misalignmentZ), toLeaveTime);
 		}
 		// WAITコマンド
 		else if (word.find("WAIT") == 0) {

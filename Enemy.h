@@ -25,7 +25,8 @@ public:
 	/// <param name="model">モデル</param>
 	/// <param name="position">初期座標</param>
 	void Initialize(
-	    Model* model, const Vector3& position, const Vector3& velocity, Vector3 misalignment);
+	    Model* model, const Vector3& position, const Vector3& velocity, Vector3 misalignment,
+	    int32_t toLeaveTimer);
 
 	/// <summary>
 	/// 更新
@@ -111,7 +112,7 @@ private:
 		Leave                            // 離脱する
 	};
 	Phase phase_ = Phase::Approach;
-	int32_t toLeaveTimer = 60 * 5;       // 離脱フェーズに移るまでの時間
+	int32_t toLeaveTimer_;       // 離脱フェーズに移るまでの時間
 
 	Player* player_ = nullptr;           // 自キャラ
 

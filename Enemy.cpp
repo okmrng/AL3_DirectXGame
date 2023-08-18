@@ -4,7 +4,8 @@
 #include "GameScene.h"
 
 void Enemy::Initialize(
-    Model* model, const Vector3& position, const Vector3& velocity, Vector3 misalignment) {
+    Model* model, const Vector3& position, const Vector3& velocity,
+    Vector3 misalignment, int32_t toLeaveTimer) {
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -19,6 +20,8 @@ void Enemy::Initialize(
 	// 速度
 	velocity_ = velocity;
 	misalignment_ = misalignment;
+
+	toLeaveTimer_ = toLeaveTimer;
 
 	// 接近フェーズ初期化
 	ApproachInitialize();
@@ -59,7 +62,7 @@ void Enemy::ApproachUpdate() {
 	worldTransform_.translation_.z += velocity_.z;
 
 	// 離脱
-	if (--toLeaveTimer <= 0.0f) {
+	if (--toLeaveTimer_ <= 0.0f) {
 		phase_ = Phase::Leave;
 	}
 

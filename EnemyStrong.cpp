@@ -4,7 +4,8 @@
 #include "Player.h"
 
 void EnemyStrong::Initialize(
-    Model* model, const Vector3& position, const Vector3& velocity, Vector3 misalignment) {
+    Model* model, const Vector3& position, const Vector3& velocity, Vector3 misalignment,
+    int32_t toLeaveTimer) {
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -19,6 +20,8 @@ void EnemyStrong::Initialize(
 	// 速度
 	velocity_ = velocity;
 	misalignment_ = misalignment;
+
+	toLeaveTimer_ = toLeaveTimer;
 
 	// 接近フェーズ初期化
 	ApproachInitialize();
@@ -63,7 +66,7 @@ void EnemyStrong::ApproachUpdate() {
 	worldTransform_.translation_.z += velocity_.z;
 
 	// 離脱
-	if (--toLeaveTimer <= 0.0f) {
+	if (--toLeaveTimer_ <= 0.0f) {
 		phase_ = Phase::Leave;
 	}
 
@@ -88,7 +91,7 @@ void EnemyStrong::AttackUpdate() {
 	}
 
 	// 離脱フェーズへ
-	if (--toLeaveTimer <= 0) {
+	if (--toLeaveTimer_ <= 0) {
 		phase_ = Phase::Leave;
 	}
 }
@@ -135,7 +138,13 @@ void EnemyStrong::Fire() {
 	gameScene_->AddEnemyBullet(newBullet);
 }
 
-void EnemyStrong::OnColision() { --HP; }
+void EnemyStrong::OnColision() { 
+	if (phase_ == Phase::Leave) {
+		HP -= 3;
+	} else {
+		--HP;
+	}
+}
 
 void EnemyStrong::OnBombCollision() { isDead_ = true; }
 

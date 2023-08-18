@@ -25,7 +25,8 @@ public:
 	/// <param name="model">モデル</param>
 	/// <param name="position">初期座標</param>
 	void Initialize(
-	    Model* model, const Vector3& position, const Vector3& velocity, Vector3 misalignment);
+	    Model* model, const Vector3& position, const Vector3& velocity, Vector3 misalignment,
+	    int32_t toLeaveTimer);
 
 	/// <summary>
 	/// 更新
@@ -90,7 +91,7 @@ public:
 
 	bool GetIsDead() { return isDead_; }
 
-	static const int kFireInterval = 45; // 発射間隔
+	static const int kFireInterval = 30; // 発射間隔
 
 private:
 	int32_t kFireTimer = 0;              // 発射タイマー
@@ -111,7 +112,7 @@ private:
 		Leave                            // 離脱する
 	};							         
 	Phase phase_ = Phase::Approach;     
-	int32_t toLeaveTimer = 60 * 5;
+	int32_t toLeaveTimer_;
 								         
 	Player* player_ = nullptr;           // 自キャラ
 

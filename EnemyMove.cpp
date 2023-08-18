@@ -5,7 +5,7 @@
 
 void EnemyMove::Initialize(
     Model* model, const Vector3& position, const Vector3& velocity, const Vector3& leaveVelocity,
-    Vector3 misalignment) {
+    Vector3 misalignment, int32_t toLeaveTimer) {
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -21,6 +21,8 @@ void EnemyMove::Initialize(
 	velocity_ = velocity;
 	leaveVelocity_ = leaveVelocity;
 	misalignment_ = misalignment;
+
+	toLeaveTimer_ = toLeaveTimer;
 
 	// 接近フェーズ初期化
 	ApproachInitialize();
@@ -71,7 +73,7 @@ void EnemyMove::ApproachUpdate() {
 	}*/
 
 	// 離脱
-	if (--toLeaveTimer <= 0.0f) {
+	if (--toLeaveTimer_ <= 0.0f) {
 		phase_ = Phase::Leave;
 	}
 
