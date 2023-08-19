@@ -133,6 +133,11 @@ void EnemyMove::OnColision() { --HP; }
 
 void EnemyMove::OnBombCollision() { isDead_ = true; }
 
+void EnemyMove::SetParent(const WorldTransform* parent) {
+	// 親子関係を結ぶ
+	worldTransform_.parent_ = parent;
+}
+
 Vector3 EnemyMove::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

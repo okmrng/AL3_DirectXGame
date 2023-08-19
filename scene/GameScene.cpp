@@ -738,7 +738,7 @@ void GameScene::AddEnemyMove(
 	EnemyMove* obj = new EnemyMove();
 	// 初期化
 	obj->Initialize(
-	    model_, pos + railCamera_->GetWorldPositiopn(), velocity, leaveVelocity, misalignment,
+	    model_, pos, velocity, leaveVelocity, misalignment,
 	    toLeaveTimer);
 	// 自キャラのアドレスを渡す
 	obj->SetPlayer(player_);
@@ -746,6 +746,8 @@ void GameScene::AddEnemyMove(
 	obj->SetGameScene(this);
 	// レールカメラを渡す
 	obj->SetRailCamera(railCamera_);
+	// レールカメラと親子関係を結ぶ
+	obj->SetParent(&railCamera_->GetWorldTransform());
 
 	enemyMove_.push_back(obj);
 }
