@@ -231,13 +231,16 @@ void Player::Bomb() {
 	if (canBomb_) {
 		if (input_->IsTriggerMouse(1)) {
 			// 弾の速度
-			const float kBulletSpeed = 1.0f;
+			const float kBulletSpeed = 2.0f;
 			Vector3 velocity;
 			/*velocity.x = worldTransformReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
 			velocity.y = worldTransformReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
 			velocity.z = worldTransformReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];*/
 
-			velocity = worldTransformReticle_.translation_ - railCamera_->GetWorldPositiopn();
+			Vector3 railCameraWorld =
+			    railCamera_->GetWorldPositiopn() + worldTransform_.translation_;
+
+			velocity = worldTransformReticle_.translation_ - railCameraWorld;
 
 			// 正規化
 			velocity = Normalize(velocity);
@@ -246,10 +249,12 @@ void Player::Bomb() {
 			velocity.y *= kBulletSpeed;
 			velocity.z *= kBulletSpeed;
 
+			velocity += misalignment_;
+
 			// 弾を生成し、初期化
 			PlayerBomb* newBomb = new PlayerBomb();
 			//newBomb->Initialize(model_, GetWorldPositiopn(), velocity);
-			newBomb->Initialize(model_, railCamera_->GetWorldPositiopn(), velocity);
+			newBomb->Initialize(model_, railCameraWorld, velocity);
 
 			// 弾を登録する
 			bomb_ = newBomb;

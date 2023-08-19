@@ -63,7 +63,7 @@ void Enemy::ApproachUpdate() {
 
 	// 離脱
 	toLeaveTimer_--;
-	if (toLeaveTimer_ <= 0.0f) {
+	if (toLeaveTimer_ >= 0) {
 		phase_ = Phase::Leave;
 	}
 
