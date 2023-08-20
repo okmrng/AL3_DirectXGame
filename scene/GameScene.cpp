@@ -29,6 +29,7 @@ GameScene::~GameScene() {
 	delete railCamera_;
 	delete debugCamera_;
 	delete title_;
+	delete goal_;
 }
 
 void GameScene::Initialize() {
@@ -71,6 +72,12 @@ void GameScene::Initialize() {
 	// タイトル
 	title_ = new Title();
 	title_->Initialize();
+
+	// ゴール
+	goal_ = new Goal();
+	goal_->Initialize(model_);
+	// レールカメラと親子関係を結ぶ
+	goal_->SetParent(&railCamera_->GetWorldTransform());
 
 	// デバッグカメラ生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
@@ -207,7 +214,8 @@ void GameScene::Update() {
 			viewProjection_.TransferMatrix();
 		}
 	}
-	
+	// ゴール
+	goal_->Update();
 }
 
 void GameScene::CheckAllCollisions() { 
@@ -624,6 +632,9 @@ void GameScene::Draw() {
 	if (scene_ == Scene::MAINGAME) {
 		// 自キャラの描画
 		player_->Draw(viewProjection_);
+
+		// ゴール
+		goal_->Draw(viewProjection_);
 
 		// 通常の敵の描画
 		for (Enemy* enemy : enemy_) {

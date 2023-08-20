@@ -27,7 +27,13 @@ public:
 	/// <summary>
 	/// 半径
 	/// </summary>
-	float GetRadius() { return radius_; }
+	//float GetRadius() { return radius_; }
+
+	// セッター関数
+	/// <summary>
+	/// 親子関係
+	/// </summary>
+	void SetParent(const WorldTransform* parent);
 
 private:
 	Model* model_ = nullptr;      // モデル
@@ -36,5 +42,5 @@ private:
 	WorldTransform worldTransform_; // ワールド変換
 	float radius_ = 1.0f;           // 半径
 
-	bool isDead_ = false; // デスフラグ
+	//bool isDead_ = false; // デスフラグ
 };
