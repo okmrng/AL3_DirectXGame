@@ -597,6 +597,35 @@ void GameScene::CheckAllCollisions() {
 		}
 	}
 	#pragma endregion
+
+	// 自弾とゴールの当たり判定
+	#pragma region
+	for (PlayerBullet* bullet : playerBullets) {
+		// ゴールの座標
+		posA = goal_->GetWorldPositiopn();
+		// 自弾の座標
+		posB = bullet->GetWorldPositiopn();
+
+		// AとBの距離を求める
+		const float collisionX = (posB.x - posA.x) * (posB.x - posA.x);
+		const float collisionY = (posB.y - posA.y) * (posB.y - posA.y);
+		const float collisionZ = (posB.z - posA.z) * (posB.z - posA.z);
+		const float collisionXYZ = collisionX + collisionY + collisionZ;
+
+		const float collisionRadiusA = goal_->GetRadius();
+		const float collisionRadiusB = bullet->GetRadius();
+		const float collisionRadiusAB =
+		    (collisionRadiusA + collisionRadiusB) * (collisionRadiusA + collisionRadiusB);
+
+		// 球と球の交差判定
+		if (collisionXYZ <= collisionRadiusAB) {
+			// 敵キャラの衝突時コールバックを呼び出す
+			goal_->OnColision();
+			// 自弾の衝突時コールバックを呼び出す
+			bullet->OnColision();
+		}
+	}
+	#pragma endregion
 }
 
 void GameScene::Draw() {

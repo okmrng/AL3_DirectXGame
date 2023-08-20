@@ -23,11 +23,21 @@ public:
 	/// </summary>
 	void Draw(ViewProjection& viewProjection);
 
+	/// <summary>
+	/// 当たった時の処理
+	/// </summary>
+	void OnColision();
+
 	// ゲッター関数
 	/// <summary>
 	/// 半径
 	/// </summary>
-	//float GetRadius() { return radius_; }
+	float GetRadius() { return radius_; }
+
+	/// <summary>
+	/// ワールド座標を取得
+	/// </summary>
+	Vector3 GetWorldPositiopn();
 
 	// セッター関数
 	/// <summary>
@@ -41,6 +51,4 @@ private:
 
 	WorldTransform worldTransform_; // ワールド変換
 	float radius_ = 1.0f;           // 半径
-
-	//bool isDead_ = false; // デスフラグ
 };
