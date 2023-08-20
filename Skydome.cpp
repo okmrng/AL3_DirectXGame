@@ -7,6 +7,7 @@ void Skydome::Initialize(Model* model) {
 
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
+	worldTransform_.translation_ = {0.0f, 2.0f, 0.0f};
 }
 
 void Skydome::Update() { 
