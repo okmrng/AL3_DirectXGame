@@ -5,7 +5,7 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 	assert(model);
 	model_ = model;
 	// テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("black.jpg");
+	textureHandle_ = TextureManager::Load("model/black.jpg");
 
 	// ワールド変換の初期化
 	worldTransform_.Initialize();

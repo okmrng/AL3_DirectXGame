@@ -5,7 +5,7 @@ void PlayerBomb::Initialize(Model* model, const Vector3& position, const Vector3
 	assert(model);
 	model_ = model;
 	// テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("player/bomb.png");
+	textureHandle_ = TextureManager::Load("model/bomb.png");
 
 	// ワールド変換の初期化
 	worldTransform_.Initialize();

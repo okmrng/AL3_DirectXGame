@@ -17,7 +17,7 @@ void Player::Initialize(Model* model) {
 	// 引数として受け取ったデータをメンバ変数に記録する
 	model_ = model;
 	// テクスチャの読み込み
-	textureHandle_ = TextureManager::Load("player/player.png");
+	textureHandle_ = TextureManager::Load("model/player.png");
 
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
@@ -34,7 +34,7 @@ void Player::Initialize(Model* model) {
 	model3DReticle_ = model;
 
 	// レティクル用テクスチャ取得
-	uint32_t textureReticle = TextureManager::Load("player/target.png");
+	uint32_t textureReticle = TextureManager::Load("sprite/target.png");
 	// スプライト生成
 	spriteReticle_ = Sprite::Create(textureReticle, {640, 360}, {1, 1, 1, 1}, {0.5f, 0.5f});
 }

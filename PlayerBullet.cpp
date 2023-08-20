@@ -5,7 +5,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position,const Vector
 	assert(model);
 	model_ = model;
 	// テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("player/cube.jpg");
+	textureHandle_ = TextureManager::Load("model/cube.jpg");
 
 	// ワールド変換の初期化
 	worldTransform_.Initialize();
