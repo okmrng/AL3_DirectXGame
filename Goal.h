@@ -71,5 +71,5 @@ private:
 	Sprite* spriteClear_ = nullptr;          // スプライト
 	uint32_t textureHandleClear_ = 0u;  // テクスチャハンドル
 
-	WorldTransform worldTransformClear_;                // ワールド変換
+	WorldTransform worldTransformClear_; // ワールド変換
 };

@@ -196,4 +196,6 @@ private: // メンバ変数
 		MAINGAME   // メインゲーム
 	};
 	Scene scene_ = Scene::TITLE; // シーン
+
+	int32_t count_ = 13600; // ゲームカウント
 };

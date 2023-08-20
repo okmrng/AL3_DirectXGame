@@ -101,6 +101,9 @@ void GameScene::Update() {
 
 	if (scene_ == Scene::MAINGAME) {
 		if (goal_->GetIsHit() == false) {
+			// カウント
+			--count_;
+
 			// 自キャラ
 			player_->Update(viewProjection_);
 
@@ -195,8 +198,10 @@ void GameScene::Update() {
 			viewProjection_.matView = railCamera_->GetViewProjection().matView;
 			viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 		}
-		// ゴール
-		goal_->Update();
+		if (count_ <= 0) {
+			// ゴール
+			goal_->Update();
+		}
 
 		// デバッグカメラの更新
 		#ifdef _DEBUG
@@ -715,8 +720,10 @@ void GameScene::Draw() {
 		player_->DrawUI();
 
 		// ゴール
-		if (goal_->GetIsHit()) {
-			goal_->DrawUI();
+		if (count_ <= 0) {
+			if (goal_->GetIsHit()) {
+				goal_->DrawUI();
+			}
 		}
 	}
 	/// </summary>
