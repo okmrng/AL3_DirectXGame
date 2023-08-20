@@ -194,29 +194,29 @@ void GameScene::Update() {
 			railCamera_->Update();
 			viewProjection_.matView = railCamera_->GetViewProjection().matView;
 			viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-
-// デバッグカメラの更新
-#ifdef _DEBUG
-			if (input_->TriggerKey(DIK_C)) {
-				isDebugCameraActive_ = true;
-			}
-#endif
-
-			if (isDebugCameraActive_) {
-				debugCamera_->Update();
-				viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-				viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-
-				// ビュープロジェクション行列の転送
-				viewProjection_.TransferMatrix();
-			} else if (!isDebugCameraActive_) {
-				viewProjection_.matView = railCamera_->GetViewProjection().matView;
-				viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-				viewProjection_.TransferMatrix();
-			}
 		}
 		// ゴール
 		goal_->Update();
+
+		// デバッグカメラの更新
+		#ifdef _DEBUG
+		if (input_->TriggerKey(DIK_C)) {
+			isDebugCameraActive_ = true;
+		}
+		#endif
+
+		if (isDebugCameraActive_) {
+			debugCamera_->Update();
+			viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+			viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
+			// ビュープロジェクション行列の転送
+			viewProjection_.TransferMatrix();
+		} else if (!isDebugCameraActive_) {
+			viewProjection_.matView = railCamera_->GetViewProjection().matView;
+			viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+			viewProjection_.TransferMatrix();
+		}
 	}
 }
 
@@ -665,7 +665,9 @@ void GameScene::Draw() {
 		player_->Draw(viewProjection_);
 
 		// ゴール
-		goal_->Draw(viewProjection_);
+		if (goal_->GetIsHit() == false) {
+			goal_->Draw(viewProjection_);
+		}
 
 		// 通常の敵の描画
 		for (Enemy* enemy : enemy_) {
@@ -709,7 +711,13 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	// メインゲーム
 	if (scene_ == Scene::MAINGAME) {
+		// 自機
 		player_->DrawUI();
+
+		// ゴール
+		if (goal_->GetIsHit()) {
+			goal_->DrawUI();
+		}
 	}
 	/// </summary>
 

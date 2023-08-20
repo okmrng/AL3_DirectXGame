@@ -3,6 +3,7 @@
 #include <Model.h>
 #include <cassert>
 #include <Sprite.h>
+#include "MathUtility.h"
 
 /// <summary>
 /// ゴール
@@ -23,6 +24,11 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw(ViewProjection& viewProjection);
+
+	/// <summary>
+	/// UI描画
+	/// </summary>
+	void DrawUI();
 
 	/// <summary>
 	/// 当たった時の処理
@@ -62,8 +68,8 @@ private:
 	bool isHit_ = false; // 衝突フラグ
 
 	// UI
-	Sprite* sprite_ = nullptr;          // スプライト
+	Sprite* spriteClear_ = nullptr;          // スプライト
 	uint32_t textureHandleClear_ = 0u;  // テクスチャハンドル
 
-	WorldTransform worldTransformClear_; // ワールド変換
+	WorldTransform worldTransformClear_;                // ワールド変換
 };

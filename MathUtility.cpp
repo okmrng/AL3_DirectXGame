@@ -69,23 +69,6 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	return result;
 }
 
-Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
-	if (t < 1.0f) {
-		t += 1.0f / 30.0f;
-	}
-	if (t >= 1.0f) {
-		t = 1.0f;
-	}
-	float easedT_ = sqrt(1.0f - pow(t - 1.0f, 2.0f));
-
-	Vector3 temp;
-	temp.x = (1 - t) * v1.x + t * v2.x;
-	temp.y = (1 - t) * v1.y + t * v2.y;
-	temp.z = (1 - t) * v1.z + t * v2.z;
-
-	return temp;
-}
-
 Matrix4x4 MakeScaleMatrix(const Vector3& scale) {
 	Matrix4x4 result;
 

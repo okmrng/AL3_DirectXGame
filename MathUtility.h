@@ -20,13 +20,6 @@ Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, f
 // 座標変換
 Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 
-/// <summary>
-/// イージング
-/// </summary>
-/// <param name="v1">スタート</param>/// <param name="v2">ゴール</param>/// <param
-/// name="t">フレーム</param>/// <returns></returns>
-Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
-
 // スケーリング行列
 Matrix4x4 MakeScaleMatrix(const Vector3& scale);
 
