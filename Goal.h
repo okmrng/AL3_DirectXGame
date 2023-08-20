@@ -2,6 +2,7 @@
 
 #include <Model.h>
 #include <cassert>
+#include <Sprite.h>
 
 /// <summary>
 /// ゴール
@@ -51,6 +52,7 @@ public:
 	void SetParent(const WorldTransform* parent);
 
 private:
+	// 本体
 	Model* model_ = nullptr;      // モデル
 	uint32_t textureHandle_ = 0u; // テクスチャハンドル
 
@@ -58,4 +60,10 @@ private:
 	float radius_ = 1.0f;           // 半径
 
 	bool isHit_ = false; // 衝突フラグ
+
+	// UI
+	Sprite* sprite_ = nullptr;          // スプライト
+	uint32_t textureHandleClear_ = 0u;  // テクスチャハンドル
+
+	WorldTransform worldTransformClear_; // ワールド変換
 };
