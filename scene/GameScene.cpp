@@ -100,122 +100,124 @@ void GameScene::Update() {
 	}
 
 	if (scene_ == Scene::MAINGAME) {
-		// 自キャラ
-		player_->Update(viewProjection_);
+		if (goal_->GetIsHit() == false) {
+			// 自キャラ
+			player_->Update(viewProjection_);
 
-		// ゲームオーバー
-		/*if (player_->GetIsDead()) {
-			scene_ = Scene::TITLE;
-		}*/
+			// ゲームオーバー
+			/*if (player_->GetIsDead()) {
+			    scene_ = Scene::TITLE;
+			}*/
 
-		// 通常の敵
-		UpdateEnemyPopComands();
-		for (Enemy* enemy : enemy_) {
-			enemy->Update();
-		}
-
-		// デスフラグの立った敵を削除
-		enemy_.remove_if([](Enemy* enemy) {
-			if (enemy->GetIsDead()) {
-				delete enemy;
-				return true;
+			// 通常の敵
+			UpdateEnemyPopComands();
+			for (Enemy* enemy : enemy_) {
+				enemy->Update();
 			}
-			return false;
-		});
 
-		// 発射間隔が短い敵
-		UpdateEnemyIntervalShortPopComands();
-		for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
-			enemyIntervalShort->Update();
-		}
+			// デスフラグの立った敵を削除
+			enemy_.remove_if([](Enemy* enemy) {
+				if (enemy->GetIsDead()) {
+					delete enemy;
+					return true;
+				}
+				return false;
+			});
 
-		// デスフラグの立った敵を削除
-		enemyIntervalShort_.remove_if([](EnemyIntervalShort* enemyIntervalShort) {
-			if (enemyIntervalShort->GetIsDead()) {
-				delete enemyIntervalShort;
-				return true;
+			// 発射間隔が短い敵
+			UpdateEnemyIntervalShortPopComands();
+			for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+				enemyIntervalShort->Update();
 			}
-			return false;
-		});
 
-		// 強い敵
-		UpdateEnemyStrongPopComands();
-		for (EnemyStrong* enemyStrong : enemyStrong_) {
-			enemyStrong->Update();
-		}
+			// デスフラグの立った敵を削除
+			enemyIntervalShort_.remove_if([](EnemyIntervalShort* enemyIntervalShort) {
+				if (enemyIntervalShort->GetIsDead()) {
+					delete enemyIntervalShort;
+					return true;
+				}
+				return false;
+			});
 
-		// デスフラグの立った敵を削除
-		enemyStrong_.remove_if([](EnemyStrong* enemyStrong) {
-			if (enemyStrong->GetIsDead()) {
-				delete enemyStrong;
-				return true;
+			// 強い敵
+			UpdateEnemyStrongPopComands();
+			for (EnemyStrong* enemyStrong : enemyStrong_) {
+				enemyStrong->Update();
 			}
-			return false;
-		});
 
-		// 動く敵
-		UpdateEnemyMovePopComands();
-		for (EnemyMove* enemyMove : enemyMove_) {
-			enemyMove->Update();
-		}
+			// デスフラグの立った敵を削除
+			enemyStrong_.remove_if([](EnemyStrong* enemyStrong) {
+				if (enemyStrong->GetIsDead()) {
+					delete enemyStrong;
+					return true;
+				}
+				return false;
+			});
 
-		// デスフラグの立った敵を削除
-		enemyMove_.remove_if([](EnemyMove* enemyMove) {
-			if (enemyMove->GetIsDead()) {
-				delete enemyMove;
-				return true;
+			// 動く敵
+			UpdateEnemyMovePopComands();
+			for (EnemyMove* enemyMove : enemyMove_) {
+				enemyMove->Update();
 			}
-			return false;
-		});
 
-		// 敵弾更新
-		for (EnemyBullet* bullet : bullets_) {
-			bullet->Update();
-		}
+			// デスフラグの立った敵を削除
+			enemyMove_.remove_if([](EnemyMove* enemyMove) {
+				if (enemyMove->GetIsDead()) {
+					delete enemyMove;
+					return true;
+				}
+				return false;
+			});
 
-		// デスフラグの立った敵弾を削除
-		bullets_.remove_if([](EnemyBullet* bullet) {
-			if (bullet->GetisDead()) {
-				delete bullet;
-				return true;
+			// 敵弾更新
+			for (EnemyBullet* bullet : bullets_) {
+				bullet->Update();
 			}
-			return false;
-		});
 
-		// 当たり判定
-		CheckAllCollisions();
+			// デスフラグの立った敵弾を削除
+			bullets_.remove_if([](EnemyBullet* bullet) {
+				if (bullet->GetisDead()) {
+					delete bullet;
+					return true;
+				}
+				return false;
+			});
 
-		// 天球の更新
-		skydome_->Update();
+			// 当たり判定
+			CheckAllCollisions();
 
-		// レールカメラの更新
-		UpdateRailCameraComands();
-		railCamera_->Update();
-		viewProjection_.matView = railCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+			// 天球の更新
+			skydome_->Update();
 
-		// デバッグカメラの更新
-		#ifdef _DEBUG
-		if (input_->TriggerKey(DIK_C)) {
-			isDebugCameraActive_ = true;
-		}
-		#endif
-
-		if (isDebugCameraActive_) {
-			debugCamera_->Update();
-			viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-			viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-
-			// ビュープロジェクション行列の転送
-			viewProjection_.TransferMatrix();
-		} else if (!isDebugCameraActive_) {
+			// レールカメラの更新
+			UpdateRailCameraComands();
+			railCamera_->Update();
 			viewProjection_.matView = railCamera_->GetViewProjection().matView;
 			viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-			viewProjection_.TransferMatrix();
+
+// デバッグカメラの更新
+#ifdef _DEBUG
+			if (input_->TriggerKey(DIK_C)) {
+				isDebugCameraActive_ = true;
+			}
+#endif
+
+			if (isDebugCameraActive_) {
+				debugCamera_->Update();
+				viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+				viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
+				// ビュープロジェクション行列の転送
+				viewProjection_.TransferMatrix();
+			} else if (!isDebugCameraActive_) {
+				viewProjection_.matView = railCamera_->GetViewProjection().matView;
+				viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+				viewProjection_.TransferMatrix();
+			}
 		}
+		// ゴール
+		goal_->Update();
 	}
-	// ゴール
-	goal_->Update();
 }
 
 void GameScene::CheckAllCollisions() { 

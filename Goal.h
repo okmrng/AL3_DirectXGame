@@ -39,6 +39,11 @@ public:
 	/// </summary>
 	Vector3 GetWorldPositiopn();
 
+	/// <summary>
+	/// 衝突フラグ
+	/// </summary>
+	bool GetIsHit() { return isHit_; }
+
 	// セッター関数
 	/// <summary>
 	/// 親子関係
@@ -51,4 +56,6 @@ private:
 
 	WorldTransform worldTransform_; // ワールド変換
 	float radius_ = 1.0f;           // 半径
+
+	bool isHit_ = false; // 衝突フラグ
 };

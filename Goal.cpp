@@ -9,23 +9,31 @@ void Goal::Initialize(Model* model) {
 
 	// ワールド変換初期化
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = {0.0f, 0.0f, 50.0f};
+	worldTransform_.translation_ = {0.0f, 25.0f, 50.0f};
 }
 
 void Goal::Update() {
 	// 回転
 	Vector3 rot = {0.05f, 0.01f, 0.05f};
-
 	worldTransform_.rotation_ += rot;
+
+	// 移動
+	float move = -0.1f;
+	if (worldTransform_.translation_.y <= 0.0f) {
+		move = 0.0f;
+	}
+	worldTransform_.translation_.y += move;
 
 	worldTransform_.UpdateMatrix();
 }
 
 void Goal::Draw(ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	if (isHit_ == false) {
+		model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	}
 }
 
-void Goal::OnColision() {  }
+void Goal::OnColision() { isHit_ = true; }
 
 Vector3 Goal::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
