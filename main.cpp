@@ -21,7 +21,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
 	win->CreateGameWindow(
-	    L"GC2A_06_オクムラ_ナギ_AL3", WS_OVERLAPPEDWINDOW & ~(WS_MAXIMIZEBOX | WS_THICKFRAME), 1280, 720);
+	    L"SKYSHOOTER", WS_OVERLAPPEDWINDOW & ~(WS_MAXIMIZEBOX | WS_THICKFRAME), 1280, 720);
 	win->SetSizeChangeMode(WinApp::SizeChangeMode::kNone);
 
 	// DirectX初期化処理
