@@ -1,7 +1,6 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
-#include "AxisIndicator.h"
 #include <fstream>
 
 GameScene::GameScene() {}
@@ -28,7 +27,6 @@ GameScene::~GameScene() {
 	delete skydome_;
 	delete railCamera_;
 	delete debugCamera_;
-	delete title_;
 	delete goal_;
 	delete score_;
 }
@@ -70,10 +68,6 @@ void GameScene::Initialize() {
 	
 	LoadRailCamera();
 
-	// タイトル
-	title_ = new Title();
-	title_->Initialize();
-
 	// ゴール
 	goal_ = new Goal();
 	goal_->Initialize(model_);
@@ -89,165 +83,153 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	// タイトル
-	if (scene_ == Scene::TITLE) {
-		title_->Update();
-		// タイトルからの遷移
-		// メインゲームへ
-		if (title_->GetToNext()) {
-			scene_ = Scene::MAINGAME;
+	if (goal_->GetIsHit() == false) {
+		// カウント
+		--count_;
+
+		// 自キャラ
+		player_->Update(viewProjection_);
+
+		// 通常の敵
+		UpdateEnemyPopComands();
+		for (Enemy* enemy : enemy_) {
+			enemy->Update();
 		}
+
+		// 倒したらスコア加算
+		for (Enemy* enemy : enemy_) {
+			if (enemy->GetIsHit()) {
+				score_->AddScore50();
+			}
+		}
+
+		// デスフラグの立った敵を削除
+		enemy_.remove_if([](Enemy* enemy) {
+			if (enemy->GetIsDead()) {
+				delete enemy;
+				return true;
+			}
+			return false;
+		});
+
+		// 発射間隔が短い敵
+		UpdateEnemyIntervalShortPopComands();
+		for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+			enemyIntervalShort->Update();
+		}
+
+		// 倒したらスコア加算
+		for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+			if (enemyIntervalShort->GetIsHit()) {
+				score_->AddScore50();
+			}
+		}
+
+		// デスフラグの立った敵を削除
+		enemyIntervalShort_.remove_if([](EnemyIntervalShort* enemyIntervalShort) {
+			if (enemyIntervalShort->GetIsDead()) {
+				delete enemyIntervalShort;
+				return true;
+			}
+			return false;
+		});
+
+		// 強い敵
+		UpdateEnemyStrongPopComands();
+		for (EnemyStrong* enemyStrong : enemyStrong_) {
+			enemyStrong->Update();
+		}
+
+		// 倒したらスコア加算
+		for (EnemyStrong* enemyStrong : enemyStrong_) {
+			if (enemyStrong->GetIsHit()) {
+				score_->AddScore300();
+			}
+		}
+
+		// デスフラグの立った敵を削除
+		enemyStrong_.remove_if([](EnemyStrong* enemyStrong) {
+			if (enemyStrong->GetIsDead()) {
+				delete enemyStrong;
+				return true;
+			}
+			return false;
+		});
+
+		// 動く敵
+		UpdateEnemyMovePopComands();
+		for (EnemyMove* enemyMove : enemyMove_) {
+			enemyMove->Update();
+		}
+
+		// 倒したらスコア加算
+		for (EnemyMove* enemyMove : enemyMove_) {
+			if (enemyMove->GetIsHit()) {
+				score_->AddScore100();
+			}
+		}
+
+		// デスフラグの立った敵を削除
+		enemyMove_.remove_if([](EnemyMove* enemyMove) {
+			if (enemyMove->GetIsDead()) {
+				delete enemyMove;
+				return true;
+			}
+			return false;
+		});
+
+		// 敵弾更新
+		for (EnemyBullet* bullet : bullets_) {
+			bullet->Update();
+		}
+
+		// デスフラグの立った敵弾を削除
+		bullets_.remove_if([](EnemyBullet* bullet) {
+			if (bullet->GetisDead()) {
+				delete bullet;
+				return true;
+			}
+			return false;
+		});
+
+		// 当たり判定
+		CheckAllCollisions();
+
+		// 天球の更新
+		skydome_->Update();
+
+		// スコアの更新
+		score_->Update();
+
+		// レールカメラの更新
+		UpdateRailCameraComands();
+		railCamera_->Update();
+		viewProjection_.matView = railCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+	}
+	if (count_ <= 0) {
+		// ゴール
+		goal_->Update();
 	}
 
-	if (scene_ == Scene::MAINGAME) {
-		if (goal_->GetIsHit() == false) {
-			// カウント
-			--count_;
+// デバッグカメラの更新
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_C)) {
+		isDebugCameraActive_ = true;
+	}
+#endif
 
-			// 自キャラ
-			player_->Update(viewProjection_);
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 
-			// 通常の敵
-			UpdateEnemyPopComands();
-			for (Enemy* enemy : enemy_) {
-				enemy->Update();
-			}
-
-			// 倒したらスコア加算
-			for (Enemy* enemy : enemy_) {
-				if (enemy->GetIsHit()) {
-					score_->AddScore50();
-				}
-			}
-
-			// デスフラグの立った敵を削除
-			enemy_.remove_if([](Enemy* enemy) {
-				if (enemy->GetIsDead()) {
-					delete enemy;
-					return true;
-				}
-				return false;
-			});
-
-			// 発射間隔が短い敵
-			UpdateEnemyIntervalShortPopComands();
-			for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
-				enemyIntervalShort->Update();
-			}
-			
-			// 倒したらスコア加算
-			for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
-				if (enemyIntervalShort->GetIsHit()) {
-					score_->AddScore50();
-				}
-			}
-
-			// デスフラグの立った敵を削除
-			enemyIntervalShort_.remove_if([](EnemyIntervalShort* enemyIntervalShort) {
-				if (enemyIntervalShort->GetIsDead()) {
-					delete enemyIntervalShort;
-					return true;
-				}
-				return false;
-			});
-
-			// 強い敵
-			UpdateEnemyStrongPopComands();
-			for (EnemyStrong* enemyStrong : enemyStrong_) {
-				enemyStrong->Update();
-			}
-			
-			// 倒したらスコア加算
-			for (EnemyStrong* enemyStrong : enemyStrong_) {
-				if (enemyStrong->GetIsHit()) {
-					score_->AddScore300();
-				}
-			}
-
-			// デスフラグの立った敵を削除
-			enemyStrong_.remove_if([](EnemyStrong* enemyStrong) {
-				if (enemyStrong->GetIsDead()) {
-					delete enemyStrong;
-					return true;
-				}
-				return false;
-			});
-
-			// 動く敵
-			UpdateEnemyMovePopComands();
-			for (EnemyMove* enemyMove : enemyMove_) {
-				enemyMove->Update();
-			}
-
-			// 倒したらスコア加算
-			for (EnemyMove* enemyMove : enemyMove_) {
-				if (enemyMove->GetIsHit()) {
-					score_->AddScore100();
-				}
-			}
-
-			// デスフラグの立った敵を削除
-			enemyMove_.remove_if([](EnemyMove* enemyMove) {
-				if (enemyMove->GetIsDead()) {
-					delete enemyMove;
-					return true;
-				}
-				return false;
-			});
-
-			// 敵弾更新
-			for (EnemyBullet* bullet : bullets_) {
-				bullet->Update();
-			}
-
-			// デスフラグの立った敵弾を削除
-			bullets_.remove_if([](EnemyBullet* bullet) {
-				if (bullet->GetisDead()) {
-					delete bullet;
-					return true;
-				}
-				return false;
-			});
-
-			// 当たり判定
-			CheckAllCollisions();
-
-			// 天球の更新
-			skydome_->Update();
-
-			// スコアの更新
-			score_->Update();
-
-			// レールカメラの更新
-			UpdateRailCameraComands();
-			railCamera_->Update();
-			viewProjection_.matView = railCamera_->GetViewProjection().matView;
-			viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-		}
-		if (count_ <= 0) {
-			// ゴール
-			goal_->Update();
-		}
-
-		// デバッグカメラの更新
-		#ifdef _DEBUG
-		if (input_->TriggerKey(DIK_C)) {
-			isDebugCameraActive_ = true;
-		}
-		#endif
-
-		if (isDebugCameraActive_) {
-			debugCamera_->Update();
-			viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-			viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-
-			// ビュープロジェクション行列の転送
-			viewProjection_.TransferMatrix();
-		} else if (!isDebugCameraActive_) {
-			viewProjection_.matView = railCamera_->GetViewProjection().matView;
-			viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-			viewProjection_.TransferMatrix();
-		}
+		// ビュープロジェクション行列の転送
+		viewProjection_.TransferMatrix();
+	} else if (!isDebugCameraActive_) {
+		viewProjection_.matView = railCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+		viewProjection_.TransferMatrix();
 	}
 }
 
@@ -688,10 +670,6 @@ void GameScene::Draw() {
 
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
-	// タイトル
-	if (scene_ == Scene::TITLE) {
-		title_->Draw();
-	}
 	/// </summary>
 
 	// スプライト描画後処理
@@ -706,44 +684,42 @@ void GameScene::Draw() {
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
-	// メインゲーム
-	if (scene_ == Scene::MAINGAME) {
-		// 自キャラの描画
-		player_->Draw(viewProjection_);
+	// 自キャラの描画
+	player_->Draw(viewProjection_);
 
-		// ゴール
-		if (goal_->GetIsHit() == false) {
-			goal_->Draw(viewProjection_);
-		}
-
-		// 通常の敵の描画
-		for (Enemy* enemy : enemy_) {
-			enemy->Draw(viewProjection_);
-		}
-
-		// 発射間隔が短い敵の描画
-		for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
-			enemyIntervalShort->Draw(viewProjection_);
-		}
-
-		// 強い敵
-		for (EnemyStrong* enemyStrong : enemyStrong_) {
-			enemyStrong->Draw(viewProjection_);
-		}
-
-		// 動く敵
-		for (EnemyMove* enemyMove : enemyMove_) {
-			enemyMove->Draw(viewProjection_);
-		}
-
-		// 敵の弾の描画
-		for (EnemyBullet* bullet : bullets_) {
-			bullet->Draw(viewProjection_);
-		}
-
-		// 天球の描画
-		skydome_->Draw(viewProjection_);
+	// ゴール
+	if (goal_->GetIsHit() == false) {
+		goal_->Draw(viewProjection_);
 	}
+
+	// 通常の敵の描画
+	for (Enemy* enemy : enemy_) {
+		enemy->Draw(viewProjection_);
+	}
+
+	// 発射間隔が短い敵の描画
+	for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+		enemyIntervalShort->Draw(viewProjection_);
+	}
+
+	// 強い敵
+	for (EnemyStrong* enemyStrong : enemyStrong_) {
+		enemyStrong->Draw(viewProjection_);
+	}
+
+	// 動く敵
+	for (EnemyMove* enemyMove : enemyMove_) {
+		enemyMove->Draw(viewProjection_);
+	}
+
+	// 敵の弾の描画
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection_);
+	}
+
+	// 天球の描画
+	skydome_->Draw(viewProjection_);
+	
 	/// </summary>
 
 	// 3Dオブジェクト描画後処理
@@ -756,21 +732,19 @@ void GameScene::Draw() {
 
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
-	// メインゲーム
-	if (scene_ == Scene::MAINGAME) {
-		// 自機
-		player_->DrawUI();
+	// 自機
+	player_->DrawUI();
 
-		// ゴール
-		if (count_ <= 0) {
-			if (goal_->GetIsHit()) {
-				goal_->DrawUI();
-			}
+	// ゴール
+	if (count_ <= 0) {
+		if (goal_->GetIsHit()) {
+			goal_->DrawUI();
 		}
-
-		// スコア
-		score_->DrawUI();
 	}
+
+	// スコア
+	score_->DrawUI();
+
 	/// </summary>
 
 	// スプライト描画後処理

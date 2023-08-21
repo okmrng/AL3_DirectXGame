@@ -17,7 +17,6 @@
 #include "EnemyBullet.h"
 #include "Skydome.h"
 #include "RailCamera.h"
-#include "Title.h"
 #include "Goal.h"
 #include "Score.h"
 #include <sstream>
@@ -162,8 +161,6 @@ private: // メンバ変数
 
 	RailCamera* railCamera_ = nullptr; // レールカメラ
 
-	Title* title_ = nullptr; // タイトル
-
 	Goal* goal_ = nullptr; // ゴール
 
 	Score* score_ = nullptr; // スコア
@@ -191,14 +188,6 @@ private: // メンバ変数
 	// レールカメラ
 	bool asItIs_; // 変化なしフラグ
 	int32_t asItIsTimer_; // 次変化起こすまでの時間
-
-	// シーン
-	enum class Scene {
-		TITLE,     // タイトル
-		OPERATION, // チュートリアル
-		MAINGAME   // メインゲーム
-	};
-	Scene scene_ = Scene::TITLE; // シーン
 
 	int32_t count_ = 13600; // ゲームカウント
 };

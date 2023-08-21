@@ -1,6 +1,7 @@
 #include "Audio.h"
 #include "AxisIndicator.h"
 #include "DirectXCommon.h"
+#include "Title.h"
 #include "GameScene.h"
 #include "ImGuiManager.h"
 #include "PrimitiveDrawer.h"
@@ -16,7 +17,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Audio* audio = nullptr;
 	AxisIndicator* axisIndicator = nullptr;
 	PrimitiveDrawer* primitiveDrawer = nullptr;
+	Title* title = nullptr;
 	GameScene* gameScene = nullptr;
+
+	// シーン
+	enum class Scene {
+		TITLE,     // タイトル
+		OPERATION, // チュートリアル
+		MAINGAME   // メインゲーム
+	};
+	Scene scene = Scene::TITLE; // シーン
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
@@ -58,6 +68,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	primitiveDrawer = PrimitiveDrawer::GetInstance();
 	primitiveDrawer->Initialize();
 #pragma endregion
+	// タイトルの初期化
+	title = new Title();
+	title->Initialize();
 
 	// ゲームシーンの初期化
 	gameScene = new GameScene();
@@ -74,8 +87,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
 		input->Update();
+		// タイトルの毎フレーム処理
+		if (scene == Scene::TITLE) {
+			title->Update();
+			// タイトルからの遷移
+			// メインゲームへ
+			if (title->GetToNext()) {
+				scene = Scene::MAINGAME;
+			}
+		}
 		// ゲームシーンの毎フレーム処理
-		gameScene->Update();
+		if (scene == Scene::MAINGAME) {
+			gameScene->Update();
+		}
 		// 軸表示の更新
 		axisIndicator->Update();
 		// ImGui受付終了
@@ -83,8 +107,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		// 描画開始
 		dxCommon->PreDraw();
+		// タイトルの描画
+		if (scene == Scene::TITLE) {
+			title->Draw();
+		}
 		// ゲームシーンの描画
-		gameScene->Draw();
+		if (scene == Scene::MAINGAME) {
+			gameScene->Draw();
+		}
 		// 軸表示の描画
 		axisIndicator->Draw();
 		// プリミティブ描画のリセット
@@ -96,6 +126,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 
 	// 各種解放
+	SafeDelete(title);
 	SafeDelete(gameScene);
 	audio->Finalize();
 	// ImGui解放

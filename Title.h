@@ -1,14 +1,24 @@
 ﻿#pragma once
 
-#include <Input.h>
-#include <Sprite.h>
-#include <TextureManager.h>
+#include "Audio.h"
+#include "DirectXCommon.h"
+#include "Input.h"
+#include "Model.h"
+#include "SafeDelete.h"
+#include "Sprite.h"
+#include "ViewProjection.h"
+#include "WorldTransform.h"
 
 /// <summary>
 /// タイトル
 /// </summary>
 class Title {
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	Title();
+
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -36,11 +46,13 @@ public:
 	bool GetToNext() { return toNext_; }
 
 private:
+	DirectXCommon* dxCommon_ = nullptr;
+	Input* input_ = nullptr;
+	Audio* audio_ = nullptr;
+
 	uint32_t textureHandle_title_bg = 0u; // 背景のテクスチャハンドル
 
 	Sprite* sprite_title_bg = nullptr;    // 背景のスプライト
 									      
 	bool toNext_ = false;                 // 次のシーンへ遷移するフラグ
-									      
-	Input* input_ = nullptr;              // キー入力
 };
