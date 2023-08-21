@@ -107,11 +107,6 @@ void GameScene::Update() {
 			// 自キャラ
 			player_->Update(viewProjection_);
 
-			// ゲームオーバー
-			/*if (player_->GetIsDead()) {
-			    scene_ = Scene::TITLE;
-			}*/
-
 			// 通常の敵
 			UpdateEnemyPopComands();
 			for (Enemy* enemy : enemy_) {
@@ -257,8 +252,6 @@ void GameScene::CheckAllCollisions() {
 
 		// 球と球の交差判定
 		if (collisionXYZ <= collisionRadiusAB) {
-			// 自キャラの衝突時コールバックを呼び出す
-			player_->OnColision();
 			// 敵弾の衝突時コールバックを呼び出す
 			bullet->OnColision();
 			// スコア
@@ -288,8 +281,6 @@ void GameScene::CheckAllCollisions() {
 
 		// 球と球の交差判定
 		if (collisionXYZ <= collisionRadiusAB) {
-			// 自キャラの衝突時コールバックを呼び出す
-			player_->OnColision();
 			// スコア
 			score_->SubtractScore();
 		}
@@ -380,8 +371,6 @@ void GameScene::CheckAllCollisions() {
 
 		// 球と球の交差判定
 		if (collisionXYZ <= collisionRadiusAB) {
-			// 自キャラの衝突時コールバックを呼び出す
-			player_->OnColision();
 			// スコア
 			score_->SubtractScore();
 		}
@@ -472,8 +461,6 @@ void GameScene::CheckAllCollisions() {
 
 		// 球と球の交差判定
 		if (collisionXYZ <= collisionRadiusAB) {
-			// 自キャラの衝突時コールバックを呼び出す
-			player_->OnColision();
 			// スコア
 			score_->SubtractScore();
 		}
@@ -564,8 +551,6 @@ void GameScene::CheckAllCollisions() {
 
 		// 球と球の交差判定
 		if (collisionXYZ <= collisionRadiusAB) {
-			// 自キャラの衝突時コールバックを呼び出す
-			player_->OnColision();
 			// スコア
 			score_->SubtractScore();
 		}

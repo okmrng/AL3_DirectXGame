@@ -120,11 +120,6 @@ void Player::Update(ViewProjection& viewProjection) {
 
 	// マウスカーソルのスクリーン座標からワールド座標を取得して2Dレティクル配置
 	UpdateReticle(viewProjection);
-
-	// ゲームオーバー
-	if (HP_ <= 0) {
-		isDead_ = true;
-	}
 }
 
 void Player::UpdateReticle(ViewProjection& viewProjection) {
@@ -264,8 +259,6 @@ void Player::Bomb() {
 		}
 	}
 }
-
-void Player::OnColision() { --HP_; }
 
 Vector3 Player::GetWorldPositiopn() {
 	// ワールド座標を入れる変数

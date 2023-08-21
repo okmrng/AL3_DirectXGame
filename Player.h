@@ -63,11 +63,6 @@ public:
 	/// </summary>
 	void Bomb();
 
-	/// <summary>
-	/// 衝突を検出したら呼び出されるコールバック関数
-	/// </summary>
-	void OnColision();
-
 	//ゲッター
 	/// <summary>
 	/// 弾リストを取得
@@ -93,11 +88,6 @@ public:
 	/// 半径
 	/// </summary>
 	const float GetRadius() { return radius_; }
-
-	/// <summary>
-	/// 死亡フラグの取得
-	/// </summary>
-	bool GetIsDead() { return isDead_; }
 
 	// セッター
 	/// <summary>
@@ -143,10 +133,6 @@ private:
 	Model* model3DReticle_ = nullptr;
 
 	Sprite* spriteReticle_ = nullptr;          // スプライト
-
-	int32_t HP_ = 3; // HP
-	
-	bool isDead_ = false; // 死亡フラグ
 
 	RailCamera* railCamera_ = nullptr; // レールカメラ
 };
