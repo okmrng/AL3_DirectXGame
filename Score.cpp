@@ -55,6 +55,26 @@ void Score::Update() {
 
 	number_ = score_;
 
+	// スコア制限
+	if (score_ <= 0) {
+		score_ = 0;
+		number_ = 0;
+	}
+	if (score_ > 99999) {
+		score_ = 99999;
+		number_ = 99999;
+	}
+
+	if (add_) {
+		subtractScore_ += 50;
+		add_ = false;
+	}
+
+	/*ImGui::Begin("score");
+	ImGui::Text("%d", score_);
+	ImGui::Text("%d", subtractScore_);
+	ImGui::End();*/
+
 	for (int32_t i = 0; i < 5; i++) {
 		spriteNumber_[i]->SetTextureHandle(textureHandleNumber_[eachNumber_[i]]);
 	}
@@ -75,3 +95,10 @@ void Score::AddScore50() { score_ += 50; }
 void Score::AddScore100() { score_ += 100; }
 
 void Score::AddScore300() { score_ += 300; }
+
+void Score::AddScore() { score_++; }
+
+void Score::SubtractScore() {
+	score_ -= subtractScore_;
+	add_ = true;
+}

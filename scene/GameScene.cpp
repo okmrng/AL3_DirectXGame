@@ -261,6 +261,8 @@ void GameScene::CheckAllCollisions() {
 			player_->OnColision();
 			// 敵弾の衝突時コールバックを呼び出す
 			bullet->OnColision();
+			// スコア
+			score_->SubtractScore();
 		}
 	}
 	#pragma endregion
@@ -288,6 +290,8 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 自キャラの衝突時コールバックを呼び出す
 			player_->OnColision();
+			// スコア
+			score_->SubtractScore();
 		}
 	}
 	#pragma endregion
@@ -318,6 +322,8 @@ void GameScene::CheckAllCollisions() {
 				enemy->OnColision();
 				// 自弾の衝突時コールバックを呼び出す
 				bullet->OnColision();
+				// スコア加算
+				score_->AddScore();
 			}
 		}
 	}
@@ -346,6 +352,8 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 敵の衝突時コールバックを呼び出す
 			enemy->OnBombCollision();
+			// スコア
+			score_->AddScore50();
 		}
 	}
 	#pragma endregion
@@ -374,6 +382,8 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 自キャラの衝突時コールバックを呼び出す
 			player_->OnColision();
+			// スコア
+			score_->SubtractScore();
 		}
 	}
 	#pragma endregion
@@ -404,6 +414,8 @@ void GameScene::CheckAllCollisions() {
 				enemyIntervalShort->OnColision();
 				// 自弾の衝突時コールバックを呼び出す
 				bullet->OnColision();
+				// スコア加算
+				score_->AddScore();
 			}
 		}
 	}
@@ -432,6 +444,8 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 敵の衝突時コールバックを呼び出す
 			enemyIntervalShort->OnBombCollision();
+			// スコア
+			score_->AddScore50();
 		}
 	}
 	#pragma endregion
@@ -460,6 +474,8 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 自キャラの衝突時コールバックを呼び出す
 			player_->OnColision();
+			// スコア
+			score_->SubtractScore();
 		}
 	}
 	#pragma endregion
@@ -490,6 +506,8 @@ void GameScene::CheckAllCollisions() {
 				enemyStrong->OnColision();
 				// 自弾の衝突時コールバックを呼び出す
 				bullet->OnColision();
+				// スコア加算
+				score_->AddScore100();
 			}
 		}
 	}
@@ -518,6 +536,8 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 自キャラの衝突時コールバックを呼び出す
 			enemyStrong->OnColision();
+			// スコア
+			score_->AddScore300();
 		}
 	}
 	#pragma endregion
@@ -546,6 +566,8 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 自キャラの衝突時コールバックを呼び出す
 			player_->OnColision();
+			// スコア
+			score_->SubtractScore();
 		}
 	}
 	#pragma endregion
@@ -576,6 +598,8 @@ void GameScene::CheckAllCollisions() {
 				enemyMove->OnColision();
 				// 自弾の衝突時コールバックを呼び出す
 				bullet->OnColision();
+				// スコア加算
+				score_->AddScore50();
 			}
 		}
 	}
@@ -604,6 +628,8 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 敵の衝突時コールバックを呼び出す
 			enemyMove->OnBombCollision();
+			// スコア加算
+			score_->AddScore100();
 		}
 	}
 	#pragma endregion
