@@ -1,5 +1,10 @@
 ﻿#include "Score.h"
 
+Score::~Score() {
+	delete sprite_;
+	delete spriteNumber_;
+}
+
 void Score::Initialize() {
 	// SCORE
 	// ワールド変換
