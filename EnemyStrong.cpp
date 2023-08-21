@@ -149,8 +149,6 @@ void EnemyStrong::OnColision() {
 	}
 }
 
-void EnemyStrong::OnBombCollision() { --HP; }
-
 void EnemyStrong::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
 	worldTransform_.parent_ = parent;

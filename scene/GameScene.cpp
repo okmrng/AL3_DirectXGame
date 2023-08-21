@@ -371,8 +371,8 @@ void GameScene::CheckAllCollisions() {
 
 		// 球と球の交差判定
 		if (collisionXYZ <= collisionRadiusAB) {
-			// 敵の衝突時コールバックを呼び出す
-			enemy->OnBombCollision();
+			// 敵キャラの衝突時コールバックを呼び出す
+			enemy->OnColision();
 			// ボムの衝突時コールバックを呼び出す
 			player_->OnBombCollision();
 			// スコア
@@ -467,8 +467,8 @@ void GameScene::CheckAllCollisions() {
 
 		// 球と球の交差判定
 		if (collisionXYZ <= collisionRadiusAB) {
-			// 敵の衝突時コールバックを呼び出す
-			enemyIntervalShort->OnBombCollision();
+			// 敵キャラの衝突時コールバックを呼び出す
+			enemyIntervalShort->OnColision();
 			// ボムの衝突時コールバックを呼び出す
 			player_->OnBombCollision();
 			// スコア
@@ -659,8 +659,8 @@ void GameScene::CheckAllCollisions() {
 
 		// 球と球の交差判定
 		if (collisionXYZ <= collisionRadiusAB) {
-			// 敵の衝突時コールバックを呼び出す
-			enemyMove->OnBombCollision();
+			// 敵キャラの衝突時コールバックを呼び出す
+			enemyMove->OnColision();
 			// ボムの衝突時コールバックを呼び出す
 			player_->OnBombCollision();
 			// スコア加算

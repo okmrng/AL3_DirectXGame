@@ -120,8 +120,6 @@ void EnemyIntervalShort::Fire() {
 
 void EnemyIntervalShort::OnColision() { isHit_ = true; }
 
-void EnemyIntervalShort::OnBombCollision() { isHit_ = true; }
-
 Vector3 EnemyIntervalShort::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

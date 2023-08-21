@@ -134,8 +134,6 @@ void EnemyMove::Fire() {
 
 void EnemyMove::OnColision() { --HP; }
 
-void EnemyMove::OnBombCollision() { --HP; }
-
 void EnemyMove::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
 	worldTransform_.parent_ = parent;
