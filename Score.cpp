@@ -53,6 +53,8 @@ void Score::Update() {
 
 	eachNumber_[4] = number_ % 10;
 
+	number_ = score_;
+
 	for (int32_t i = 0; i < 5; i++) {
 		spriteNumber_[i]->SetTextureHandle(textureHandleNumber_[eachNumber_[i]]);
 	}
@@ -67,3 +69,9 @@ void Score::DrawUI() {
 		spriteNumber_[i]->Draw();
 	}
 }
+
+void Score::AddScore50() { score_ += 50; }
+
+void Score::AddScore100() { score_ += 100; }
+
+void Score::AddScore300() { score_ += 300; }
