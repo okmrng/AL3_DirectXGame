@@ -30,6 +30,7 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete title_;
 	delete goal_;
+	delete score_;
 }
 
 void GameScene::Initialize() {
@@ -79,13 +80,12 @@ void GameScene::Initialize() {
 	// レールカメラと親子関係を結ぶ
 	goal_->SetParent(&railCamera_->GetWorldTransform());
 
+	// スコア
+	score_ = new Score();
+	score_->Initialize();
+
 	// デバッグカメラ生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
-
-	// 軸方向表示を有効にする
-	AxisIndicator::GetInstance()->SetVisible(true);
-	// 軸方向が参照するビュープロジェクションを参照する(アドレス渡し)
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 }
 
 void GameScene::Update() {
@@ -191,6 +191,9 @@ void GameScene::Update() {
 
 			// 天球の更新
 			skydome_->Update();
+
+			// スコアの更新
+			score_->Update();
 
 			// レールカメラの更新
 			UpdateRailCameraComands();
@@ -725,6 +728,9 @@ void GameScene::Draw() {
 				goal_->DrawUI();
 			}
 		}
+
+		// スコア
+		score_->DrawUI();
 	}
 	/// </summary>
 

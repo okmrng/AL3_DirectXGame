@@ -19,6 +19,7 @@
 #include "RailCamera.h"
 #include "Title.h"
 #include "Goal.h"
+#include "Score.h"
 #include <sstream>
 
 /// <summary>
@@ -164,6 +165,8 @@ private: // メンバ変数
 	Title* title_ = nullptr; // タイトル
 
 	Goal* goal_ = nullptr; // ゴール
+
+	Score* score_ = nullptr; // スコア
 
 	// コマンド
 	std::stringstream enemyPopComands;              // 敵発生コマンド
