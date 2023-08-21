@@ -260,6 +260,8 @@ void Player::Bomb() {
 	}
 }
 
+void Player::OnBombCollision() { bomb_->OnColision(); }
+
 Vector3 Player::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
@@ -283,6 +285,16 @@ Vector3 Player::GetBombWorldPositiopn() {
 	}
 
 	return worldPos;
+}
+
+uint32_t Player::GetBombTextureHandle() { 
+	uint32_t texture = 0u;
+
+	if (bomb_) {
+		texture = bomb_->GetTextureHandle();
+	}
+
+	return texture;
 }
 
 void Player::SetParent(const WorldTransform* parent) {

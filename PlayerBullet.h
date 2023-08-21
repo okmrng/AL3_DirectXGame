@@ -48,6 +48,8 @@ public:
 	/// <returns></returns>
 	Vector3 GetWorldPositiopn();
 
+	uint32_t GetTextureHandle() { return textureHandle_; }
+
 	// セッター関数
 	void SetParent(const WorldTransform* parent);
 

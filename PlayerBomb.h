@@ -47,6 +47,8 @@ public:
 	/// <returns></returns>
 	Vector3 GetWorldPositiopn();
 
+	uint32_t GetTextureHandle() { return textureHandle_; }
+
 	private:
 	WorldTransform worldTransform_;          // ワールド変換データ
 									         

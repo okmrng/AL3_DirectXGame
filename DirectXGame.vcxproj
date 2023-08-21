@@ -116,6 +116,7 @@
     <ClCompile Include="EnemyMove.cpp" />
     <ClCompile Include="EnemyStrong.cpp" />
     <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="HitBullet.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="EnemyMove.h" />
     <ClInclude Include="EnemyStrong.h" />
     <ClInclude Include="Goal.h" />
+    <ClInclude Include="HitBullet.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="MathUtility.h" />
     <ClInclude Include="math\Matrix4x4.h" />

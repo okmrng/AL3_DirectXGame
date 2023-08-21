@@ -48,6 +48,12 @@ public:
 	/// <returns></returns>
 	Vector3 GetWorldPositiopn();
 
+	uint32_t GetTextureHandle() { return textureHandle_; }
+
+	/// <summary>
+	/// セッター
+	/// </summary>
+	/// <param name="parent"></param>
 	void Set(const WorldTransform* parent);
 
 private:

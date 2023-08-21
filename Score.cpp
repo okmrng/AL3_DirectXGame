@@ -2,7 +2,9 @@
 
 Score::~Score() {
 	delete sprite_;
-	delete spriteNumber_;
+	for (int32_t i = 0; i < 5; i++) {
+		delete spriteNumber_[i];
+	}
 }
 
 void Score::Initialize() {

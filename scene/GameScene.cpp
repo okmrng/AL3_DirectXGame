@@ -29,6 +29,9 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete goal_;
 	delete score_;
+	for (HitBullet* hitBullet : hitBullet_) {
+		delete hitBullet;
+	}
 }
 
 void GameScene::Initialize() {
@@ -201,6 +204,19 @@ void GameScene::Update() {
 		// スコアの更新
 		score_->Update();
 
+		// 弾が当たった時のエフェクトの更新
+		for (HitBullet* hitBullet : hitBullet_) {
+			hitBullet->Update();
+		}
+
+		hitBullet_.remove_if([](HitBullet* hitBullet) {
+			if (hitBullet->GetIsDead()) {
+				delete hitBullet;
+				return true;
+			}
+			return false;
+		});
+
 		// レールカメラの更新
 		UpdateRailCameraComands();
 		railCamera_->Update();
@@ -266,6 +282,8 @@ void GameScene::CheckAllCollisions() {
 			bullet->OnColision();
 			// スコア
 			score_->SubtractScore();
+			// 弾が当たった時のエフェクト
+			AddHitBullet(bullet->GetWorldPositiopn(), bullet->GetTextureHandle());
 		}
 	}
 	#pragma endregion
@@ -325,6 +343,8 @@ void GameScene::CheckAllCollisions() {
 				bullet->OnColision();
 				// スコア加算
 				score_->AddScore();
+				// 弾が当たった時のエフェクト
+				AddHitBullet(bullet->GetWorldPositiopn(), bullet->GetTextureHandle());
 			}
 		}
 	}
@@ -353,8 +373,12 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 敵の衝突時コールバックを呼び出す
 			enemy->OnBombCollision();
+			// ボムの衝突時コールバックを呼び出す
+			player_->OnBombCollision();
 			// スコア
 			score_->AddScore50();
+			// 弾が当たった時のエフェクト
+			AddHitBullet(player_->GetBombWorldPositiopn(), player_->GetBombTextureHandle());
 		}
 	}
 	#pragma endregion
@@ -415,6 +439,8 @@ void GameScene::CheckAllCollisions() {
 				bullet->OnColision();
 				// スコア加算
 				score_->AddScore();
+				// 弾が当たった時のエフェクト
+				AddHitBullet(bullet->GetWorldPositiopn(), bullet->GetTextureHandle());
 			}
 		}
 	}
@@ -443,8 +469,12 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 敵の衝突時コールバックを呼び出す
 			enemyIntervalShort->OnBombCollision();
+			// ボムの衝突時コールバックを呼び出す
+			player_->OnBombCollision();
 			// スコア
 			score_->AddScore50();
+			// 弾が当たった時のエフェクト
+			AddHitBullet(player_->GetBombWorldPositiopn(), player_->GetBombTextureHandle());
 		}
 	}
 	#pragma endregion
@@ -505,6 +535,8 @@ void GameScene::CheckAllCollisions() {
 				bullet->OnColision();
 				// スコア加算
 				score_->AddScore100();
+				// 弾が当たった時のエフェクト
+				AddHitBullet(bullet->GetWorldPositiopn(), bullet->GetTextureHandle());
 			}
 		}
 	}
@@ -533,8 +565,12 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 自キャラの衝突時コールバックを呼び出す
 			enemyStrong->OnColision();
+			// ボムの衝突時コールバックを呼び出す
+			player_->OnBombCollision();
 			// スコア
 			score_->AddScore300();
+			// 弾が当たった時のエフェクト
+			AddHitBullet(player_->GetBombWorldPositiopn(), player_->GetBombTextureHandle());
 		}
 	}
 	#pragma endregion
@@ -595,6 +631,8 @@ void GameScene::CheckAllCollisions() {
 				bullet->OnColision();
 				// スコア加算
 				score_->AddScore50();
+				// 弾が当たった時のエフェクト
+				AddHitBullet(bullet->GetWorldPositiopn(), bullet->GetTextureHandle());
 			}
 		}
 	}
@@ -623,8 +661,12 @@ void GameScene::CheckAllCollisions() {
 		if (collisionXYZ <= collisionRadiusAB) {
 			// 敵の衝突時コールバックを呼び出す
 			enemyMove->OnBombCollision();
+			// ボムの衝突時コールバックを呼び出す
+			player_->OnBombCollision();
 			// スコア加算
 			score_->AddScore100();
+			// 弾が当たった時のエフェクト
+			AddHitBullet(player_->GetBombWorldPositiopn(), player_->GetBombTextureHandle());
 		}
 	}
 	#pragma endregion
@@ -715,6 +757,11 @@ void GameScene::Draw() {
 	// 敵の弾の描画
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection_);
+	}
+
+	// 弾が当たった時のエフェクトの描画
+	for (HitBullet* hitBullet : hitBullet_) {
+		hitBullet->Draw(viewProjection_);
 	}
 
 	// 天球の描画
@@ -826,6 +873,15 @@ void GameScene::AddEnemyMove(
 	obj->SetParent(&railCamera_->GetWorldTransform());
 
 	enemyMove_.push_back(obj);
+}
+
+void GameScene::AddHitBullet(Vector3 pos, uint32_t textureHandle) {
+	// 生成
+	HitBullet* obj = new HitBullet();
+	// 初期化
+	obj->Initialize(pos, model_, textureHandle);
+
+	hitBullet_.push_back(obj);
 }
 
 void GameScene::LoadEnemyPopData() {
@@ -1356,6 +1412,9 @@ void GameScene::UpdateRailCameraComands() {
 			}
 			for (EnemyMove* enemyMove : enemyMove_) {
 				enemyMove->SetMisalignment(Vector3(moveX, moveY, moveZ));
+			}
+			for (HitBullet* hitBullet : hitBullet_) {
+				hitBullet->SetMisalignment(Vector3(moveX, moveY, moveZ));
 			}
 		}
 		// ASITISコマンド

@@ -63,6 +63,11 @@ public:
 	/// </summary>
 	void Bomb();
 
+	/// <summary>
+	/// ボムの当たった時の処理
+	/// </summary>
+	void OnBombCollision();
+
 	//ゲッター
 	/// <summary>
 	/// 弾リストを取得
@@ -88,6 +93,8 @@ public:
 	/// 半径
 	/// </summary>
 	const float GetRadius() { return radius_; }
+
+	uint32_t GetBombTextureHandle();
 
 	// セッター
 	/// <summary>

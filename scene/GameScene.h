@@ -19,6 +19,7 @@
 #include "RailCamera.h"
 #include "Goal.h"
 #include "Score.h"
+#include "HitBullet.h"
 #include <sstream>
 
 /// <summary>
@@ -94,6 +95,9 @@ public: // メンバ関数
 	    Vector3 pos, Vector3 velocity, const Vector3& leaveVelocity, Vector3 misalignment,
 	    int32_t toLeaveTimer);
 
+
+	void AddHitBullet(Vector3 pos, uint32_t textureHandle);
+
 	/// <summary>
 	/// 敵発生データの読み込み
 	/// </summary>
@@ -164,6 +168,8 @@ private: // メンバ変数
 	Goal* goal_ = nullptr; // ゴール
 
 	Score* score_ = nullptr; // スコア
+
+	std::list<HitBullet*> hitBullet_; // 弾が当たった時のエフェクト
 
 	// コマンド
 	std::stringstream enemyPopComands;              // 敵発生コマンド
