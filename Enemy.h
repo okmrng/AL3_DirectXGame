@@ -93,6 +93,8 @@ public:
 
 	bool GetIsDead() { return isDead_; }
 
+	bool GetIsHit() { return isHit_; }
+
 	static const int kFireInterval = 60; // 発射間隔
 
 private:
@@ -125,6 +127,7 @@ private:
 	// デス
 	int32_t deathTimer_ = 300;           // デスタイマー
 	bool isDead_ = false;                // デスフラグ
+	bool isHit_ = false;                 // ヒット
 
 	int32_t HP = 5;
 

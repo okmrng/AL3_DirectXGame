@@ -43,6 +43,9 @@ void EnemyMove::Update() {
 
 	// HPが0になったらデス
 	if (HP <= 0) {
+		isHit_ = true;
+	}
+	if (isHit_) {
 		isDead_ = true;
 	}
 
@@ -131,7 +134,7 @@ void EnemyMove::Fire() {
 
 void EnemyMove::OnColision() { --HP; }
 
-void EnemyMove::OnBombCollision() { isDead_ = true; }
+void EnemyMove::OnBombCollision() { --HP; }
 
 void EnemyMove::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ

@@ -42,6 +42,9 @@ void Enemy::Update() {
 
 	// HPが0になったらデス
 	if (HP <= 0) {
+		isHit_ = true;
+	}
+	if (isHit_) {
 		isDead_ = true;
 	}
 
@@ -121,7 +124,7 @@ void Enemy::Fire() {
 
 void Enemy::OnColision() { --HP; }
 
-void Enemy::OnBombCollision() { isDead_ = true; }
+void Enemy::OnBombCollision() { --HP; }
 
 Vector3 Enemy::GetWorldPositiopn() {
 	// ワールド座標を入れる変数

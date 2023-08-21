@@ -40,6 +40,11 @@ void EnemyIntervalShort::Update() {
 		break;
 	}
 
+	// デス
+	if (isHit_) {
+		isDead_ = true;
+	}
+
 	worldTransform_.UpdateMatrix();
 }
 
@@ -113,9 +118,9 @@ void EnemyIntervalShort::Fire() {
 	gameScene_->AddEnemyBullet(newBullet);
 }
 
-void EnemyIntervalShort::OnColision() { isDead_ = true; }
+void EnemyIntervalShort::OnColision() { isHit_ = true; }
 
-void EnemyIntervalShort::OnBombCollision() { isDead_ = true; }
+void EnemyIntervalShort::OnBombCollision() { isHit_ = true; }
 
 Vector3 EnemyIntervalShort::GetWorldPositiopn() {
 	// ワールド座標を入れる変数

@@ -113,6 +113,13 @@ void GameScene::Update() {
 				enemy->Update();
 			}
 
+			// 倒したらスコア加算
+			for (Enemy* enemy : enemy_) {
+				if (enemy->GetIsHit()) {
+					score_->AddScore50();
+				}
+			}
+
 			// デスフラグの立った敵を削除
 			enemy_.remove_if([](Enemy* enemy) {
 				if (enemy->GetIsDead()) {
@@ -126,6 +133,13 @@ void GameScene::Update() {
 			UpdateEnemyIntervalShortPopComands();
 			for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
 				enemyIntervalShort->Update();
+			}
+			
+			// 倒したらスコア加算
+			for (EnemyIntervalShort* enemyIntervalShort : enemyIntervalShort_) {
+				if (enemyIntervalShort->GetIsHit()) {
+					score_->AddScore50();
+				}
 			}
 
 			// デスフラグの立った敵を削除
@@ -142,6 +156,13 @@ void GameScene::Update() {
 			for (EnemyStrong* enemyStrong : enemyStrong_) {
 				enemyStrong->Update();
 			}
+			
+			// 倒したらスコア加算
+			for (EnemyStrong* enemyStrong : enemyStrong_) {
+				if (enemyStrong->GetIsHit()) {
+					score_->AddScore300();
+				}
+			}
 
 			// デスフラグの立った敵を削除
 			enemyStrong_.remove_if([](EnemyStrong* enemyStrong) {
@@ -156,6 +177,13 @@ void GameScene::Update() {
 			UpdateEnemyMovePopComands();
 			for (EnemyMove* enemyMove : enemyMove_) {
 				enemyMove->Update();
+			}
+
+			// 倒したらスコア加算
+			for (EnemyMove* enemyMove : enemyMove_) {
+				if (enemyMove->GetIsHit()) {
+					score_->AddScore100();
+				}
 			}
 
 			// デスフラグの立った敵を削除

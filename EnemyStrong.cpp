@@ -46,6 +46,9 @@ void EnemyStrong::Update() {
 
 	// HPが0になったらデス
 	if (HP <= 0) {
+		isHit_ = true;
+	}
+	if (isHit_) {
 		isDead_ = true;
 	}
 
@@ -146,7 +149,7 @@ void EnemyStrong::OnColision() {
 	}
 }
 
-void EnemyStrong::OnBombCollision() { isDead_ = true; }
+void EnemyStrong::OnBombCollision() { --HP; }
 
 void EnemyStrong::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ
