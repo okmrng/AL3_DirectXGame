@@ -4,6 +4,7 @@
 #include <cassert>
 #include <Sprite.h>
 #include "MathUtility.h"
+#include <Input.h>
 
 /// <summary>
 /// ゴール
@@ -51,6 +52,8 @@ public:
 	/// </summary>
 	bool GetIsHit() { return isHit_; }
 
+	bool GetDrawHighScore() { return drawHighScore_; }
+
 	// セッター関数
 	/// <summary>
 	/// 親子関係
@@ -72,4 +75,8 @@ private:
 	uint32_t textureHandleClear_ = 0u;  // テクスチャハンドル
 
 	WorldTransform worldTransformClear_; // ワールド変換
+
+	bool drawHighScore_ = false; // ハイスコア描画フラグ
+
+	Input* input_;
 };

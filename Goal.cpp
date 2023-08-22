@@ -24,6 +24,10 @@ void Goal::Initialize(Model* model) {
 	    textureHandleClear_,
 	    Vector2(worldTransformClear_.translation_.x, worldTransformClear_.translation_.y),
 	    {1, 1, 1, 1}, {0.0f, 0.0f});
+
+	// キー
+	// シングルトンインスタンスを取得する
+	input_ = Input::GetInstance();
 }
 
 void Goal::Update() {
@@ -42,15 +46,22 @@ void Goal::Update() {
 	worldTransform_.UpdateMatrix();
 
 	// UI
-	// 移動
 	float moveClear = -200.0f;
 	if (isHit_) {
+		// 移動
 		worldTransformClear_.translation_.x += moveClear;
 	}
+
+	// 移動止め
 	if (worldTransformClear_.translation_.x <= 1.0f) {
 		moveClear = 0.0f;
 		worldTransformClear_.translation_.x = 1.0f;
+
+		if (input_->TriggerKey(DIK_SPACE)) {
+			drawHighScore_ = true;
+		}
 	}
+
 	spriteClear_->SetPosition(
 	    Vector2(worldTransformClear_.translation_.x, worldTransformClear_.translation_.y));
 

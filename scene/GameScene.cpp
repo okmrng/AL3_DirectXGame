@@ -790,7 +790,7 @@ void GameScene::Draw() {
 	}
 
 	// スコア
-	score_->DrawUI();
+	score_->DrawUI(goal_->GetDrawHighScore());
 
 	/// </summary>
 
