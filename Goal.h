@@ -54,6 +54,8 @@ public:
 
 	bool GetDrawHighScore() { return drawHighScore_; }
 
+	bool GetToTitle() { return toTitle_; }
+
 	// セッター関数
 	/// <summary>
 	/// 親子関係
@@ -79,4 +81,8 @@ private:
 	bool drawHighScore_ = false; // ハイスコア描画フラグ
 
 	Input* input_;
+
+	bool toTitle_ = false; // タイトルへ
+
+	int32_t triggerCount_ = 5; // 連続押し防止
 };

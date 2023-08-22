@@ -133,6 +133,9 @@ public: // メンバ関数
 	/// </summary>
 	void UpdateRailCameraComands();
 
+	// ゲッター
+	bool GetToTitle() { return toTitle_; }
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -195,5 +198,7 @@ private: // メンバ変数
 	bool asItIs_; // 変化なしフラグ
 	int32_t asItIsTimer_; // 次変化起こすまでの時間
 
-	int32_t count_ = 13600; // ゲームカウント
+	int32_t count_ = 0; // 13600; // ゲームカウント
+
+	bool toTitle_ = false; // タイトルへ
 };

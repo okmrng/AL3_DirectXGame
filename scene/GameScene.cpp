@@ -226,6 +226,10 @@ void GameScene::Update() {
 	if (count_ <= 0) {
 		// ゴール
 		goal_->Update();
+
+		if (goal_->GetToTitle()) {
+			toTitle_ = true;
+		}
 	}
 
 // デバッグカメラの更新

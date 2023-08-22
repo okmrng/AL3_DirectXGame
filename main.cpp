@@ -99,6 +99,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// ゲームシーンの毎フレーム処理
 		if (scene == Scene::MAINGAME) {
 			gameScene->Update();
+			if (gameScene->GetToTitle()) {
+				scene = Scene::TITLE;
+			}
 		}
 		// 軸表示の更新
 		axisIndicator->Update();

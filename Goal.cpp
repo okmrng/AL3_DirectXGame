@@ -60,6 +60,15 @@ void Goal::Update() {
 		if (input_->TriggerKey(DIK_SPACE)) {
 			drawHighScore_ = true;
 		}
+
+		if (drawHighScore_) {
+			triggerCount_--;
+			if (triggerCount_ <= 0) {
+				if (input_->TriggerKey(DIK_SPACE)) {
+					toTitle_ = true;
+				}
+			}
+		}
 	}
 
 	spriteClear_->SetPosition(
