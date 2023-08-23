@@ -38,8 +38,15 @@ void Player::Initialize(Model* model) {
 	// スプライト生成
 	spriteReticle_ = Sprite::Create(textureReticle, {640, 360}, {1, 1, 1, 1}, {0.5f, 0.5f});
 
+	// ボム
 	// ボムフラグ
 	canBomb_ = true;
+
+	// テクスチャ取得
+	textureBombIcon_ = TextureManager::Load("sprite/icon_bomb.png");
+	// スプライト生成
+	spriteBombIcon_ = Sprite::Create(textureBombIcon_, {1130, 600}, {1, 1, 1, 1}, {0.0f, 0.0f});
+	spriteBombIcon_->SetSize({130,100});
 }
 
 void Player::Update(ViewProjection& viewProjection) {
@@ -190,7 +197,13 @@ void Player::Draw(ViewProjection& viewProjection) {
 }
 
 void Player::DrawUI() { 
+	// レティクル
 	spriteReticle_->Draw();
+
+	// ボム
+	if (canBomb_) {
+		spriteBombIcon_->Draw();
+	}
 }
 
 void Player::Attack() { 

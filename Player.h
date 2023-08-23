@@ -129,8 +129,11 @@ private:
 	PlayerBomb* bomb_ = nullptr;               // ボム	
 											   
 	bool canBomb_ = true;                      // ボムフラグ
-	static const int32_t kCoolTime_ = 60 * 3;  // ボムのクールタイムの長さ
+	static const int32_t kCoolTime_ = 60 * 5;  // ボムのクールタイムの長さ
 	int32_t bombTimer_ = kCoolTime_;           // ボムのクールタイム
+
+	Sprite* spriteBombIcon_ = nullptr; // ボムのアイコンのスプライト
+	uint32_t textureBombIcon_ = 0u;    // ボムのアイコンのテクスチャハンドル
 											   
 	const float radius_ = 1.0f;                // 半径
 											   
