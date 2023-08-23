@@ -77,7 +77,7 @@ private:
 	uint32_t textureHandleHighNumber_[10] = {0u, 0u, 0u, 0u, 0u,
 	                                         0u, 0u, 0u, 0u, 0u}; // テクスチャハンドル
 
-	int32_t highScore_ = 100; // ハイスコア
+	int32_t highScore_ = 0; // ハイスコア
 	int32_t highScoreLast_ = highScore_; // ハイスコア
 
 	int32_t eachHighNumber_[5] = {0}; // 画像の割り当て

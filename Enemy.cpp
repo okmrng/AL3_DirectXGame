@@ -21,7 +21,15 @@ void Enemy::Initialize(
 	velocity_ = velocity;
 	misalignment_ = misalignment;
 
+	phase_ = Phase::Approach;
 	toLeaveTimer_ = toLeaveTimer;
+
+	player_ = nullptr; 
+	gameScene_ = nullptr;
+
+	deathTimer_ = 300;
+
+	isDead_ = false;
 
 	// 接近フェーズ初期化
 	ApproachInitialize();

@@ -99,9 +99,9 @@ public: // メンバ関数
 	void AddHitBullet(Vector3 pos, uint32_t textureHandle);
 
 	/// <summary>
-	/// 敵発生データの読み込み
+	/// データの読み込み
 	/// </summary>
-	void LoadEnemyPopData();
+	void LoadData(const std::string& filename, std::stringstream& targetStream);
 
 	/// <summary>
 	/// 敵発生コマンドの更新
@@ -124,14 +124,11 @@ public: // メンバ関数
 	void UpdateEnemyMovePopComands();
 
 	/// <summary>
-	/// レールカメラデータの読み込み
-	/// </summary>
-	void LoadRailCamera();
-
-	/// <summary>
 	/// レールカメラのコマンドの更新
 	/// </summary>
 	void UpdateRailCameraComands();
+
+	//void fileHead(std::stringstream ss);
 
 	// ゲッター
 	bool GetToTitle() { return toTitle_; }
@@ -198,7 +195,7 @@ private: // メンバ変数
 	bool asItIs_; // 変化なしフラグ
 	int32_t asItIsTimer_; // 次変化起こすまでの時間
 
-	int32_t count_ = 0; // 13600; // ゲームカウント
+	int32_t count_ = 13600; // 13600; // ゲームカウント
 
 	bool toTitle_ = false; // タイトルへ
 };

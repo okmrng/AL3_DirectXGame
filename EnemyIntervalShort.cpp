@@ -23,6 +23,8 @@ void EnemyIntervalShort::Initialize(
 
 	toLeaveTimer_ = toLeaveTimer;
 
+	isDead_ = false;
+
 	// 接近フェーズ初期化
 	ApproachInitialize();
 }

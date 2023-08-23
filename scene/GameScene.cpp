@@ -53,7 +53,17 @@ void GameScene::Initialize() {
 	player_->Initialize(model_);
 
 	// 敵発生
-	LoadEnemyPopData();
+	// 通常の敵
+	LoadData("Resources/script/enemyData.csv", enemyPopComands);
+
+	// 発射間隔が短い敵
+	LoadData("Resources/script/enemyIntervalShortData.csv", enemyIntervalShortPopComands);
+
+	// 強い敵
+	LoadData("Resources/script/enemyStrongData.csv", enemyStrongPopComands);
+
+	// 動く敵
+	LoadData("Resources/script/enemyMoveData.csv", enemyMovePopComands);
 
 	// 天球
 	skydome_ = new Skydome();
@@ -69,7 +79,7 @@ void GameScene::Initialize() {
 		bullet->Set(&railCamera_->GetWorldTransform());
 	}
 	
-	LoadRailCamera();
+	LoadData("Resources/script/railCameraData.csv", railCameraComands);
 
 	// ゴール
 	goal_ = new Goal();
@@ -80,6 +90,16 @@ void GameScene::Initialize() {
 	// スコア
 	score_ = new Score();
 	score_->Initialize();
+
+	count_ = 13600;
+
+	enemyWaitTimer_ = 0;
+	enemyIntervalShortWaitTimer_ = 0;
+	enemyStrongWaitTimer_ = 0;
+	enemyMoveWaitTimer_ = 0;
+	asItIsTimer_ = 0;
+
+	toTitle_ = false;
 
 	// デバッグカメラ生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
@@ -227,6 +247,7 @@ void GameScene::Update() {
 		// ゴール
 		goal_->Update();
 
+		// タイトルへ
 		if (goal_->GetToTitle()) {
 			toTitle_ = true;
 		}
@@ -251,6 +272,14 @@ void GameScene::Update() {
 		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 		viewProjection_.TransferMatrix();
 	}
+
+	ImGui::Begin("waitTimer");
+	ImGui::Text("enemy             :%d", enemyWaitTimer_);
+	ImGui::Text("enemyIntervalShort:%d", enemyIntervalShortWaitTimer_);
+	ImGui::Text("enemyStrong       :%d", enemyStrongWaitTimer_);
+	ImGui::Text("enemyMove         :%d", enemyMoveWaitTimer_);
+	ImGui::Text("railCamera        :%d", asItIsTimer_);
+	ImGui::End();
 }
 
 void GameScene::CheckAllCollisions() { 
@@ -888,50 +917,30 @@ void GameScene::AddHitBullet(Vector3 pos, uint32_t textureHandle) {
 	hitBullet_.push_back(obj);
 }
 
-void GameScene::LoadEnemyPopData() {
+void GameScene::LoadData(const std::string& filename, std::stringstream& targetStream) {
 	std::ifstream file;
-	// 通常の敵
 	// ファイルを開く
-	file.open("Resources/script/enemyData.csv");
+	file.open(filename);
 	assert(file.is_open());
 
 	// ファイルの内容を文字列ストリームにコピー
-	enemyPopComands << file.rdbuf();
+	// 文字列ストリームをクリア
+	targetStream.str("");
+	targetStream << file.rdbuf();
 
 	// ファイルを閉じる
 	file.close();
 
-	// 発射間隔が短い敵
-	file.open("Resources/script/enemyIntervalShortData.csv");
+	// ファイルを再度開いてポインタを先頭に戻す
+	file.open(filename);
 	assert(file.is_open());
 
-	// ファイルの内容を文字列ストリームにコピー
-	enemyIntervalShortPopComands << file.rdbuf();
-
-	// ファイルを閉じる
-	file.close();
-
-	// 強い敵
-	// ファイルを開く
-	file.open("Resources/script/enemyStrongData.csv");
-	assert(file.is_open());
-
-	// ファイルの内容を文字列ストリームにコピー
-	enemyStrongPopComands << file.rdbuf();
-
-	// ファイルを閉じる
-	file.close();
-
-	// 動く敵
-	// ファイルを開く
-	file.open("Resources/script/enemyMoveData.csv");
-	assert(file.is_open());
-
-	// ファイルの内容を文字列ストリームにコピー
-	enemyMovePopComands << file.rdbuf();
-
-	// ファイルを閉じる
-	file.close();
+	// エラーフラグをクリア
+	file.clear();
+	// ファイルポインタを先頭に戻す
+	file.seekg(0, std::ios::beg); 
+	// 再度ファイルを閉じる
+	file.close();                 
 }
 
 void GameScene::UpdateEnemyPopComands() {
@@ -1017,11 +1026,11 @@ void GameScene::UpdateEnemyPopComands() {
 			getline(line_stream, word, ',');
 
 			// 待ち時間
-			int32_t waitTime = atoi(word.c_str());
+			int32_t waitTime_ = atoi(word.c_str());
 
 			// 待機開始
 			enemyIsWait_ = true;
-			enemyWaitTimer_ = waitTime;
+			enemyWaitTimer_ = waitTime_;
 
 			// コマンドループを抜ける
 			break;
@@ -1113,11 +1122,11 @@ void GameScene::UpdateEnemyIntervalShortPopComands() {
 			getline(line_stream, word, ',');
 
 			// 待ち時間
-			int32_t waitTime = atoi(word.c_str());
+			int32_t waitTime_ = atoi(word.c_str());
 
 			// 待機開始
 			enemyIntervalShortIsWait_ = true;
-			enemyIntervalShortWaitTimer_ = waitTime;
+			enemyIntervalShortWaitTimer_ = waitTime_;
 
 			// コマンドループを抜ける
 			break;
@@ -1329,19 +1338,6 @@ void GameScene::UpdateEnemyMovePopComands() {
 			break;
 		}
 	}
-}
-
-void GameScene::LoadRailCamera() {
-	// ファイルを開く
-	std::ifstream file;
-	file.open("Resources/script/railCameraData.csv");
-	assert(file.is_open());
-
-	// ファイルの内容を文字列ストリームにコピー
-	railCameraComands << file.rdbuf();
-
-	// ファイルを閉じる
-	file.close();
 }
 
 void GameScene::UpdateRailCameraComands() {

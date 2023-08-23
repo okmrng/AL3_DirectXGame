@@ -89,6 +89,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		input->Update();
 		// タイトルの毎フレーム処理
 		if (scene == Scene::TITLE) {
+			gameScene->Initialize();
 			title->Update();
 			// タイトルからの遷移
 			// メインゲームへ
@@ -100,6 +101,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		if (scene == Scene::MAINGAME) {
 			gameScene->Update();
 			if (gameScene->GetToTitle()) {
+				title->Initialize();
 				scene = Scene::TITLE;
 			}
 		}

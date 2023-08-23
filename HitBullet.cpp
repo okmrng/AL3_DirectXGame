@@ -14,6 +14,9 @@ void HitBullet::Initialize(Vector3 position, Model* model, uint32_t textureHandl
 		worldTransform_[i].translation_ = position;
 		worldTransform_[i].scale_ = {0.1f, 0.1f, 0.1f};
 	}
+
+	count_ = 15;     // デスまでのカウント
+	isDead_ = false; // デス
 }
 
 void HitBullet::Update() {

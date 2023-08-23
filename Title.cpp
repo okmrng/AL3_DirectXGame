@@ -23,6 +23,8 @@ void Title::Initialize() {
 	// キー
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
+
+	toNext_ = false;
 }
 
 void Title::Update() {

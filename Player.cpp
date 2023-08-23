@@ -37,6 +37,9 @@ void Player::Initialize(Model* model) {
 	uint32_t textureReticle = TextureManager::Load("sprite/target.png");
 	// スプライト生成
 	spriteReticle_ = Sprite::Create(textureReticle, {640, 360}, {1, 1, 1, 1}, {0.5f, 0.5f});
+
+	// ボムフラグ
+	canBomb_ = true;
 }
 
 void Player::Update(ViewProjection& viewProjection) {

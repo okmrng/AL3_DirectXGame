@@ -12,6 +12,9 @@ void Goal::Initialize(Model* model) {
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = {0.0f, 25.0f, 50.0f};
 
+	// 衝突フラグ
+	isHit_ = false;
+
 	// UI
 	// ワールド変換初期化
 	worldTransformClear_.Initialize();
@@ -25,9 +28,18 @@ void Goal::Initialize(Model* model) {
 	    Vector2(worldTransformClear_.translation_.x, worldTransformClear_.translation_.y),
 	    {1, 1, 1, 1}, {0.0f, 0.0f});
 
+	// ハイスコア描画フラグ
+	drawHighScore_ = false;
+
 	// キー
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
+
+	// タイトルへ
+	toTitle_ = false;
+
+	// 連続押し棒氏
+	triggerCount_ = 5;
 }
 
 void Goal::Update() {

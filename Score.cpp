@@ -50,6 +50,13 @@ void Score::Initialize() {
 		    {1, 1, 1, 1}, {0.0f, 0.0f});
 	}
 
+	// スコア
+	score_ = 0;
+	subtractScore_ = 50;
+	add_ = false;
+
+	number_ = score_; 
+
 	// HIGHSCORE
 	// ワールド変換
 	worldTransformHigh_.Initialize();
@@ -102,6 +109,8 @@ void Score::Initialize() {
 	    Vector2{
 	        worldTransformScoreUpdate_.translation_.x, worldTransformScoreUpdate_.translation_.y},
 	    {1, 1, 1, 1}, {0.0f, 0.0f});
+
+	isScoreUpdate = false;
 }
 
 void Score::Update() {
