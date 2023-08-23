@@ -55,4 +55,6 @@ private:
 	Sprite* sprite_title_bg = nullptr;    // 背景のスプライト
 									      
 	bool toNext_ = false;                 // 次のシーンへ遷移するフラグ
+
+	uint32_t soundDataHandle_ = 0u; // サウンドデータハンドル
 };

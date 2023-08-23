@@ -12,6 +12,7 @@ void Title::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+	audio_->Initialize();
 
 	// 背景
 	// テクスチャ読み込み
@@ -25,11 +26,20 @@ void Title::Initialize() {
 	input_ = Input::GetInstance();
 
 	toNext_ = false;
+
+	// BGM
+	soundDataHandle_ = audio_->LoadWave("bgm/title.wav");
 }
 
 void Title::Update() {
+	// BGM再生
+	if (!audio_->IsPlaying(soundDataHandle_)) {
+		audio_->PlayWave(soundDataHandle_, false, 0.3f);
+	}
+
 	// スペースキーが押されたらメインゲームへ
 	if (input_->TriggerKey(DIK_SPACE)) {
+		audio_->StopWave(soundDataHandle_);
 		toNext_ = true;
 	}
 }

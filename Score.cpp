@@ -100,6 +100,8 @@ void Score::DrawUI(bool drawHighScore) {
 	for (int32_t i = 0; i < 5; i++) {
 		spriteNumber_[i]->Draw();
 	}
+
+	drawHighScore = true;
 }
 
 void Score::AddScore50() { score_ += 50; }

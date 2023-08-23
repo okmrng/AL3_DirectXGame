@@ -91,7 +91,7 @@ void GameScene::Initialize() {
 	score_ = new Score();
 	score_->Initialize();
 
-	count_ = 13600;
+	count_ = 0;
 
 	enemyWaitTimer_ = 0;
 	enemyIntervalShortWaitTimer_ = 0;

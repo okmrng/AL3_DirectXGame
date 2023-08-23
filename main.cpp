@@ -24,7 +24,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	enum class Scene {
 		TITLE,     // タイトル
 		OPERATION, // チュートリアル
-		MAINGAME   // メインゲーム
+		MAINGAME,  // メインゲーム
+		INITIALIZE // 初期化
 	};
 	Scene scene = Scene::TITLE; // シーン
 
@@ -89,7 +90,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		input->Update();
 		// タイトルの毎フレーム処理
 		if (scene == Scene::TITLE) {
-			gameScene->Initialize();
 			title->Update();
 			// タイトルからの遷移
 			// メインゲームへ
@@ -101,9 +101,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		if (scene == Scene::MAINGAME) {
 			gameScene->Update();
 			if (gameScene->GetToTitle()) {
-				title->Initialize();
-				scene = Scene::TITLE;
+				scene = Scene::INITIALIZE;
 			}
+		}
+		// 初期化
+		if (scene == Scene::INITIALIZE) {
+			title->Initialize();
+			gameScene->Initialize();
+			scene = Scene::TITLE;
 		}
 		// 軸表示の更新
 		axisIndicator->Update();
