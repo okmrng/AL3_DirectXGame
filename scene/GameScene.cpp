@@ -39,6 +39,7 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+	//audio_->Initialize();
 
 	// 3Dモデル
 	model_ = Model::Create();
@@ -91,7 +92,7 @@ void GameScene::Initialize() {
 	score_ = new Score();
 	score_->Initialize();
 
-	count_ = 0;
+	count_ = 13600;
 
 	enemyWaitTimer_ = 0;
 	enemyIntervalShortWaitTimer_ = 0;
@@ -103,6 +104,17 @@ void GameScene::Initialize() {
 
 	// デバッグカメラ生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
+
+	// BGM
+	// 通常
+	soundDataHandleNormal_ = audio_->LoadWave("bgm/mainGameNormal.wav");
+
+	volumeNormal_ = 0.3f;
+
+	// ボス
+	soundDataHandleBoss_ = audio_->LoadWave("bgm/mainGameBoss.wav");
+
+	volumeBoss_ = 0.3f;
 }
 
 void GameScene::Update() {
@@ -242,13 +254,55 @@ void GameScene::Update() {
 		railCamera_->Update();
 		viewProjection_.matView = railCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+
+		// BGM
+		// 再生
+		if (!audio_->IsPlaying(soundDataHandleNormal_)) {
+			audio_->PlayWave(soundDataHandleNormal_, true, volumeNormal_);
+		}
+		
+		if (count_ <= 7700) {
+			// 音量フェードアウト
+			if (volumeNormal_ >= 0.0f) {
+				volumeNormal_ -= 0.001f;
+			}
+			if (volumeNormal_ <= 0.0f) {
+				// BGM停止
+				volumeNormal_ = 0.0f;				
+			}
+		}
+		// 音量セット
+		audio_->SetVolume(soundDataHandleNormal_, volumeNormal_);
+
+		// BGM切り替え
+		if (count_ <= 7380) {
+			if (!audio_->IsPlaying(soundDataHandleBoss_)) {
+				audio_->PlayWave(soundDataHandleBoss_, true, volumeBoss_);
+			}
+		}
+
+		if (count_ <= 300) {
+			// 音量フェードアウト
+			if (volumeBoss_ >= 0.0f) {
+				volumeBoss_ -= 0.001f;
+			}
+			if (volumeBoss_ <= 0.0f) {
+				// BGM停止
+				volumeBoss_ = 0.0f;
+			}
+		}
+		// 音量セット
+		audio_->SetVolume(soundDataHandleBoss_, volumeBoss_);
 	}
 	if (count_ <= 0) {
+
 		// ゴール
 		goal_->Update();
 
 		// タイトルへ
 		if (goal_->GetToTitle()) {
+			audio_->StopWave(soundDataHandleNormal_);
+			audio_->StopWave(soundDataHandleBoss_);
 			toTitle_ = true;
 		}
 	}
@@ -279,6 +333,7 @@ void GameScene::Update() {
 	ImGui::Text("enemyStrong       :%d", enemyStrongWaitTimer_);
 	ImGui::Text("enemyMove         :%d", enemyMoveWaitTimer_);
 	ImGui::Text("railCamera        :%d", asItIsTimer_);
+	ImGui::Text("count             :%d", count_);
 	ImGui::End();
 }
 

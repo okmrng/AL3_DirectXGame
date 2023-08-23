@@ -198,4 +198,14 @@ private: // メンバ変数
 	int32_t count_ = 13600; // 13600; // ゲームカウント
 
 	bool toTitle_ = false; // タイトルへ
+
+	// BGM
+	// 通常時
+	uint32_t soundDataHandleNormal_ = 0u; // サウンドデータハンドル
+
+	float volumeNormal_ = 0.3f; // 音量
+
+	uint32_t soundDataHandleBoss_ = 0u; // サウンドデータハンドル
+
+	float volumeBoss_ = 0.3f; // 音量
 };

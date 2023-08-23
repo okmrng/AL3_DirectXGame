@@ -21,10 +21,6 @@ void Title::Initialize() {
 	// スプライト生成
 	sprite_title_bg = Sprite::Create(textureHandle_title_bg, {0.0f, 0.0f});
 
-	// キー
-	// シングルトンインスタンスを取得する
-	input_ = Input::GetInstance();
-
 	toNext_ = false;
 
 	// BGM
@@ -34,7 +30,7 @@ void Title::Initialize() {
 void Title::Update() {
 	// BGM再生
 	if (!audio_->IsPlaying(soundDataHandle_)) {
-		audio_->PlayWave(soundDataHandle_, false, 0.3f);
+		audio_->PlayWave(soundDataHandle_, true, 0.3f);
 	}
 
 	// スペースキーが押されたらメインゲームへ
