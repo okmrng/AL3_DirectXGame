@@ -69,23 +69,43 @@ void Score::Initialize() {
 	// スプライト生成
 	spriteS_ = Sprite::Create(textureS_, {470, 370}, {1, 1, 1, 1}, {0.0f, 0.0f});
 
+	// サウンド読み込み
+	soundS_ = audio_->LoadWave("se/s.wav");
+	voiceS_ = 0u;
+	stopCountS_ = 120;
+
 	// テクスチャ読み込み
 	textureA_ = TextureManager::Load("sprite/a.png");
 	// スプライト生成
 	spriteA_ = Sprite::Create(textureA_, {470, 370}, {1, 1, 1, 1}, {0.0f, 0.0f});
+
+	// サウンド読み込み
+	soundA_ = audio_->LoadWave("se/a.wav");
+	voiceA_ = 0u;
+	stopCountA_ = 60;
 
 	// テクスチャ読み込み
 	textureB_ = TextureManager::Load("sprite/b.png");
 	// スプライト生成
 	spriteB_ = Sprite::Create(textureB_, {520, 390}, {1, 1, 1, 1}, {0.0f, 0.0f});
 
+	// サウンド読み込み
+	soundB_ = audio_->LoadWave("se/b.wav");
+	voiceB_ = 0u;
+	stopCountB_ = 60;
+
 	// テクスチャ読み込み
 	textureC_ = TextureManager::Load("sprite/c.png");
 	// スプライト生成
 	spriteC_ = Sprite::Create(textureC_, {520, 430}, {1, 1, 1, 1}, {0.0f, 0.0f});
+
+	// サウンド読み込み
+	soundC_ = audio_->LoadWave("se/c.wav");
+	voiceC_ = 0u;
+	stopCountC_ = 60;
 }
 
-void Score::Update() {
+void Score::Update(bool playSound) {
 	// スコア
 	// 画像割り当て
 	eachNumber_[0] = number_ / 10000;
@@ -120,6 +140,47 @@ void Score::Update() {
 
 	for (int32_t i = 0; i < 5; i++) {
 		spriteNumber_[i]->SetTextureHandle(textureHandleNumber_[eachNumber_[i]]);
+	}
+
+	// ランクに応じてSEを再生
+	if (playSound) {
+		--stopCountS_;
+		--stopCountA_;
+		--stopCountB_;
+		--stopCountC_;
+
+		if (score_ >= 90000) {
+			if (!audio_->IsPlaying(voiceS_)) {
+				voiceS_ = audio_->PlayWave(soundS_);
+			}
+			if (stopCountS_ <= 0) {
+				audio_->StopWave(voiceS_);
+			}
+		}
+		if (score_ >= 80000 && score_ < 90000) {
+			if (!audio_->IsPlaying(voiceA_)) {
+				voiceA_ = audio_->PlayWave(soundA_);
+			}
+			if (stopCountA_ <= 0) {
+				audio_->StopWave(voiceA_);
+			}
+		}
+		if (score_ >= 70000 && score_ < 80000) {
+			if (!audio_->IsPlaying(voiceB_)) {
+				voiceB_ = audio_->PlayWave(soundB_);
+			}
+			if (stopCountB_ <= 0) {
+				audio_->StopWave(voiceB_);
+			}
+		}
+		if (score_ < 70000) {
+			if (!audio_->IsPlaying(voiceC_)) {
+				voiceC_ = audio_->PlayWave(soundC_,true);
+			}
+			if (stopCountC_<=0) {
+				audio_->StopWave(voiceC_);
+			}
+		}
 	}
 }
 

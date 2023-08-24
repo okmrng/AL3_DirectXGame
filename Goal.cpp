@@ -33,8 +33,8 @@ void Goal::Initialize(Model* model) {
 	    Vector2(worldTransformClear_.translation_.x, worldTransformClear_.translation_.y),
 	    {1, 1, 1, 1}, {0.0f, 0.0f});
 
-	// ハイスコア描画フラグ
-	drawHighScore_ = false;
+	// ランク描画フラグ
+	rank_ = false;
 
 	// キー
 	// シングルトンインスタンスを取得する
@@ -75,10 +75,10 @@ void Goal::Update() {
 		worldTransformClear_.translation_.x = 1.0f;
 
 		if (input_->TriggerKey(DIK_SPACE)) {
-			drawHighScore_ = true;
+			rank_ = true;
 		}
 
-		if (drawHighScore_) {
+		if (rank_) {
 			triggerCount_--;
 			if (triggerCount_ <= 0) {
 				if (input_->TriggerKey(DIK_SPACE)) {

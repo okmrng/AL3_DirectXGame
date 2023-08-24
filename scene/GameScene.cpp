@@ -235,9 +235,6 @@ void GameScene::Update() {
 		// 天球の更新
 		skydome_->Update();
 
-		// スコアの更新
-		score_->Update();
-
 		// 弾が当たった時のエフェクトの更新
 		for (HitBullet* hitBullet : hitBullet_) {
 			hitBullet->Update();
@@ -296,6 +293,10 @@ void GameScene::Update() {
 		// 音量セット
 		audio_->SetVolume(voiceBoss_, volumeBoss_);
 	}
+
+	// スコアの更新
+	score_->Update(goal_->GetRank());
+
 	if (count_ <= 0) {
 
 		// ゴール
@@ -882,7 +883,7 @@ void GameScene::Draw() {
 	}
 
 	// スコア
-	score_->DrawUI(goal_->GetDrawHighScore());
+	score_->DrawUI(goal_->GetRank());
 
 	/// </summary>
 

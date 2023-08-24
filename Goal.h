@@ -53,7 +53,7 @@ public:
 	/// </summary>
 	bool GetIsHit() { return isHit_; }
 
-	bool GetDrawHighScore() { return drawHighScore_; }
+	bool GetRank() { return rank_; }
 
 	bool GetToTitle() { return toTitle_; }
 
@@ -84,7 +84,7 @@ private:
 
 	WorldTransform worldTransformClear_; // ワールド変換
 
-	bool drawHighScore_ = false; // ハイスコア描画フラグ
+	bool rank_ = false; // ランクフラグ
 
 	Input* input_;
 

@@ -24,7 +24,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(bool playSound);
 
 	/// <summary>
 	/// UI描画
@@ -77,12 +77,28 @@ private:
 	Sprite* spriteS_ = nullptr; // Sスプライト
 	uint32_t textureS_ = 0u;    // Sテクスチャ
 
+	uint32_t soundS_ = 0u;     // Sのサウンドハンドル
+	uint32_t voiceS_ = 0u;     // Sの再生ハンドル
+	int32_t stopCountS_ = 120; // 停止カウント
+
 	Sprite* spriteA_ = nullptr; // Aスプライト
 	uint32_t textureA_ = 0u;    // Aテクスチャ
+
+	uint32_t soundA_ = 0u;    // Aのサウンドハンドル
+	uint32_t voiceA_ = 0u;    // Aの再生ハンドル
+	int32_t stopCountA_ = 60; // 停止カウント
 
 	Sprite* spriteB_ = nullptr; // Bスプライト
 	uint32_t textureB_ = 0u;    // Bテクスチャ
 
+	uint32_t soundB_ = 0u;    // Bのサウンドハンドル
+	uint32_t voiceB_ = 0u;    // Bの再生ハンドル
+	int32_t stopCountB_ = 60; // 停止カウント
+
 	Sprite* spriteC_ = nullptr; // Cスプライト
 	uint32_t textureC_ = 0u;    // Cテクスチャ
+
+	uint32_t soundC_ = 0u;   // Cのサウンドハンドル
+	uint32_t voiceC_ = 0u;   // Cの再生ハンドル
+	int32_t stopCountC_ = 60; // 停止カウント
 };
