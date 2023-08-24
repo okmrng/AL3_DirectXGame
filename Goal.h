@@ -5,6 +5,7 @@
 #include <Sprite.h>
 #include "MathUtility.h"
 #include <Input.h>
+#include "Audio.h"
 
 /// <summary>
 /// ゴール
@@ -63,6 +64,8 @@ public:
 	void SetParent(const WorldTransform* parent);
 
 private:
+	Audio* audio_ = nullptr;
+
 	// 本体
 	Model* model_ = nullptr;      // モデル
 	uint32_t textureHandle_ = 0u; // テクスチャハンドル
@@ -71,6 +74,9 @@ private:
 	float radius_ = 1.0f;           // 半径
 
 	bool isHit_ = false; // 衝突フラグ
+
+	uint32_t soundGoal_ = 0u; // サウンドハンドル
+	uint32_t voiceGoal_ = 0u; // 再生ハンドル
 
 	// UI
 	Sprite* spriteClear_ = nullptr;          // スプライト

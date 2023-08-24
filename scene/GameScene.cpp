@@ -92,7 +92,7 @@ void GameScene::Initialize() {
 	score_ = new Score();
 	score_->Initialize();
 
-	count_ = 13600;
+	count_ = 0;
 
 	enemyWaitTimer_ = 0;
 	enemyIntervalShortWaitTimer_ = 0;
@@ -786,6 +786,8 @@ void GameScene::CheckAllCollisions() {
 			goal_->OnColision();
 			// 自弾の衝突時コールバックを呼び出す
 			bullet->OnColision();
+			// 弾が当たった時のエフェクト
+			AddHitBullet(bullet->GetWorldPositiopn(), bullet->GetTextureHandle());
 		}
 	}
 	#pragma endregion

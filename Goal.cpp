@@ -1,6 +1,8 @@
 ﻿#include "Goal.h"
 
 void Goal::Initialize(Model* model) { 
+	audio_ = Audio::GetInstance();
+
 	// 本体
 	// モデルをセット
 	assert(model); 
@@ -14,6 +16,9 @@ void Goal::Initialize(Model* model) {
 
 	// 衝突フラグ
 	isHit_ = false;
+
+	soundGoal_ = audio_->LoadWave("se/goal.wav");
+	voiceGoal_ = 0u;
 
 	// UI
 	// ワールド変換初期化
@@ -98,7 +103,14 @@ void Goal::DrawUI() {
 	spriteClear_->Draw();
 }
 
-void Goal::OnColision() { isHit_ = true; }
+void Goal::OnColision() { 
+	// SE再生
+	if (!audio_->IsPlaying(voiceGoal_)) {
+		voiceGoal_ = audio_->PlayWave(soundGoal_);
+	}
+
+	isHit_ = true; 
+}
 
 Vector3 Goal::GetWorldPositiopn() {
 	// ワールド座標を入れる変数
