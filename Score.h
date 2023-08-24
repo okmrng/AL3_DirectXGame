@@ -4,6 +4,7 @@
 #include <Sprite.h>
 #include <TextureManager.h>
 #include <ImGuiManager.h>
+#include <Audio.h>
 
 /// <summary>
 /// スコア
@@ -43,6 +44,8 @@ public:
 	void SubtractScore();
 
 private:
+	Audio* audio_ = nullptr;
+
 	// SCORE
 	WorldTransform worldTransform_; // ワールド変換
 
@@ -63,4 +66,7 @@ private:
 
 	int32_t eachNumber_[5] = {0}; // 画像の割り当て
 	int32_t number_ = score_;     // スコアの値で画像を割り当てる
+
+	uint32_t soundDamage_ = 0u; // ダメージを受けた時のサウンドハンドル
+	uint32_t voiceDamage_ = 0u; // ダメージを受けた時の再生ハンドル
 };

@@ -202,10 +202,12 @@ private: // メンバ変数
 	// BGM
 	// 通常時
 	uint32_t soundDataHandleNormal_ = 0u; // サウンドデータハンドル
+	uint32_t voiceNormal_ = 0u;           // 再生ハンドル
 
-	float volumeNormal_ = 0.3f; // 音量
+	float volumeNormal_ = 0.2f; // 音量
 
 	uint32_t soundDataHandleBoss_ = 0u; // サウンドデータハンドル
+	uint32_t voiceBoss_ = 0u;           // 再生ハンドル
 
-	float volumeBoss_ = 0.3f; // 音量
+	float volumeBoss_ = 0.2f; // 音量
 };

@@ -10,6 +10,7 @@
 #include <cassert>
 #include "ImGuiManager.h"
 #include "MathUtility.h"
+#include "Audio.h"
 
 // 前方宣言
 class RailCamera;
@@ -108,6 +109,8 @@ public:
 	void SetMisalignment(Vector3 misalignment) { misalignment_ = misalignment; }
 
 private:
+	Audio* audio_ = nullptr;
+
 	// 自機
 	WorldTransform worldTransform_;            // ワールド変換データ
 
@@ -134,6 +137,11 @@ private:
 
 	Sprite* spriteBombIcon_ = nullptr; // ボムのアイコンのスプライト
 	uint32_t textureBombIcon_ = 0u;    // ボムのアイコンのテクスチャハンドル
+
+	uint32_t soundBombIcon_ = 0u; // サウンドハンドル
+	int32_t stopCount_ = 60;      // 音声を止めるまでのカウント
+	uint32_t voiceBombIcon_ = 0u; // 音声再生ハンドル
+	float volumeBombIcon_ = 1.0f; // 音量
 											   
 	const float radius_ = 1.0f;                // 半径
 											   

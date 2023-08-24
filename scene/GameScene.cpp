@@ -108,13 +108,15 @@ void GameScene::Initialize() {
 	// BGM
 	// 通常
 	soundDataHandleNormal_ = audio_->LoadWave("bgm/mainGameNormal.wav");
+	voiceNormal_ = 0u;
 
-	volumeNormal_ = 0.3f;
+	volumeNormal_ = 0.2f;
 
 	// ボス
 	soundDataHandleBoss_ = audio_->LoadWave("bgm/mainGameBoss.wav");
+	voiceBoss_ = 0u;
 
-	volumeBoss_ = 0.3f;
+	volumeBoss_ = 0.2f;
 }
 
 void GameScene::Update() {
@@ -257,8 +259,8 @@ void GameScene::Update() {
 
 		// BGM
 		// 再生
-		if (!audio_->IsPlaying(soundDataHandleNormal_)) {
-			audio_->PlayWave(soundDataHandleNormal_, true, volumeNormal_);
+		if (!audio_->IsPlaying(voiceNormal_)) {
+			voiceNormal_ = audio_->PlayWave(soundDataHandleNormal_, true, volumeNormal_);
 		}
 		
 		if (count_ <= 7700) {
@@ -272,12 +274,12 @@ void GameScene::Update() {
 			}
 		}
 		// 音量セット
-		audio_->SetVolume(soundDataHandleNormal_, volumeNormal_);
+		audio_->SetVolume(voiceNormal_, volumeNormal_);
 
 		// BGM切り替え
 		if (count_ <= 7380) {
-			if (!audio_->IsPlaying(soundDataHandleBoss_)) {
-				audio_->PlayWave(soundDataHandleBoss_, true, volumeBoss_);
+			if (!audio_->IsPlaying(voiceBoss_)) {
+				voiceBoss_ = audio_->PlayWave(soundDataHandleBoss_, true, volumeBoss_);
 			}
 		}
 
@@ -292,7 +294,7 @@ void GameScene::Update() {
 			}
 		}
 		// 音量セット
-		audio_->SetVolume(soundDataHandleBoss_, volumeBoss_);
+		audio_->SetVolume(voiceBoss_, volumeBoss_);
 	}
 	if (count_ <= 0) {
 
@@ -301,8 +303,8 @@ void GameScene::Update() {
 
 		// タイトルへ
 		if (goal_->GetToTitle()) {
-			audio_->StopWave(soundDataHandleNormal_);
-			audio_->StopWave(soundDataHandleBoss_);
+			audio_->StopWave(voiceNormal_);
+			audio_->StopWave(voiceBoss_);
 			toTitle_ = true;
 		}
 	}

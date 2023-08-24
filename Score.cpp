@@ -8,6 +8,8 @@ Score::~Score() {
 }
 
 void Score::Initialize() {
+	audio_ = Audio::GetInstance();
+
 	// SCORE
 	// ワールド変換
 	worldTransform_.Initialize();
@@ -52,6 +54,9 @@ void Score::Initialize() {
 	add_ = false;
 
 	number_ = score_; 
+
+	soundDamage_ = audio_->LoadWave("se/damage.wav");
+	voiceDamage_ = 0u;
 }
 
 void Score::Update() {
@@ -115,4 +120,7 @@ void Score::AddScore() { score_++; }
 void Score::SubtractScore() {
 	score_ -= subtractScore_;
 	add_ = true;
+	if (!audio_->IsPlaying(voiceDamage_)) {
+		voiceDamage_ = audio_->PlayWave(soundDamage_);
+	}
 }

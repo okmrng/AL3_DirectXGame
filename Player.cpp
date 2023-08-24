@@ -11,6 +11,8 @@ Player::~Player() {
 }
 
 void Player::Initialize(Model* model) {
+	audio_ = Audio::GetInstance();
+
 	// 自機
 	// NULLポインタチェック
 	assert(model);
@@ -47,6 +49,12 @@ void Player::Initialize(Model* model) {
 	// スプライト生成
 	spriteBombIcon_ = Sprite::Create(textureBombIcon_, {1130, 600}, {1, 1, 1, 1}, {0.0f, 0.0f});
 	spriteBombIcon_->SetSize({130,100});
+
+	// SE
+	soundBombIcon_ = audio_->LoadWave("se/bombIcon.wav");
+	stopCount_ = 60;
+	voiceBombIcon_ = 0u;
+	volumeBombIcon_ = 1.0f;
 }
 
 void Player::Update(ViewProjection& viewProjection) {
@@ -123,10 +131,31 @@ void Player::Update(ViewProjection& viewProjection) {
 
 	// ボムクールタイム
 	if (canBomb_ == false) {
+		stopCount_ = 60;
 		if (--bombTimer_ <= 0) {
+			volumeBombIcon_ = 1.0f;
 			canBomb_ = true;
 		}
 	}
+
+	if (canBomb_) {
+		--stopCount_;
+		if (stopCount_ > 0) {
+			// ボムアイコンのSE再生
+			if (!audio_->IsPlaying(voiceBombIcon_)) {
+				voiceBombIcon_ = audio_->PlayWave(soundBombIcon_);
+			}
+		}
+		else if (stopCount_ <= 0) {
+			// 停止
+			volumeBombIcon_ = 0.0f;
+		}
+	}
+	audio_->SetVolume(voiceBombIcon_, volumeBombIcon_);
+
+	ImGui::Begin("stopCount");
+	ImGui::Text("%d", stopCount_);
+	ImGui::End();
 
 	// マウスカーソルのスクリーン座標からワールド座標を取得して2Dレティクル配置
 	UpdateReticle(viewProjection);

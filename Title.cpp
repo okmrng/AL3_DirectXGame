@@ -30,7 +30,7 @@ void Title::Initialize() {
 void Title::Update() {
 	// BGM再生
 	if (!audio_->IsPlaying(soundDataHandle_)) {
-		audio_->PlayWave(soundDataHandle_, true, 0.3f);
+		audio_->PlayWave(soundDataHandle_, true, 0.2f);
 	}
 
 	// スペースキーが押されたらメインゲームへ
