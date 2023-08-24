@@ -23,7 +23,7 @@ void Goal::Initialize(Model* model) {
 	// UI
 	// ワールド変換初期化
 	worldTransformClear_.Initialize();
-	worldTransformClear_.translation_ = {1400.0f, 150.0f, 0.0f};
+	worldTransformClear_.translation_ = {1400.0f, 100.0f, 0.0f};
 
 	// テクスチャ読み込み
 	textureHandleClear_ = TextureManager::Load("sprite/clear.png");

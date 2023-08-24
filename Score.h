@@ -29,7 +29,7 @@ public:
 	/// <summary>
 	/// UI描画
 	/// </summary>
-	void DrawUI(bool drawHighScore);
+	void DrawUI(bool drawRank);
 
 	// スコア獲得
 	void AddScore50();
@@ -69,4 +69,20 @@ private:
 
 	uint32_t soundDamage_ = 0u; // ダメージを受けた時のサウンドハンドル
 	uint32_t voiceDamage_ = 0u; // ダメージを受けた時の再生ハンドル
+
+	// ランク
+	Sprite* spriteRank_ = nullptr; // RANKスプライト
+	uint32_t textureRank_ = 0u;    // RANKテクスチャ
+
+	Sprite* spriteS_ = nullptr; // Sスプライト
+	uint32_t textureS_ = 0u;    // Sテクスチャ
+
+	Sprite* spriteA_ = nullptr; // Aスプライト
+	uint32_t textureA_ = 0u;    // Aテクスチャ
+
+	Sprite* spriteB_ = nullptr; // Bスプライト
+	uint32_t textureB_ = 0u;    // Bテクスチャ
+
+	Sprite* spriteC_ = nullptr; // Cスプライト
+	uint32_t textureC_ = 0u;    // Cテクスチャ
 };

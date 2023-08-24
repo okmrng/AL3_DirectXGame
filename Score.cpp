@@ -57,6 +57,32 @@ void Score::Initialize() {
 
 	soundDamage_ = audio_->LoadWave("se/damage.wav");
 	voiceDamage_ = 0u;
+
+	// ランク
+	// テクスチャ読み込み
+	textureRank_ = TextureManager::Load("sprite/rank.png");
+	// スプライト生成
+	spriteRank_ = Sprite::Create(textureRank_, {420, 430}, {1, 1, 1, 1}, {0.0f, 0.0f});
+
+	// テクスチャ読み込み
+	textureS_ = TextureManager::Load("sprite/s.png");
+	// スプライト生成
+	spriteS_ = Sprite::Create(textureS_, {470, 370}, {1, 1, 1, 1}, {0.0f, 0.0f});
+
+	// テクスチャ読み込み
+	textureA_ = TextureManager::Load("sprite/a.png");
+	// スプライト生成
+	spriteA_ = Sprite::Create(textureA_, {470, 370}, {1, 1, 1, 1}, {0.0f, 0.0f});
+
+	// テクスチャ読み込み
+	textureB_ = TextureManager::Load("sprite/b.png");
+	// スプライト生成
+	spriteB_ = Sprite::Create(textureB_, {520, 390}, {1, 1, 1, 1}, {0.0f, 0.0f});
+
+	// テクスチャ読み込み
+	textureC_ = TextureManager::Load("sprite/c.png");
+	// スプライト生成
+	spriteC_ = Sprite::Create(textureC_, {520, 430}, {1, 1, 1, 1}, {0.0f, 0.0f});
 }
 
 void Score::Update() {
@@ -97,7 +123,7 @@ void Score::Update() {
 	}
 }
 
-void Score::DrawUI(bool drawHighScore) {
+void Score::DrawUI(bool drawRank) {
 	// SCORE
 	sprite_->Draw();
 
@@ -106,7 +132,21 @@ void Score::DrawUI(bool drawHighScore) {
 		spriteNumber_[i]->Draw();
 	}
 
-	drawHighScore = true;
+	if (drawRank) {
+		if (score_ >= 90000) {
+			spriteS_->Draw();
+		}
+		if (score_ >= 80000&&score_<90000) {
+			spriteA_->Draw();
+		}
+		if (score_ >= 70000 && score_ < 80000) {
+			spriteB_->Draw();
+		}
+		if (score_ < 70000) {
+			spriteC_->Draw();
+		}
+		spriteRank_->Draw();
+	}
 }
 
 void Score::AddScore50() { score_ += 50; }
