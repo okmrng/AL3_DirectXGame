@@ -6,6 +6,8 @@
 void EnemyMove::Initialize(
     Model* model, const Vector3& position, const Vector3& velocity, const Vector3& leaveVelocity,
     Vector3 misalignment, int32_t toLeaveTimer) {
+	audio_ = Audio::GetInstance();
+
 	// NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -25,6 +27,9 @@ void EnemyMove::Initialize(
 	toLeaveTimer_ = toLeaveTimer;
 
 	isDead_ = false;
+
+	soundDamage_ = audio_->LoadWave("se/enemyDamage.wav");
+	voiceDamage_ = 0u;
 
 	// 接近フェーズ初期化
 	ApproachInitialize();
@@ -134,7 +139,14 @@ void EnemyMove::Fire() {
 	gameScene_->AddEnemyBullet(newBullet);
 }
 
-void EnemyMove::OnColision() { --HP; }
+void EnemyMove::OnColision() {
+	--HP;
+
+	// SE再生
+	if (!audio_->IsPlaying(voiceDamage_)) {
+		voiceDamage_ = audio_->PlayWave(soundDamage_);
+	}
+}
 
 void EnemyMove::SetParent(const WorldTransform* parent) {
 	// 親子関係を結ぶ

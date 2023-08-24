@@ -9,6 +9,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <cassert>
+#include "Audio.h"
 
 // 前方宣言
 class Player;
@@ -105,6 +106,8 @@ public:
 	static const int kFireInterval = 30; // 発射間隔
 
 private:
+	Audio* audio_ = nullptr;
+
 	int32_t kFireTimer = 0; // 発射タイマー
 
 	WorldTransform worldTransform_; // ワールド変換データ
@@ -140,4 +143,8 @@ private:
 	int32_t HP = 30;
 
 	RailCamera* railCamera_ = nullptr; // レールカメラ
+
+	// SE
+	uint32_t soundDamage_ = 0u; // サウンドハンドル
+	uint32_t voiceDamage_ = 0u; // 再生ハンドル
 };
