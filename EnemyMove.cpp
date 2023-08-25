@@ -12,7 +12,7 @@ void EnemyMove::Initialize(
 	assert(model);
 	model_ = model;
 	// テクスチャ読み込み
-	textureHandle_ = TextureManager::Load("model/enemy.png");
+	textureHandle_ = TextureManager::Load("model/enemyMove.png");
 
 	// ワールド変換の初期化
 	worldTransform_.Initialize();

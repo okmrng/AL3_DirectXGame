@@ -194,16 +194,16 @@ void Score::DrawUI(bool drawRank) {
 	}
 
 	if (drawRank) {
-		if (score_ >= 90000) {
+		if (score_ >= 65000) {
 			spriteS_->Draw();
 		}
-		if (score_ >= 80000&&score_<90000) {
+		if (score_ >= 60000&&score_<65000) {
 			spriteA_->Draw();
 		}
-		if (score_ >= 70000 && score_ < 80000) {
+		if (score_ >= 55000 && score_ < 60000) {
 			spriteB_->Draw();
 		}
-		if (score_ < 70000) {
+		if (score_ < 55000) {
 			spriteC_->Draw();
 		}
 		spriteRank_->Draw();
