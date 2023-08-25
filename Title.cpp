@@ -16,7 +16,7 @@ void Title::Initialize() {
 
 	// 背景
 	// テクスチャ読み込み
-	textureHandle_title_bg = TextureManager::Load("background/sprite/title.png");
+	textureHandle_title_bg = TextureManager::Load("sprite/title.png");
 
 	// スプライト生成
 	sprite_title_bg = Sprite::Create(textureHandle_title_bg, {0.0f, 0.0f});
