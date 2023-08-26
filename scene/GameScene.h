@@ -210,4 +210,9 @@ private: // メンバ変数
 	uint32_t voiceBoss_ = 0u;           // 再生ハンドル
 
 	float volumeBoss_ = 0.2f; // 音量
+
+	int32_t messageCount_ = 6901;
+
+	Sprite* spriteMessage_ = nullptr;
+	uint32_t textureMessage_ = 0u;
 };

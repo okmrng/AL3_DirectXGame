@@ -117,9 +117,15 @@ void GameScene::Initialize() {
 	voiceBoss_ = 0u;
 
 	volumeBoss_ = 0.2f;
+
+	messageCount_ = 1006900;
+
+	textureMessage_ = TextureManager::Load("sprite/message.png");
+	spriteMessage_ = Sprite::Create(textureMessage_, {500, 318}, {1, 1, 1, 1}, {0.0f, 0.0f});
 }
 
 void GameScene::Update() {
+	messageCount_--;
 	if (goal_->GetIsHit() == false) {
 		// カウント
 		--count_;
@@ -875,6 +881,10 @@ void GameScene::Draw() {
 
 	// スコア
 	score_->DrawUI(goal_->GetRank());
+
+	if (messageCount_ <= 0) {
+		spriteMessage_->Draw();
+	}
 
 	/// </summary>
 
