@@ -2,6 +2,7 @@
 #include "AxisIndicator.h"
 #include "DirectXCommon.h"
 #include "Title.h"
+#include "Explanation.h"
 #include "GameScene.h"
 #include "ImGuiManager.h"
 #include "PrimitiveDrawer.h"
@@ -18,14 +19,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	AxisIndicator* axisIndicator = nullptr;
 	PrimitiveDrawer* primitiveDrawer = nullptr;
 	Title* title = nullptr;
+	Explanation* explanation = nullptr;
 	GameScene* gameScene = nullptr;
 
 	// シーン
 	enum class Scene {
-		TITLE,     // タイトル
-		OPERATION, // チュートリアル
-		MAINGAME,  // メインゲーム
-		INITIALIZE // 初期化
+		TITLE,       // タイトル
+		EXPLANATION, // ゲーム説明
+		MAINGAME,    // メインゲーム
+		INITIALIZE   // 初期化
 	};
 	Scene scene = Scene::TITLE; // シーン
 
@@ -73,6 +75,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	title = new Title();
 	title->Initialize();
 
+	// ゲーム説明の初期化
+	explanation = new Explanation();
+	explanation->Initialize();
+
 	// ゲームシーンの初期化
 	gameScene = new GameScene();
 	gameScene->Initialize();
@@ -92,8 +98,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		if (scene == Scene::TITLE) {
 			title->Update();
 			// タイトルからの遷移
-			// メインゲームへ
+			// ゲーム説明へ
 			if (title->GetToNext()) {
+				scene = Scene::EXPLANATION;
+			}
+		}
+		// ゲーム説明の毎フレーム処理
+		if (scene == Scene::EXPLANATION) {
+			explanation->Update();
+			// ゲーム説明からの遷移
+			// メインゲームへ
+			if (explanation->GetToNext()) {
 				scene = Scene::MAINGAME;
 			}
 		}
@@ -107,6 +122,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// 初期化
 		if (scene == Scene::INITIALIZE) {
 			title->Initialize();
+			explanation->Initialize();
 			gameScene->Initialize();
 			scene = Scene::TITLE;
 		}
@@ -120,6 +136,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// タイトルの描画
 		if (scene == Scene::TITLE) {
 			title->Draw();
+		}
+		// ゲーム説明の描画
+		if (scene == Scene::EXPLANATION) {
+			explanation->Draw();
 		}
 		// ゲームシーンの描画
 		if (scene == Scene::MAINGAME) {
@@ -137,6 +157,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 各種解放
 	SafeDelete(title);
+	SafeDelete(explanation);
 	SafeDelete(gameScene);
 	audio->Finalize();
 	// ImGui解放

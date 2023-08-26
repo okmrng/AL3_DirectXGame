@@ -39,8 +39,23 @@ public:
 	/// </summary>
 	void Draw();
 
+	// ゲッター
+	bool GetToNext() { return toNext_; }
+
 private:
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+
+	// 背景
+	Sprite* sprite_ = nullptr;    // スプライト
+	uint32_t textureHandle_ = 0u; // テクスチャハンドル
+
+	// SPACE
+	Sprite* spriteSpace_ = nullptr;    // スプライト
+	uint32_t textureHandleSpace_ = 0u; // テクスチャハンドル
+
+	bool toNext_ = false; // 次のシーンへ
+
+	int32_t keyCount_ = 5; // キーカウント
 };

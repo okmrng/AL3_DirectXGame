@@ -2,15 +2,38 @@
 
 Explanation::Explanation() {}
 
-Explanation::~Explanation() {}
+Explanation::~Explanation() { delete sprite_; }
 
 void Explanation::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+	// 背景
+	// テクスチャ読み込み
+	textureHandle_ = TextureManager::Load("sprite/explanation.png");
+	// スプライト生成
+	sprite_ = Sprite::Create(textureHandle_, {0, 0}, {1, 1, 1, 1}, {0.0f, 0.0f});
+
+	// SPACE
+	// テクスチャ読み込み
+	textureHandleSpace_ = TextureManager::Load("sprite/space.png");
+	// スプライト生成
+	spriteSpace_ = Sprite::Create(textureHandleSpace_, {1134, 641}, {1, 1, 1, 1}, {0.0f, 0.0f});
+
+	toNext_ = false;
+
+	keyCount_ = 5;
 }
 
-void Explanation::Update() {}
+void Explanation::Update() {
+	keyCount_--;
+	if (keyCount_ <= 0) {
+		if (input_->TriggerKey(DIK_SPACE)) {
+			toNext_ = true;
+		}
+	}
+}
 
 void Explanation::Draw() {
 	// コマンドリストの取得
@@ -22,6 +45,7 @@ void Explanation::Draw() {
 
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
+	sprite_->Draw();
 	/// </summary>
 
 	// スプライト描画後処理
@@ -48,9 +72,11 @@ void Explanation::Draw() {
 
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
+	spriteSpace_->Draw();
 	/// </summary>
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
-#pragma endregion }
+#pragma endregion 
+}
