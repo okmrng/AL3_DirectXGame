@@ -115,6 +115,7 @@
     <ClCompile Include="EnemyIntervalShort.cpp" />
     <ClCompile Include="EnemyMove.cpp" />
     <ClCompile Include="EnemyStrong.cpp" />
+    <ClCompile Include="Explanation.cpp" />
     <ClCompile Include="Goal.cpp" />
     <ClCompile Include="HitBullet.cpp" />
     <ClCompile Include="main.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="EnemyIntervalShort.h" />
     <ClInclude Include="EnemyMove.h" />
     <ClInclude Include="EnemyStrong.h" />
+    <ClInclude Include="Explanation.h" />
     <ClInclude Include="Goal.h" />
     <ClInclude Include="HitBullet.h" />
     <ClInclude Include="input\Input.h" />
