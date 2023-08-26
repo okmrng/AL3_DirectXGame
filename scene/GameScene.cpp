@@ -329,15 +329,6 @@ void GameScene::Update() {
 		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 		viewProjection_.TransferMatrix();
 	}
-
-	ImGui::Begin("waitTimer");
-	ImGui::Text("enemy             :%d", enemyWaitTimer_);
-	ImGui::Text("enemyIntervalShort:%d", enemyIntervalShortWaitTimer_);
-	ImGui::Text("enemyStrong       :%d", enemyStrongWaitTimer_);
-	ImGui::Text("enemyMove         :%d", enemyMoveWaitTimer_);
-	ImGui::Text("railCamera        :%d", asItIsTimer_);
-	ImGui::Text("count             :%d", count_);
-	ImGui::End();
 }
 
 void GameScene::CheckAllCollisions() { 

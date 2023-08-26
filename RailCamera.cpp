@@ -30,12 +30,6 @@ void RailCamera::Update() {
 	// カメラオブジェクトのワールド行列からビュー行列を計算する
 	viewProjection_.matView = Inverse(worldTransform_.matWorld_);
 	viewProjection_.TransferMatrix();
-
-	ImGui::Begin("RailCamera");
-	ImGui::Text("velocityX:%.1f", move_.x);
-	ImGui::Text("velocityY:%.1f", move_.y);
-	ImGui::Text("velocityZ:%.1f", move_.z);
-	ImGui::End();
 }
 
 Vector3 RailCamera::GetWorldPositiopn() { 

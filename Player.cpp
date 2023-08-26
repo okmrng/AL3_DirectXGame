@@ -153,10 +153,6 @@ void Player::Update(ViewProjection& viewProjection) {
 	}
 	audio_->SetVolume(voiceBombIcon_, volumeBombIcon_);
 
-	ImGui::Begin("stopCount");
-	ImGui::Text("%d", stopCount_);
-	ImGui::End();
-
 	// マウスカーソルのスクリーン座標からワールド座標を取得して2Dレティクル配置
 	UpdateReticle(viewProjection);
 }
