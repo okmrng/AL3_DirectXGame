@@ -91,4 +91,8 @@ private:
 	bool toTitle_ = false; // タイトルへ
 
 	int32_t triggerCount_ = 5; // 連続押し防止
+
+	// SPACE
+	Sprite* spriteSpace_ = nullptr;    // スプライト
+	uint32_t textureHandleSpace_ = 0u; // テクスチャハンドル
 };

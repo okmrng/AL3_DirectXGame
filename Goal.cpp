@@ -45,6 +45,12 @@ void Goal::Initialize(Model* model) {
 
 	// 連続押し棒氏
 	triggerCount_ = 5;
+
+	// SPACE
+	// テクスチャ読み込み
+	textureHandleSpace_ = TextureManager::Load("sprite/space.png");
+	// スプライト生成
+	spriteSpace_ = Sprite::Create(textureHandleSpace_, {1134, 641}, {1, 1, 1, 1}, {0.0f, 0.0f});
 }
 
 void Goal::Update() {
@@ -101,6 +107,9 @@ void Goal::Draw(ViewProjection& viewProjection) {
 
 void Goal::DrawUI() { 
 	spriteClear_->Draw();
+	if (worldTransformClear_.translation_.x <= 1.0f) {
+		spriteSpace_->Draw();
+	}
 }
 
 void Goal::OnColision() { 
