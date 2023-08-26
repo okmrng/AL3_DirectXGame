@@ -24,12 +24,25 @@ void Explanation::Initialize() {
 	toNext_ = false;
 
 	keyCount_ = 5;
+
+	// BGM
+	soundHandle_ = audio_->LoadWave("bgm/explanation.wav");
+	voiceHandle_ = 0u;
 }
 
 void Explanation::Update() {
+	// BGM再生
+	if (!audio_->IsPlaying(voiceHandle_)) {
+		voiceHandle_ = audio_->PlayWave(soundHandle_, true, 0.2f);
+	}
+
 	keyCount_--;
 	if (keyCount_ <= 0) {
 		if (input_->TriggerKey(DIK_SPACE)) {
+			// BGM停止
+			audio_->StopWave(voiceHandle_);
+
+			// 次のシーンへ
 			toNext_ = true;
 		}
 	}

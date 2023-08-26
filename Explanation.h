@@ -58,4 +58,8 @@ private:
 	bool toNext_ = false; // 次のシーンへ
 
 	int32_t keyCount_ = 5; // キーカウント
+
+	// BGM
+	uint32_t soundHandle_ = 0u; // サウンドハンドル
+	uint32_t voiceHandle_ = 0u; // 再生ハンドル
 };
