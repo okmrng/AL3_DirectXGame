@@ -149,7 +149,7 @@ void Score::Update(bool playSound) {
 		--stopCountB_;
 		--stopCountC_;
 
-		if (score_ >= 65000) {
+		if (score_ >= 67000) {
 			if (!audio_->IsPlaying(voiceS_)) {
 				voiceS_ = audio_->PlayWave(soundS_);
 			}
@@ -157,7 +157,7 @@ void Score::Update(bool playSound) {
 				audio_->StopWave(voiceS_);
 			}
 		}
-		if (score_ >= 60000 && score_ < 65000) {
+		if (score_ >= 60000 && score_ < 67000) {
 			if (!audio_->IsPlaying(voiceA_)) {
 				voiceA_ = audio_->PlayWave(soundA_);
 			}
